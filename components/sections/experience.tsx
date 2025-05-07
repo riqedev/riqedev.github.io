@@ -14,7 +14,7 @@ const EXPERIENCE = [
   },
   {
     date: "Enero 2023 — Abril 2023",
-    title: "Desarrollador Java Jr",
+    title: "Desarrollador Jr",
     company: "Kimval Ingeniería SPA",
     description:
       "Participación en el desarrollo de plataforma para teleconsultas médicas. Desarrollo full-stack con Java, SQL y ZK Framework, enfocado en funcionalidades seguras y eficientes.",
