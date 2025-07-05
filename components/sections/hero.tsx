@@ -28,7 +28,7 @@ const Hero = () => {
       <PaddingContainer>
         <motion.div variants={itemAnimation} initial="hidden" animate="visible" className="relative z-20">
           <p className="text-primary text-xs md:text-sm font-medium uppercase mb-2">
-            Ingeniero de Software · Full-Stack Developer
+            Software Engineer · Full-Stack Developer
           </p>
           <h1 className="py-2 text-4xl font-extrabold leading-11 tracking-tight  sm:text-4xl sm:leading-10 md:text-6xl md:leading-14   sm:mx-auto md:max-w-2xl">
             {" "}
