@@ -74,7 +74,8 @@ export const certifications = [
 export const projectsData = [
   {
     title: "Enerlytics",
-    description: "Dashboard de consumo energético simulado...",
+    description:
+      "Dashboard de consumo energético simulado que analiza patrones horarios, muestra tendencias, horas críticas y ventanas óptimas para agendar tareas durante horas de menor carga energética.",
     tags: ["ReactJS", "Vite", "TailwindCSS", "ShadCN/UI", "Recharts"],
     // CAMBIO: Usa el string directo de la ruta en la carpeta public
     imageUrl: "/projects/Enerlytics.png",
@@ -82,42 +83,48 @@ export const projectsData = [
   },
   {
     title: "DMA",
-    description: "Plataforma educativa para docentes...",
+    description:
+      "Plataforma educativa para docentes. Permite diseñar clases, visualizar gráficos y generar PDF, utilizando la taxonomía de aprendizaje SOLO como base.",
     tags: ["ReactJS", "AntDesign", "TailwindCSS", "MongoDB", "Redux"],
     imageUrl: "/projects/DMA.png",
     projectLink: "http://dma2.uct.cl/",
   },
   {
     title: "Weather App",
-    description: "Aplicación que proporciona información del clima...",
+    description:
+      "Aplicación que proporciona información del clima en tiempo real, permite buscar y visualizar informacion de diferentes locaciones del mundo.",
     tags: ["ReactJS", "TailwindCSS", "OpenWeatherMap"],
     imageUrl: "/projects/Weather.png",
     projectLink: "https://github.com/riqedev/Weather-App-ReactJS-TailwindCSS",
   },
   {
     title: "Teleprocesos",
-    description: "Plataforma que ofrece servicios para consultas telemáticas...",
+    description:
+      "Plataforma que ofrece servicios para realizar consultas telemáticas de manera eficiente y segura a las instituciones de salud.",
     tags: ["Java", "ZK", "SQL Server"],
     imageUrl: "/projects/TelC.png",
     projectLink: "",
   },
   {
     title: "MACD",
-    description: "Aplicación que permite incorporar dinámicamente nuevos campos...",
+    description:
+      "Aplicación que permite incorporar dinámicamente nuevos campos en formularios sin alterar la estructura base de una BD.",
     tags: ["PHP", "Laravel", "Bootstrap", "SQL Server"],
     imageUrl: "/projects/MACD.png",
     projectLink: "https://github.com/riqedev/Modulo-Administrador-De-Campos-Dinamicos",
   },
   {
     title: "Detector de células",
-    description: "Sistema embebido que mediante técnicas de Machine Learning...",
+    description:
+      "Sistema embebido que mediante técnicas de Machine Learning detecta y categoriza células mediante sus diferentes tamaños y tipos.",
     tags: ["Python", "OpenCV", "Numpy"],
     imageUrl: "/projects/Cell.png",
     projectLink: "https://github.com/riqedev/Cells",
   },
   {
     title: "Todo App",
-    description: "Todo App con funcionalidad CRUD...",
+    description:
+      "Todo App con funcionalidad CRUD que permite gestionar y organizar tareas dinámicamente con almacenamiento y persistencia en tiempo real.",
     tags: ["ReactJS", "TailwindCSS", "Firebase"],
     imageUrl: "/projects/Todolist.png",
     projectLink: "https://github.com/riqedev/Todo-App-ReactJS-TailwindCSS-Firebase",
