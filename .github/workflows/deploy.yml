@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ['main'] # Cambia a 'master' si esa es tu rama principal
+    branches: ['main']
 
 jobs:
   build-and-deploy:
@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
@@ -33,7 +34,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './out' # Asegúrate que coincida con tu distDir en next.config.js
+          # VITE genera la carpeta 'dist', no 'out'
+          path: './dist' 
 
       - name: Deploy to GitHub Pages
         id: deployment
