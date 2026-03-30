@@ -182,7 +182,7 @@ export const Profile = () => {
                       <span className="text-xs font-medium">Ciclismo</span>
                     </div>
                     <a
-                      href="https://enrique-blog.vercel.app/"
+                      href="https://riqedev-blog.vercel.app/"
                       target="_blank"
                       className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 hover:bg-muted/40 transition-colors group/item text-center cursor-pointer"
                     >
