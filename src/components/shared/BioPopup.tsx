@@ -72,7 +72,7 @@ export const BioPopup = ({ onClose }: BioPopupProps) => {
                 Flickr
               </a>{" "}
               y explorar mis artículos en mi{" "}
-              <a href="https://enrique-blog.vercel.app/" target="_blank" className="text-primary hover:underline">
+              <a href="https://riqedev-blog.vercel.app/" target="_blank" className="text-primary hover:underline">
                 Blog Personal
               </a>
               .
