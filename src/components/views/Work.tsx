@@ -3,10 +3,11 @@ import { useState } from "react";
 import { projectsData } from "@/types/generalTypes";
 import { ProjectModal } from "@/components/shared/ProjectModal";
 import { FolderGit2, ArrowUpRight, Code2 } from "lucide-react";
-import { TerminalCard } from "@/components/shared/TerminalCard"; // Importamos el componente unificado
+import { TerminalCard } from "@/components/shared/TerminalCard";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export const Work = () => {
-  const [selectedProject, setSelectedProject] = useState<(typeof projectsData)[0] | null>(null);
+  const [selectedProject, setSelectedProject] = useState<(typeof projectsData)[number] | null>(null);
 
   return (
     <section className="relative h-screen w-full flex flex-col items-center overflow-hidden bg-background text-foreground transition-colors duration-500">
@@ -38,7 +39,7 @@ export const Work = () => {
       </div>
 
       {/* MAIN CONTENT CONTAINER */}
-      <div className="relative z-10 w-full max-w-400 h-full pt-12 pb-10 px-4 md:px-8 flex flex-col gap-4">
+      <div className="relative z-10 w-full max-w-400 h-full pt-24 pb-24 px-4 md:px-8 flex flex-col gap-4">
         {/* Internal Header for Context */}
         <div className="flex justify-between items-end border-b border-border/50 pb-4 shrink-0">
           <div>
@@ -52,7 +53,7 @@ export const Work = () => {
         </div>
 
         {/* GRID DE PROYECTOS (Scrollable) */}
-        <div className="flex-1 overflow-y-auto pr-2 -mr-2 scrollbar-thin scrollbar-thumb-border/50 scrollbar-track-transparent">
+        <ScrollArea className="flex-1 min-h-0">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-8">
             {projectsData.map((project, idx) => (
               <TerminalCard
@@ -116,7 +117,7 @@ export const Work = () => {
               </div>
             )}
           </div>
-        </div>
+        </ScrollArea>
       </div>
 
       {/* FOOTER INFO */}

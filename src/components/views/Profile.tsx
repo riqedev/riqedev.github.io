@@ -42,7 +42,7 @@ export const Profile = () => {
   const [showBio, setShowBio] = useState(false);
 
   return (
-    <section className="relative max-h-screen w-full flex flex-col items-center overflow-hidden bg-background text-foreground transition-colors duration-500">
+    <section className="relative h-screen w-full flex flex-col items-center overflow-hidden bg-background text-foreground transition-colors duration-500">
       {/* GRID BACKGROUND: Textura técnica igual al Home */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px] mask-[radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
 
@@ -73,7 +73,7 @@ export const Profile = () => {
 
       {/* MAIN CONTENT CONTAINER */}
       {/* Ajustado para respetar el Dock inferior y el Header superior */}
-      <div className="relative z-10 w-full max-w-400 h-full pt-12 pb-24 px-4 md:px-8 flex flex-col lg:grid lg:grid-cols-12 gap-4 lg:gap-6 overflow-y-auto lg:overflow-hidden">
+      <div className="relative z-10 w-full max-w-400 h-full pt-24 pb-24 px-4 md:px-8 flex flex-col lg:grid lg:grid-cols-12 gap-4 lg:gap-6 overflow-y-auto lg:overflow-hidden">
         {/* COL 1: EXPERIENCE LOG */}
         <motion.div
           initial={{ x: -20, opacity: 0 }}
@@ -151,10 +151,9 @@ export const Profile = () => {
                     eficiencia operativa.
                   </p>
                   <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                    En el día a día trabajo como <strong>desarrollador full-stack</strong>: interfaces web con{" "}
-                    <strong>React</strong>, apps móviles con <strong>React Native</strong> y backends en{" "}
-                    <strong>Python</strong>, <strong>Node.js</strong> y <strong>PHP</strong>. Dashboards en tiempo real,
-                    APIs RESTful y automatización de procesos industriales son parte constante de mi trabajo.
+                    Actualmente me desempeño como <strong>ingeniero de software</strong>, uniendo el desarrollo digital con la operación industrial.
+                    Desarrollo el stack completo: desde interfaces web en <strong>React</strong> y aplicaciones móviles con <strong>React Native</strong>, hasta la lógica de backend en <strong>Python</strong>, <strong>Node.js</strong> y <strong>PHP</strong>.
+                    Paso gran parte del tiempo diseñando dashboards en tiempo real, APIs RESTful y sistemas que automatizan procesos industriales complejos.
                     <span className="text-primary font-medium block mt-2">
                       [ "Siempre busco nuevas formas de mejorar para entregar lo mejor de mí en cada desafío." ]
                     </span>
@@ -183,7 +182,7 @@ export const Profile = () => {
                       <span className="text-xs font-medium">Ciclismo</span>
                     </div>
                     <a
-                      href="https://riqedev-blog.vercel.app/"
+                      href="https://enrique-blog.vercel.app/"
                       target="_blank"
                       className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 hover:bg-muted/40 transition-colors group/item text-center cursor-pointer"
                     >
