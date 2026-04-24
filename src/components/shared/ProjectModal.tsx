@@ -83,13 +83,15 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
               </Button>
             )}
 
-            <Button
-              variant="outline"
-              className="flex-1 gap-2 border-border hover:bg-accent"
-              onClick={() => window.open(project.projectLink, "_blank")}
-            >
-              <Github size={16} /> Repository
-            </Button>
+            {(project.repoLink ?? project.projectLink) && (
+              <Button
+                variant="outline"
+                className="flex-1 gap-2 border-border hover:bg-accent"
+                onClick={() => window.open(project.repoLink ?? project.projectLink, "_blank")}
+              >
+                <Github size={16} /> Repository
+              </Button>
+            )}
           </div>
         </div>
       </DialogContent>

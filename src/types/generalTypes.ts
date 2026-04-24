@@ -73,6 +73,15 @@ export const certifications = [
 
 export const projectsData = [
   {
+    title: "RIQE Virtual Lens Lab",
+    description:
+      "Simulador de óptica de cámara en tiempo real. Sin fotos de fondo, todo se genera proceduralmente. Ajusta focal length, apertura, distancia de foco y número de láminas del diafragma para ver bokeh, profundidad de campo, distorsión y viñeteo renderizados con física real.",
+    tags: ["React Three Fiber", "TypeScript", "Vite", "drei", "postprocessing", "ShadCN/UI", "TailwindCSS"],
+    imageUrl: "/projects/RIQE-LAB.png",
+    projectLink: "https://riqe-lab.vercel.app/",
+    repoLink: "https://github.com/riqedev/riqe-lab",
+  },
+  {
     title: "Enerlytics",
     description:
       "Dashboard de consumo energético simulado que analiza patrones horarios, muestra tendencias, horas críticas y ventanas óptimas para agendar tareas durante horas de menor carga energética.",
@@ -134,8 +143,8 @@ export const projectsData = [
 export interface Project {
   title: string;
   description: string;
-  // Usamos 'readonly string[]' porque tu projectsData usa 'as const'
   tags: readonly string[];
   imageUrl: string;
   projectLink: string;
+  repoLink?: string;
 }
