@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Github, ExternalLink } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { type Project } from "@/types/generalTypes"; // Importación correcta del tipo
+import { type Project } from "@/types/generalTypes";
 
 interface ProjectModalProps {
   project: Project | null;
@@ -14,6 +14,19 @@ interface ProjectModalProps {
 export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) => {
   if (!project) return null;
 
+  const liveUrl = project.projectLink || null;
+  // Si projectLink ya apunta a GitHub y no hay repoLink, evitamos duplicar el botón.
+  const repoUrl =
+    "repoLink" in project && project.repoLink
+      ? project.repoLink
+      : liveUrl && liveUrl.includes("github.com")
+        ? liveUrl
+        : null;
+
+  // Si el "Live Demo" en realidad es el repo, no lo mostramos como demo.
+  const showLive = liveUrl !== null && !liveUrl.includes("github.com");
+  const showRepo = repoUrl !== null;
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-6xl p-0 overflow-hidden bg-background text-foreground border-border sm:rounded-2xl h-[70vh] flex flex-col md:flex-row gap-0">
@@ -21,10 +34,15 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
         <div className="relative md:w-[60%] h-64 md:h-full bg-muted overflow-hidden group select-none">
           <img
             src={project.imageUrl}
-            alt={project.title}
+            alt={`Captura del proyecto ${project.title}`}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent pointer-events-none"
+          />
 
           <div className="absolute bottom-6 left-6 z-20 flex flex-wrap gap-2">
             {project.tags.slice(0, 3).map((tag) => (
@@ -39,7 +57,7 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
           </div>
         </div>
 
-        {/* COLUMNA DERECHA: INFO TÉCNICA */}
+        {/* COLUMNA DERECHA: INFO */}
         <div className="flex-1 flex flex-col h-full border-t md:border-t-0 md:border-l border-border bg-card relative">
           <DialogHeader className="p-6 border-b border-border shrink-0 text-left">
             <DialogTitle className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
@@ -49,7 +67,6 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
 
           <ScrollArea className="flex-1 p-6 md:p-8">
             <div className="space-y-8">
-              {/* Descripción */}
               <div>
                 <h4 className="text-sm font-semibold text-foreground mb-2">Project Overview</h4>
                 <DialogDescription className="text-muted-foreground leading-relaxed text-sm md:text-base">
@@ -57,11 +74,9 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
                 </DialogDescription>
               </div>
 
-              {/* Stack Completo */}
               <div>
                 <h4 className="text-sm font-semibold text-foreground mb-3">Architecture & Stack</h4>
                 <div className="flex flex-wrap gap-2">
-                  {/* CORRECCIÓN AQUÍ: key={tag} en lugar de key={tech} */}
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
@@ -75,24 +90,24 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
             </div>
           </ScrollArea>
 
-          {/* Footer: Acciones */}
-          <div className="p-6 border-t border-border flex flex-col sm:flex-row gap-3 shrink-0">
-            {project.projectLink && (
-              <Button className="flex-1 gap-2" onClick={() => window.open(project.projectLink, "_blank")}>
-                <ExternalLink size={16} /> Live Demo
-              </Button>
-            )}
-
-            {(project.repoLink ?? project.projectLink) && (
-              <Button
-                variant="outline"
-                className="flex-1 gap-2 border-border hover:bg-accent"
-                onClick={() => window.open(project.repoLink ?? project.projectLink, "_blank")}
-              >
-                <Github size={16} /> Repository
-              </Button>
-            )}
-          </div>
+          {(showLive || showRepo) && (
+            <div className="p-6 border-t border-border flex flex-col sm:flex-row gap-3 shrink-0">
+              {showLive && liveUrl && (
+                <Button asChild className="flex-1 gap-2">
+                  <a href={liveUrl} target="_blank" rel="noreferrer">
+                    <ExternalLink size={16} /> Live Demo
+                  </a>
+                </Button>
+              )}
+              {showRepo && repoUrl && (
+                <Button asChild variant="outline" className="flex-1 gap-2 border-border hover:bg-accent">
+                  <a href={repoUrl} target="_blank" rel="noreferrer">
+                    <Github size={16} /> Repository
+                  </a>
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

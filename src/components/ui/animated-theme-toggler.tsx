@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { Moon, Sun } from "lucide-react";
 import { flushSync } from "react-dom";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/components/theme-provider";
 
 import { cn } from "@/lib/utils";
 
@@ -10,45 +11,29 @@ interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"butt
 }
 
 export const AnimatedThemeToggler = ({ className, duration = 400, ...props }: AnimatedThemeTogglerProps) => {
-  const [isDark, setIsDark] = useState(false);
+  const { theme, setTheme } = useTheme();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    const updateTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-
-    updateTheme();
-
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const isDark =
+    theme === "dark" ||
+    (theme === "system" &&
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   const toggleTheme = useCallback(async () => {
-    if (!buttonRef.current) return;
+    const nextTheme = isDark ? "light" : "dark";
 
-    // Fallback para navegadores que no soportan View Transitions API
+    // Fallback for browsers without View Transitions API
     if (!document.startViewTransition) {
-      const newTheme = !isDark;
-      setIsDark(newTheme);
-      document.documentElement.classList.toggle("dark");
-      localStorage.setItem("theme", newTheme ? "dark" : "light");
+      setTheme(nextTheme);
       return;
     }
 
     await document.startViewTransition(() => {
-      flushSync(() => {
-        const newTheme = !isDark;
-        setIsDark(newTheme);
-        document.documentElement.classList.toggle("dark");
-        localStorage.setItem("theme", newTheme ? "dark" : "light");
-      });
+      flushSync(() => setTheme(nextTheme));
     }).ready;
+
+    if (!buttonRef.current) return;
 
     const { top, left, width, height } = buttonRef.current.getBoundingClientRect();
     const x = left + width / 2;
@@ -63,13 +48,20 @@ export const AnimatedThemeToggler = ({ className, duration = 400, ...props }: An
         duration,
         easing: "ease-in-out",
         pseudoElement: "::view-transition-new(root)",
-      }
+      },
     );
-  }, [isDark, duration]);
+  }, [isDark, setTheme, duration]);
 
   return (
-    <Button ref={buttonRef} variant="ghost" size="icon" onClick={toggleTheme} className={cn(className)} {...props}>
-      {/* CORRECCIÓN: Forzamos size-4 para igualar al Dock */}
+    <Button
+      ref={buttonRef}
+      variant="ghost"
+      size="icon"
+      onClick={toggleTheme}
+      aria-label={isDark ? "Activar tema claro" : "Activar tema oscuro"}
+      className={cn(className)}
+      {...props}
+    >
       {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
       <span className="sr-only">Toggle theme</span>
     </Button>

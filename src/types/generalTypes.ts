@@ -1,45 +1,8 @@
-// src/types/generalTypes.ts
-export interface OnlyChildrenProps {
-  children: React.ReactNode;
-}
-
-export enum Tech {
-  Python = "Python",
-  JavaScript = "JavaScript",
-  React = "React",
-  Next = "Next.js",
-  PHP = "PHP",
-  Java = "Java",
-  HTML = "HTML",
-  CSS = "CSS",
-  NodeJS = "Node.js",
-  GitHub = "GitHub",
-  Tailwind = "TailwindCSS",
-  MongoDB = "MongoDB",
-  MySQL = "MySQL",
-  Framer = "Framer Motion",
-  AntDesign = "Ant Design",
-  MaterialUI = "Material UI",
-  Figma = "Figma",
-  Typescript = "TypeScript",
-  Vercel = "Vercel",
-  Astro = "Astro",
-  Firebase = "Firebase",
-  ReactNative = "React Native",
-  Vite = "Vite",
-  FastAPI = "FastAPI",
-  Flask = "Flask",
-  PM2 = "PM2",
-  Expo = "Expo",
-  Express = "Express",
-}
-
 export const certifications = [
   {
     name: "English Certificate 61/100 (C1 Advance)",
     certificationLink: "https://www.efset.org/cert/KiPNRP",
   },
-
   {
     name: "Machine Learning: Aplicado a Python y Data Science",
     certificationLink: "https://www.udemy.com/certificate/UC-3c086afe-f3f0-4b57-af7a-4438c0ca8a9b/",
@@ -56,7 +19,6 @@ export const certifications = [
     name: "UI/UX Design With Figma : 5+ Real World Projects",
     certificationLink: "https://www.udemy.com/certificate/UC-1cd5e9be-4ba4-418b-9b1c-db0b56a2ab21/",
   },
-
   {
     name: "Complete Bootstrap & React Bootcamp with Hands-On Projects",
     certificationLink: "https://www.udemy.com/certificate/UC-ee05b7c4-0612-4e15-b33d-8e584e7ee2fe/",
@@ -86,7 +48,6 @@ export const projectsData = [
     description:
       "Dashboard de consumo energético simulado que analiza patrones horarios, muestra tendencias, horas críticas y ventanas óptimas para agendar tareas durante horas de menor carga energética.",
     tags: ["ReactJS", "Vite", "TailwindCSS", "ShadCN/UI", "Recharts"],
-    // CAMBIO: Usa el string directo de la ruta en la carpeta public
     imageUrl: "/projects/Enerlytics.png",
     projectLink: "https://github.com/riqedev/Enerlytics",
   },
@@ -140,11 +101,4 @@ export const projectsData = [
   },
 ] as const;
 
-export interface Project {
-  title: string;
-  description: string;
-  tags: readonly string[];
-  imageUrl: string;
-  projectLink: string;
-  repoLink?: string;
-}
+export type Project = (typeof projectsData)[number];

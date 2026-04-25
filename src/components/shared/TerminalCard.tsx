@@ -1,8 +1,7 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-// CORRECCIÓN AQUÍ: Agregamos 'type' porque LucideIcon no existe en el JS final, solo en TS
 import { type LucideIcon } from "lucide-react";
-import { motion, type HTMLMotionProps } from "framer-motion";
+import { motion, type HTMLMotionProps } from "motion/react";
 
 interface TerminalCardProps extends HTMLMotionProps<"div"> {
   title: string;
@@ -45,7 +44,7 @@ export const TerminalCard = ({
           {/* Título e Icono */}
           <div className="flex items-center gap-2 ml-2 text-muted-foreground">
             {Icon && <Icon size={14} />}
-            <span className="text-xs font-mono font-medium uppercase tracking-wider truncate max-w-[150px]">
+            <span className="text-xs font-mono font-medium uppercase tracking-wider truncate max-w-37.5">
               {title}
             </span>
           </div>

@@ -1,12 +1,67 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/" href="Logo.png" />
+    <link rel="icon" type="image/png" href="/Logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio EC - Sofware Engineer</title>
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+    <meta
+      name="description"
+      content="riqedev — TAKE 01: Engineering through the lens. Portfolio de Enrique, Ingeniero Civil Informático especializado en React, IoT y desarrollo full-stack."
+    />
+    <link rel="canonical" href="https://riqedev.github.io/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://riqedev.github.io/" />
+    <meta property="og:title" content="riqedev — Software Engineer" />
+    <meta
+      property="og:description"
+      content="TAKE 01: Engineering through the lens. Ingeniería como base, estética como motor."
+    />
+    <meta property="og:image" content="https://riqedev.github.io/Logo.png" />
+    <meta name="twitter:card" content="summary" />
+    <title>riqedev — Software Engineer</title>
+    <script>
+      // Prevent FOUC: aplicar tema antes del paint inicial.
+      (function () {
+        try {
+          var stored = localStorage.getItem("portfolio-ui-theme");
+          var theme = stored || "dark";
+          var resolved =
+            theme === "system"
+              ? window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light"
+              : theme;
+          document.documentElement.classList.add(resolved);
+        } catch (_) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+    <script>
+      // GitHub Pages SPA redirect: si llegamos vía 404.html con ?/path,
+      // restauramos la URL real para que React Router la tome.
+      (function (l) {
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      })(window.location);
+    </script>
   </head>
   <body>
+    <noscript>
+      <div style="padding:2rem;font-family:system-ui;color:#fafafa;background:#0a0a0a;min-height:100vh">
+        Este portfolio requiere JavaScript habilitado para visualizarse.
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
