@@ -83,9 +83,9 @@ export const Profile = () => {
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="lg:col-span-4 lg:h-full min-h-96 lg:min-h-0 flex flex-col mb-4 lg:mb-0"
+          className="lg:col-span-4 lg:h-full flex flex-col mb-4 lg:mb-0"
         >
-          <Terminal className="h-full w-full max-w-none bg-card border-border shadow-sm dark:shadow-md text-[10px] md:text-xs font-mono leading-relaxed overflow-hidden">
+          <Terminal className="h-auto lg:h-full w-full max-w-none max-h-none lg:max-h-screen bg-card border-border shadow-sm dark:shadow-md text-[10px] md:text-xs font-mono leading-relaxed overflow-visible lg:overflow-hidden">
             <TypingAnimation className="text-muted-foreground mb-4">&gt; tail -f /var/log/career.log</TypingAnimation>
 
             {EXPERIENCE_LOGS.map((log, idx) => (

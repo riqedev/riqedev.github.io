@@ -12,8 +12,10 @@ type Category = (typeof CATEGORIES)[number];
 
 const getProjectCategory = (tags: readonly string[]): Category | null => {
   const joined = tags.join(" ").toLowerCase();
-  if (/\breact\b/.test(joined)) return "REACT";
+  // React: matches "react", "reactjs", "react three fiber", "react native"
+  if (/react/.test(joined)) return "REACT";
   if (/python|opencv|numpy/.test(joined)) return "PYTHON";
+  // \bjava\b evita capturar "javascript"
   if (/\bjava\b|\bzk\b/.test(joined)) return "JAVA";
   if (/\bphp\b|laravel/.test(joined)) return "PHP";
   return null;
