@@ -9,23 +9,16 @@ const EMAIL = "philiphcc@gmail.com";
 interface Channel {
   id: string;
   label: string;
-  value: string;
   href: string;
   icon: LucideIcon;
   copy?: boolean;
 }
 
 const CHANNELS: Channel[] = [
-  { id: "01", label: "EMAIL", value: EMAIL, href: `mailto:${EMAIL}`, icon: Mail, copy: true },
-  {
-    id: "02",
-    label: "LINKEDIN",
-    value: "/in/enriquefcc",
-    href: "https://www.linkedin.com/in/enriquefcc/",
-    icon: Linkedin,
-  },
-  { id: "03", label: "GITHUB", value: "@riqedev", href: "https://github.com/riqedev", icon: Github },
-  { id: "04", label: "BLOG", value: "enrique-blog.vercel.app", href: "https://enrique-blog.vercel.app/", icon: Rss },
+  { id: "01", label: "Email", href: `mailto:${EMAIL}`, icon: Mail, copy: true },
+  { id: "02", label: "LinkedIn", href: "https://www.linkedin.com/in/enriquefcc/", icon: Linkedin },
+  { id: "03", label: "GitHub", href: "https://github.com/riqedev", icon: Github },
+  { id: "04", label: "Blog", href: "https://riqedev-blog.vercel.app/", icon: Rss },
 ];
 
 export const Contact = () => {
@@ -77,22 +70,21 @@ export const Contact = () => {
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.25 + idx * 0.08 }}
-                    className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between py-3 border-b border-border/40 last:border-b-0"
+                    className="flex items-center justify-between gap-3 py-3 border-b border-border/40 last:border-b-0"
                   >
                     <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                       <span className="text-muted-foreground/50 shrink-0">[{ch.id}]</span>
                       <Icon size={14} className="text-muted-foreground shrink-0" />
-                      <span className="text-muted-foreground/80 uppercase tracking-wider text-[10px] shrink-0">
+                      <span className="text-foreground/90 uppercase tracking-wider text-[11px] sm:text-xs">
                         {ch.label}
                       </span>
-                      <span className="text-foreground/90 truncate select-all">{ch.value}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
+                    <div className="flex items-center gap-1.5 shrink-0">
                       {ch.copy && (
                         <button
                           type="button"
                           onClick={handleCopy}
-                          aria-label={copied ? "Email copiado" : "Copiar email"}
+                          aria-label={copied ? "Copiado" : "Copiar"}
                           className="flex items-center gap-1.5 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground border border-border/40 hover:border-border rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                         >
                           {copied ? <Check size={11} /> : <Copy size={11} />}
@@ -103,6 +95,7 @@ export const Contact = () => {
                         href={ch.href}
                         target={isMail ? undefined : "_blank"}
                         rel={isMail ? undefined : "noreferrer"}
+                        aria-label={`${isMail ? "Enviar correo" : "Abrir"} ${ch.label}`}
                         className="flex items-center gap-1.5 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground border border-border/40 hover:border-border rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                       >
                         <span>{isMail ? "Send" : "Open"}</span>

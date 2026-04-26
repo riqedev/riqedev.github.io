@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export const HUDFrame = ({ children, className }: { children: ReactNode; className?: string }) => (
   <section
     className={cn(
-      "relative h-screen w-full flex flex-col items-center overflow-hidden bg-background text-foreground transition-colors duration-500",
+      "relative h-dvh w-full flex flex-col items-center overflow-hidden bg-background text-foreground transition-colors duration-500",
       className,
     )}
   >

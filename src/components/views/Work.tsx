@@ -7,25 +7,46 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { HUDFrame } from "@/components/shared/HUDFrame";
 import { cn } from "@/lib/utils";
 
+const CATEGORIES = ["REACT", "PYTHON", "JAVA", "PHP"] as const;
+type Category = (typeof CATEGORIES)[number];
+
+const getProjectCategory = (tags: readonly string[]): Category | null => {
+  const joined = tags.join(" ").toLowerCase();
+  if (/\breact\b/.test(joined)) return "REACT";
+  if (/python|opencv|numpy/.test(joined)) return "PYTHON";
+  if (/\bjava\b|\bzk\b/.test(joined)) return "JAVA";
+  if (/\bphp\b|laravel/.test(joined)) return "PHP";
+  return null;
+};
+
 export const Work = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<Category | null>(null);
 
-  const allTags = useMemo(() => {
-    const set = new Set<string>();
-    projectsData.forEach((p) => p.tags.forEach((t) => set.add(t)));
-    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  const counts = useMemo(() => {
+    const map = new Map<Category, number>();
+    CATEGORIES.forEach((c) => map.set(c, 0));
+    projectsData.forEach((p) => {
+      const cat = getProjectCategory(p.tags);
+      if (cat) map.set(cat, (map.get(cat) ?? 0) + 1);
+    });
+    return map;
   }, []);
+
+  const visibleCategories = useMemo(
+    () => CATEGORIES.filter((c) => (counts.get(c) ?? 0) > 0),
+    [counts],
+  );
 
   const filteredProjects = useMemo(
     () =>
-      activeTag
-        ? projectsData.filter((p) => (p.tags as readonly string[]).includes(activeTag))
+      activeCategory
+        ? projectsData.filter((p) => getProjectCategory(p.tags) === activeCategory)
         : projectsData,
-    [activeTag],
+    [activeCategory],
   );
 
-  const showPlaceholder = activeTag === null && projectsData.length < 8;
+  const showPlaceholder = activeCategory === null && projectsData.length < 8;
 
   return (
     <HUDFrame>
@@ -74,13 +95,17 @@ export const Work = () => {
                 <Filter size={10} />
                 FILTER
               </span>
-              <FilterChip label={`ALL (${projectsData.length})`} active={activeTag === null} onClick={() => setActiveTag(null)} />
-              {allTags.map((tag) => (
+              <FilterChip
+                label={`ALL (${projectsData.length})`}
+                active={activeCategory === null}
+                onClick={() => setActiveCategory(null)}
+              />
+              {visibleCategories.map((cat) => (
                 <FilterChip
-                  key={tag}
-                  label={tag}
-                  active={activeTag === tag}
-                  onClick={() => setActiveTag(tag)}
+                  key={cat}
+                  label={`${cat} (${counts.get(cat) ?? 0})`}
+                  active={activeCategory === cat}
+                  onClick={() => setActiveCategory(cat)}
                 />
               ))}
             </div>
@@ -93,7 +118,7 @@ export const Work = () => {
             <div className="flex flex-col items-center justify-center gap-2 py-16 text-center">
               <span className="text-xs font-mono text-muted-foreground/60">[ NO MATCH IN ROLL ]</span>
               <button
-                onClick={() => setActiveTag(null)}
+                onClick={() => setActiveCategory(null)}
                 className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
               >
                 Reset filter

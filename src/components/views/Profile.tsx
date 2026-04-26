@@ -83,7 +83,7 @@ export const Profile = () => {
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="lg:col-span-4 h-85 md:h-100 lg:h-full min-h-0 flex flex-col mb-4 lg:mb-0"
+          className="lg:col-span-4 lg:h-full min-h-96 lg:min-h-0 flex flex-col mb-4 lg:mb-0"
         >
           <Terminal className="h-full w-full max-w-none bg-card border-border shadow-sm dark:shadow-md text-[10px] md:text-xs font-mono leading-relaxed overflow-hidden">
             <TypingAnimation className="text-muted-foreground mb-4">&gt; tail -f /var/log/career.log</TypingAnimation>
@@ -119,12 +119,12 @@ export const Profile = () => {
         </motion.div>
 
         {/* COL 2: DASHBOARD */}
-        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:grid-rows-12 h-full lg:overflow-hidden">
+        <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:grid-rows-12 lg:h-full lg:overflow-hidden">
           {/* README.md */}
           <TerminalCard
             title="README.md"
             icon={User}
-            className="md:col-span-2 lg:row-span-7 h-120 lg:h-auto relative group overflow-hidden"
+            className="md:col-span-2 lg:row-span-7 relative group overflow-hidden"
             delay={0.2}
             headerAction={
               <Button
@@ -139,7 +139,7 @@ export const Profile = () => {
               </Button>
             }
           >
-            <ScrollArea className="h-full p-6 md:p-8">
+            <ScrollArea className="lg:h-full p-6 md:p-8">
               <div className="space-y-6 max-w-3xl pb-16">
                 <div className="space-y-4">
                   <h3 className="text-xl md:text-2xl font-bold text-foreground flex items-center gap-2">
@@ -189,7 +189,7 @@ export const Profile = () => {
                       <span className="text-xs font-medium">Ciclismo</span>
                     </div>
                     <a
-                      href="https://enrique-blog.vercel.app/"
+                      href="https://riqedev-blog.vercel.app/"
                       target="_blank"
                       rel="noreferrer"
                       className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 hover:bg-muted/40 transition-colors group/item text-center cursor-pointer"
@@ -212,10 +212,10 @@ export const Profile = () => {
           <TerminalCard
             title="package.json"
             icon={Cpu}
-            className="md:col-span-1 lg:row-span-5 h-75 lg:h-auto relative overflow-hidden"
+            className="md:col-span-1 lg:row-span-5 relative overflow-hidden"
             delay={0.3}
           >
-            <ScrollArea className="h-full p-6">
+            <ScrollArea className="lg:h-full p-6">
               <div className="font-mono text-xs md:text-sm leading-relaxed select-text pb-12">
                 <span className="text-yellow-400">{"{"}</span>
 
@@ -276,10 +276,10 @@ export const Profile = () => {
           <TerminalCard
             title="licenses.txt"
             icon={Award}
-            className="md:col-span-1 lg:row-span-5 h-75 lg:h-auto relative overflow-hidden"
+            className="md:col-span-1 lg:row-span-5 relative overflow-hidden"
             delay={0.4}
           >
-            <ScrollArea className="h-full p-0">
+            <ScrollArea className="lg:h-full p-0">
               <div className="flex flex-col pb-12">
                 {certifications.map((cert) => (
                   <a
