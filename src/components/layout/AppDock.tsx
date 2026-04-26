@@ -1,22 +1,17 @@
 import { Dock, DockIcon } from "@/components/ui/dock";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 import { Link, useLocation } from "react-router-dom";
-import { User, Github, Linkedin, FolderDot } from "lucide-react";
+import { User, FolderDot, Radio } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
-const DATA = {
-  navbar: [
-    { type: "logo", label: "HOME", href: "/" },
-    { type: "icon", icon: User, label: "PROFILE", href: "/profile" },
-    { type: "icon", icon: FolderDot, label: "WORK", href: "/work" },
-  ],
-  social: [
-    { label: "GITHUB", icon: Github, href: "https://github.com/riqedev" },
-    { label: "LINKEDIN", icon: Linkedin, href: "https://www.linkedin.com/in/enriquefcc/" },
-  ],
-};
+const NAV_ITEMS = [
+  { type: "logo", label: "HOME", href: "/" },
+  { type: "icon", icon: User, label: "PROFILE", href: "/profile" },
+  { type: "icon", icon: FolderDot, label: "WORK", href: "/work" },
+  { type: "icon", icon: Radio, label: "CONTACT", href: "/contact" },
+] as const;
 
 export const AppDock = () => {
   const location = useLocation();
@@ -28,8 +23,7 @@ export const AppDock = () => {
           direction="middle"
           className="bg-card backdrop-blur-md border border-border/80 px-3 md:px-6 py-2 md:py-3 rounded-2xl shadow-sm gap-2 md:gap-4"
         >
-          {/* SECCIÓN NAVEGACIÓN */}
-          {DATA.navbar.map((item) => {
+          {NAV_ITEMS.map((item) => {
             const isActive = location.pathname === item.href;
 
             return (
@@ -39,6 +33,7 @@ export const AppDock = () => {
                     <Link
                       to={item.href}
                       aria-label={item.label}
+                      aria-current={isActive ? "page" : undefined}
                       className={cn(
                         buttonVariants({ variant: "ghost", size: "icon" }),
                         "size-9 md:size-10 rounded-xl transition-colors hover:bg-transparent",
@@ -71,38 +66,7 @@ export const AppDock = () => {
             );
           })}
 
-          <div className="h-4 md:h-6 w-[1px] bg-border/30 mx-1 self-center" />
-
-          {/* SECCIÓN REDES SOCIALES */}
-          {DATA.social.map((item) => (
-            <DockIcon key={item.label} className="size-9 md:size-10">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <a
-                    href={item.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={item.label}
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-9 md:size-10 rounded-xl text-muted-foreground hover:text-foreground transition-colors hover:bg-transparent",
-                    )}
-                  >
-                    <item.icon className="size-4 md:size-5" />
-                  </a>
-                </TooltipTrigger>
-                <TooltipContent
-                  sideOffset={10}
-                  showArrow={false}
-                  className="font-mono text-[10px] uppercase tracking-widest bg-foreground text-background border-none rounded-sm px-2 py-0.5"
-                >
-                  <p>{item.label}</p>
-                </TooltipContent>
-              </Tooltip>
-            </DockIcon>
-          ))}
-
-          <div className="h-4 md:h-6 w-[1px] bg-border/30 mx-1 self-center" />
+          <div className="h-4 md:h-6 w-px bg-border/30 mx-1 self-center" />
 
           {/* SECCIÓN THEME TOGGLE (ANIMADO) */}
           <DockIcon className="size-9 md:size-10">
