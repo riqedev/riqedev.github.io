@@ -8,6 +8,7 @@ import { TerminalCard } from "@/components/shared/TerminalCard";
 import { Terminal, AnimatedSpan, TypingAnimation } from "@/components/ui/terminal";
 import { BioPopup } from "@/components/shared/BioPopup";
 import { HUDFrame } from "@/components/shared/HUDFrame";
+import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
 
 const EXPERIENCE_LOGS = [
   {
@@ -61,20 +62,17 @@ export const Profile = () => {
 
   return (
     <HUDFrame>
-      {/* HUD HEADER */}
-      <div className="absolute top-7 sm:top-8 md:top-9 w-full px-7 md:px-9 z-20 flex justify-between items-start text-[0.55rem] md:text-[0.65rem] font-mono tracking-wider text-muted-foreground/40 uppercase pointer-events-none">
-        <div className="flex flex-col gap-2 text-left">
-          <span className="text-foreground/55 tracking-[0.2em]">RIQEDEV</span>
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-foreground/45">ONLINE</span>
-          </div>
-        </div>
-        <div className="flex flex-col items-end gap-1 text-right">
-          <span className="text-foreground/55">FULL-STACK</span>
-          <span className="opacity-55">v2.0.26</span>
-        </div>
-      </div>
+      <HUDHeader
+        label="RIQEDEV"
+        status="ONLINE"
+        dotClassName="bg-emerald-500"
+        right={
+          <>
+            <span className="text-foreground/55">FULL-STACK</span>
+            <span className="opacity-55">v2.0.26</span>
+          </>
+        }
+      />
 
       {/* MAIN */}
       <div className="relative z-10 w-full max-w-400 h-full pt-24 pb-24 px-4 md:px-8 flex flex-col lg:grid lg:grid-cols-12 gap-4 lg:gap-6 overflow-y-auto lg:overflow-hidden">
@@ -90,7 +88,7 @@ export const Profile = () => {
 
             {EXPERIENCE_LOGS.map((log, idx) => (
               <div key={log.timestamp} className="mb-6">
-                <AnimatedSpan delay={1000 + idx * 800} className="text-zinc-500">
+                <AnimatedSpan delay={1000 + idx * 800} className="text-muted-foreground">
                   [{log.timestamp}] [{log.level}]
                 </AnimatedSpan>
                 <AnimatedSpan delay={1200 + idx * 800} className="text-primary font-bold">
@@ -175,26 +173,26 @@ export const Profile = () => {
                       href="https://www.flickr.com/photos/breathnshoot/"
                       target="_blank"
                       rel="noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 hover:bg-muted/40 transition-colors group/item text-center cursor-pointer"
+                      className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 hover:bg-muted/40 transition-colors group/item text-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                     >
-                      <Camera size={24} className="text-zinc-500 group-hover/item:text-primary transition-colors" />
+                      <Camera size={24} className="text-muted-foreground group-hover/item:text-primary transition-colors" />
                       <span className="text-xs font-medium">Fotografía</span>
                     </a>
                     <div className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 text-center cursor-default">
-                      <Keyboard size={24} className="text-zinc-500" />
+                      <Keyboard size={24} className="text-muted-foreground" />
                       <span className="text-xs font-medium">Mech Keebs</span>
                     </div>
                     <div className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 text-center cursor-default">
-                      <Bike size={24} className="text-zinc-500" />
+                      <Bike size={24} className="text-muted-foreground" />
                       <span className="text-xs font-medium">Ciclismo</span>
                     </div>
                     <a
                       href="https://riqedev-blog.vercel.app/"
                       target="_blank"
                       rel="noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 hover:bg-muted/40 transition-colors group/item text-center cursor-pointer"
+                      className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 hover:bg-muted/40 transition-colors group/item text-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                     >
-                      <Rss size={24} className="text-zinc-500 group-hover/item:text-primary transition-colors" />
+                      <Rss size={24} className="text-muted-foreground group-hover/item:text-primary transition-colors" />
                       <span className="text-xs font-medium">Blog</span>
                     </a>
                   </div>
@@ -287,7 +285,7 @@ export const Profile = () => {
                     href={cert.certificationLink}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-between p-3 border-b border-border hover:bg-muted/20 transition-colors group"
+                    className="flex items-center justify-between p-3 border-b border-border hover:bg-muted/20 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/60"
                   >
                     <div className="flex flex-col gap-1 overflow-hidden">
                       <span className="text-xs font-medium text-foreground truncate">{cert.name}</span>
@@ -308,11 +306,7 @@ export const Profile = () => {
         </div>
       </div>
 
-      {/* HUD FOOTER */}
-      <div className="absolute bottom-7 sm:bottom-8 md:bottom-9 w-full px-7 md:px-9 flex justify-between items-end text-[0.55rem] md:text-[0.65rem] font-mono text-muted-foreground/40 uppercase pointer-events-none z-10">
-        <span>AUTOBIO</span>
-        <span>[ 100% ]</span>
-      </div>
+      <HUDFooter left="AUTOBIO" right="[ 100% ]" />
 
       {showBio && <BioPopup onClose={() => setShowBio(false)} />}
     </HUDFrame>

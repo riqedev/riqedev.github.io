@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence, MotionConfig } from "motion/react";
 import { Home } from "@/components/views/Home";
 import { Work } from "@/components/views/Work";
 import { Profile } from "@/components/views/Profile";
@@ -24,14 +24,16 @@ const AnimatedRoutes = () => {
 
 function App() {
   return (
-    <Router>
-      <div className="relative min-h-dvh bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground overflow-hidden transition-colors duration-300">
-        <div className="relative z-10">
-          <AnimatedRoutes />
+    <MotionConfig reducedMotion="user">
+      <Router>
+        <div className="relative min-h-dvh bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground overflow-hidden transition-colors duration-300">
+          <div className="relative z-10">
+            <AnimatedRoutes />
+          </div>
+          <AppDock />
         </div>
-        <AppDock />
-      </div>
-    </Router>
+      </Router>
+    </MotionConfig>
   );
 }
 

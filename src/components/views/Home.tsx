@@ -1,38 +1,32 @@
 import { motion } from "motion/react";
 import { HUDFrame } from "@/components/shared/HUDFrame";
+import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
 
 export const Home = () => {
   return (
     <HUDFrame className="justify-center">
-      {/* HUD HEADER */}
-      <div className="absolute top-7 sm:top-8 md:top-9 w-full px-7 md:px-9 z-20 flex justify-between items-start text-[0.55rem] md:text-[0.65rem] font-mono tracking-wider text-muted-foreground/40 uppercase pointer-events-none">
-        <div className="flex flex-col gap-2 text-left">
-          <span className="text-foreground/55 tracking-[0.2em]">RIQEDEV</span>
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-            <span className="text-foreground/45">REC</span>
-          </div>
-        </div>
-
-        <div className="absolute left-1/2 -translate-x-1/2 hidden md:block text-center opacity-40">
-          <span>CHILE // 38.7397° S, 72.5901° W</span>
-        </div>
-
-        <div className="flex flex-col items-end gap-1 text-right">
-          <div className="flex items-center gap-3">
-            <span className="border border-foreground/15 px-1.5 py-0.5 rounded-[2px] text-foreground/55 text-[9px]">
-              RAW
-            </span>
-            <span className="hidden sm:inline">
-              ISO <span className="text-foreground/55">AUTO</span>
-            </span>
-          </div>
-          <div className="flex gap-3 opacity-55">
-            <span>1/2000</span>
-            <span>ƒ/2.8</span>
-          </div>
-        </div>
-      </div>
+      <HUDHeader
+        label="RIQEDEV"
+        status="REC"
+        dotClassName="bg-red-500"
+        center={<span>CHILE // 38.7397° S, 72.5901° W</span>}
+        right={
+          <>
+            <div className="flex items-center gap-3">
+              <span className="border border-foreground/15 px-1.5 py-0.5 rounded-[2px] text-foreground/55 text-[9px]">
+                RAW
+              </span>
+              <span className="hidden sm:inline">
+                ISO <span className="text-foreground/55">AUTO</span>
+              </span>
+            </div>
+            <div className="flex gap-3 opacity-55">
+              <span>1/2000</span>
+              <span>ƒ/2.8</span>
+            </div>
+          </>
+        }
+      />
 
       {/* HERO */}
       <motion.div
@@ -58,11 +52,7 @@ export const Home = () => {
         </div>
       </motion.div>
 
-      {/* HUD FOOTER */}
-      <div className="absolute bottom-7 sm:bottom-8 md:bottom-9 w-full px-7 md:px-9 flex justify-between items-end text-[0.55rem] md:text-[0.65rem] font-mono text-muted-foreground/40 uppercase pointer-events-none z-10">
-        <span>AF-C  WIDE</span>
-        <span>[ 100% ]</span>
-      </div>
+      <HUDFooter left="AF-C  WIDE" right="[ 100% ]" />
     </HUDFrame>
   );
 };

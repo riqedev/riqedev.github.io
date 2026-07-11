@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { Mail, Github, Linkedin, Rss, Copy, Check, ArrowUpRight, Radio, type LucideIcon } from "lucide-react";
 import { HUDFrame } from "@/components/shared/HUDFrame";
+import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
 import { TerminalCard } from "@/components/shared/TerminalCard";
 
 const EMAIL = "philiphcc@gmail.com";
@@ -36,19 +37,12 @@ export const Contact = () => {
 
   return (
     <HUDFrame>
-      {/* HUD HEADER */}
-      <div className="absolute top-7 sm:top-8 md:top-9 w-full px-7 md:px-9 z-20 flex justify-between items-start text-[0.55rem] md:text-[0.65rem] font-mono tracking-wider text-muted-foreground/40 uppercase pointer-events-none">
-        <div className="flex flex-col gap-2 text-left">
-          <span className="text-foreground/55 tracking-[0.2em]">TRANSMIT</span>
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-            <span className="text-foreground/45">OPEN FREQUENCY</span>
-          </div>
-        </div>
-        <div className="flex flex-col items-end gap-1 text-right">
-          <span className="text-foreground/55">{CHANNELS.length} CHANNELS</span>
-        </div>
-      </div>
+      <HUDHeader
+        label="TRANSMIT"
+        status="OPEN FREQUENCY"
+        dotClassName="bg-cyan-400"
+        right={<span className="text-foreground/55">{CHANNELS.length} CHANNELS</span>}
+      />
 
       {/* MAIN */}
       <div className="relative z-10 w-full max-w-3xl h-full pt-24 pb-24 px-4 md:px-8 flex flex-col justify-center">
@@ -112,11 +106,7 @@ export const Contact = () => {
         </motion.div>
       </div>
 
-      {/* HUD FOOTER */}
-      <div className="absolute bottom-7 sm:bottom-8 md:bottom-9 w-full px-7 md:px-9 flex justify-between items-end text-[0.55rem] md:text-[0.65rem] font-mono text-muted-foreground/40 uppercase pointer-events-none z-10">
-        <span>SIGNAL OK</span>
-        <span>[ AWAITING REPLY ]</span>
-      </div>
+      <HUDFooter left="SIGNAL OK" right="[ AWAITING REPLY ]" />
     </HUDFrame>
   );
 };

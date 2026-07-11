@@ -1,12 +1,21 @@
 import type { ReactNode } from "react";
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 /**
  * Marco visual común a las tres vistas: grid técnico de fondo + esquinas de visor.
  * Las views proyectan encima sus barras de HUD (header/footer) y el contenido principal.
+ *
+ * El enter/exit (fade rápido, solo opacidad) hace que `AnimatePresence` en App.tsx
+ * anime el cambio de ruta sin sensación de lag. Nada de blur (leía como "cargando")
+ * y el exit es más veloz que el enter para compensar el `mode="wait"` (sale y entra
+ * en secuencia). No es un obturador — es un corte limpio y casi instantáneo.
  */
 export const HUDFrame = ({ children, className }: { children: ReactNode; className?: string }) => (
-  <section
+  <motion.section
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1, transition: { duration: 0.15, ease: "easeOut" } }}
+    exit={{ opacity: 0, transition: { duration: 0.12, ease: "easeIn" } }}
     className={cn(
       "relative h-dvh w-full flex flex-col items-center overflow-hidden bg-background text-foreground transition-colors duration-500",
       className,
@@ -30,5 +39,5 @@ export const HUDFrame = ({ children, className }: { children: ReactNode; classNa
     </div>
 
     {children}
-  </section>
+  </motion.section>
 );

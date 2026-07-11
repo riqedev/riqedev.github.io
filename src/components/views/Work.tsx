@@ -5,6 +5,7 @@ import { FolderGit2, ArrowUpRight, Code2, Filter } from "lucide-react";
 import { TerminalCard } from "@/components/shared/TerminalCard";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { HUDFrame } from "@/components/shared/HUDFrame";
+import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = ["REACT", "PYTHON", "JAVA", "PHP"] as const;
@@ -52,21 +53,16 @@ export const Work = () => {
 
   return (
     <HUDFrame>
-      {/* HUD HEADER */}
-      <div className="absolute top-7 sm:top-8 md:top-9 w-full px-7 md:px-9 z-20 flex justify-between items-start text-[0.55rem] md:text-[0.65rem] font-mono tracking-wider text-muted-foreground/40 uppercase pointer-events-none">
-        <div className="flex flex-col gap-2 text-left">
-          <span className="text-foreground/55 tracking-[0.2em]">ARCHIVE</span>
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-            <span className="text-foreground/45">CATALOG</span>
-          </div>
-        </div>
-        <div className="flex flex-col items-end gap-1 text-right">
+      <HUDHeader
+        label="ARCHIVE"
+        status="CATALOG"
+        dotClassName="bg-blue-500"
+        right={
           <span className="text-foreground/55">
             {filteredProjects.length}/{projectsData.length} FILES
           </span>
-        </div>
-      </div>
+        }
+      />
 
       {/* MAIN */}
       <div className="relative z-10 w-full max-w-400 h-full pt-24 pb-24 px-4 md:px-8 flex flex-col gap-4">
@@ -79,7 +75,7 @@ export const Work = () => {
             href="https://github.com/riqedev"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-[10px] md:text-xs font-mono bg-muted/20 hover:bg-muted/40 px-2 py-1 rounded transition-colors"
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-[10px] md:text-xs font-mono bg-muted/20 hover:bg-muted/40 px-2 py-1 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
           >
             <FolderGit2 size={12} />
             <span>github / riqedev</span>
@@ -204,11 +200,7 @@ export const Work = () => {
         </ScrollArea>
       </div>
 
-      {/* HUD FOOTER */}
-      <div className="absolute bottom-7 sm:bottom-8 md:bottom-9 w-full px-7 md:px-9 flex justify-between items-end text-[0.55rem] md:text-[0.65rem] font-mono text-muted-foreground/40 uppercase pointer-events-none z-10">
-        <span>ROLL 01</span>
-        <span>[ 100% ]</span>
-      </div>
+      <HUDFooter left="ROLL 01" right="[ 100% ]" />
 
       <ProjectModal project={selectedProject} isOpen={!!selectedProject} onClose={() => setSelectedProject(null)} />
     </HUDFrame>
