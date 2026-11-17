@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, type Ref } from "react";
 import { Moon, Sun } from "lucide-react";
 import { flushSync } from "react-dom";
 import { Button } from "@/components/ui/button";
@@ -8,11 +8,23 @@ import { cn } from "@/lib/utils";
 
 interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"button"> {
   duration?: number;
+  ref?: Ref<HTMLButtonElement>;
 }
 
-export const AnimatedThemeToggler = ({ className, duration = 400, ...props }: AnimatedThemeTogglerProps) => {
+export const AnimatedThemeToggler = ({ className, duration = 400, ref, ...props }: AnimatedThemeTogglerProps) => {
   const { theme, setTheme } = useTheme();
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Radix (TooltipTrigger asChild) inyecta su propio ref: lo combinamos con el nuestro,
+  // que es el que mide el botón para originar el círculo del view transition.
+  const setRefs = useCallback(
+    (node: HTMLButtonElement | null) => {
+      buttonRef.current = node;
+      if (typeof ref === "function") ref(node);
+      else if (ref) ref.current = node;
+    },
+    [ref],
+  );
 
   const isDark =
     theme === "dark" ||
@@ -46,7 +58,7 @@ export const AnimatedThemeToggler = ({ className, duration = 400, ...props }: An
       },
       {
         duration,
-        easing: "ease-in-out",
+        easing: "cubic-bezier(0.77, 0, 0.175, 1)",
         pseudoElement: "::view-transition-new(root)",
       },
     );
@@ -54,16 +66,18 @@ export const AnimatedThemeToggler = ({ className, duration = 400, ...props }: An
 
   return (
     <Button
-      ref={buttonRef}
       variant="ghost"
       size="icon"
-      onClick={toggleTheme}
       aria-label={isDark ? "Activar tema claro" : "Activar tema oscuro"}
       className={cn(className)}
       {...props}
+      ref={setRefs}
+      onClick={(e) => {
+        props.onClick?.(e);
+        void toggleTheme();
+      }}
     >
       {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-      <span className="sr-only">Toggle theme</span>
     </Button>
   );
 };

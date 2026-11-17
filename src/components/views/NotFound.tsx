@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { HUDFrame } from "@/components/shared/HUDFrame";
 import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
+import { RecDot } from "@/components/shared/Wordmark";
 
 export const NotFound = () => {
   return (
@@ -10,8 +11,8 @@ export const NotFound = () => {
       <HUDHeader
         label="ERR_404"
         status="NO SIGNAL"
-        dotClassName="bg-red-500"
-        right={<span className="text-foreground/55">FRAME LOST</span>}
+        signal="rec"
+        right={<span className="text-hud-strong">FRAME LOST</span>}
       />
 
       {/* SMPTE-style barras de color (referencia técnica clásica de TV) */}
@@ -32,11 +33,11 @@ export const NotFound = () => {
         className="relative z-10 flex flex-col items-center text-center select-none px-6 gap-8"
       >
         <div className="flex flex-col items-center gap-3">
-          <span className="text-[10px] md:text-xs font-mono tracking-[0.3em] text-muted-foreground uppercase">
+          <span className="osd text-[10px] md:text-xs tracking-[0.3em] text-hud">
             // 404 // scene not found
           </span>
-          <h1 className="text-[18vw] sm:text-[16vw] md:text-[12vw] lg:text-[10vw] leading-[0.85] font-bold tracking-tighter text-foreground">
-            NO<span className="text-primary">.</span>SIGNAL
+          <h1 className="display text-[13vw] sm:text-[12vw] md:text-[10vw] lg:text-[8vw] text-foreground">
+            NO<RecDot className="mx-[0.06em]" />SIGNAL
           </h1>
           <p className="text-xs md:text-sm font-mono text-muted-foreground max-w-md mt-2">
             La toma que buscas no existe en este rollo. El visor está vacío.
@@ -45,9 +46,9 @@ export const NotFound = () => {
 
         <Link
           to="/"
-          className="group flex items-center gap-3 px-4 py-2 border border-border/60 hover:border-primary/60 hover:text-primary text-muted-foreground rounded-md font-mono text-[10px] md:text-xs uppercase tracking-[0.2em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+          className="group osd pressable flex h-9 items-center gap-3 rounded-md border border-border px-4 text-[10px] tracking-[0.2em] text-muted-foreground outline-none hover:border-foreground/40 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:text-xs"
         >
-          <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
+          <ArrowLeft size={14} aria-hidden="true" className="transition-transform duration-200 group-hover:-translate-x-0.5" />
           <span>Rec from start</span>
         </Link>
       </motion.div>

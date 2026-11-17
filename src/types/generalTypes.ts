@@ -39,7 +39,7 @@ export const projectsData = [
     description:
       "Simulador de óptica de cámara en tiempo real. Sin fotos de fondo, todo se genera proceduralmente. Ajusta focal length, apertura, distancia de foco y número de láminas del diafragma para ver bokeh, profundidad de campo, distorsión y viñeteo renderizados con física real.",
     tags: ["React Three Fiber", "TypeScript", "Vite", "drei", "postprocessing", "ShadCN/UI", "TailwindCSS"],
-    imageUrl: "/projects/RIQE-LAB.png",
+    imageUrl: "/projects/RIQE-LAB.webp",
     projectLink: "https://riqe-lab.vercel.app/",
     repoLink: "https://github.com/riqedev/riqe-lab",
   },
@@ -48,7 +48,7 @@ export const projectsData = [
     description:
       "Dashboard de consumo energético simulado que analiza patrones horarios, muestra tendencias, horas críticas y ventanas óptimas para agendar tareas durante horas de menor carga energética.",
     tags: ["ReactJS", "Vite", "TailwindCSS", "ShadCN/UI", "Recharts"],
-    imageUrl: "/projects/Enerlytics.png",
+    imageUrl: "/projects/Enerlytics.webp",
     projectLink: "https://github.com/riqedev/Enerlytics",
   },
   {
@@ -56,7 +56,7 @@ export const projectsData = [
     description:
       "Plataforma educativa para docentes. Permite diseñar clases, visualizar gráficos y generar PDF, utilizando la taxonomía de aprendizaje SOLO como base.",
     tags: ["ReactJS", "AntDesign", "TailwindCSS", "MongoDB", "Redux"],
-    imageUrl: "/projects/DMA.png",
+    imageUrl: "/projects/DMA.webp",
     projectLink: "http://dma2.uct.cl/",
   },
   {
@@ -64,7 +64,7 @@ export const projectsData = [
     description:
       "Aplicación que proporciona información del clima en tiempo real, permite buscar y visualizar informacion de diferentes locaciones del mundo.",
     tags: ["ReactJS", "TailwindCSS", "OpenWeatherMap"],
-    imageUrl: "/projects/Weather.png",
+    imageUrl: "/projects/Weather.webp",
     projectLink: "https://github.com/riqedev/Weather-App-ReactJS-TailwindCSS",
   },
   {
@@ -72,7 +72,7 @@ export const projectsData = [
     description:
       "Plataforma que ofrece servicios para realizar consultas telemáticas de manera eficiente y segura a las instituciones de salud.",
     tags: ["Java", "ZK", "SQL Server"],
-    imageUrl: "/projects/TelC.png",
+    imageUrl: "/projects/TelC.webp",
     projectLink: "",
   },
   {
@@ -80,7 +80,7 @@ export const projectsData = [
     description:
       "Aplicación que permite incorporar dinámicamente nuevos campos en formularios sin alterar la estructura base de una BD.",
     tags: ["PHP", "Laravel", "Bootstrap", "SQL Server"],
-    imageUrl: "/projects/MACD.png",
+    imageUrl: "/projects/MACD.webp",
     projectLink: "https://github.com/riqedev/Modulo-Administrador-De-Campos-Dinamicos",
   },
   {
@@ -88,7 +88,7 @@ export const projectsData = [
     description:
       "Sistema embebido que mediante técnicas de Machine Learning detecta y categoriza células mediante sus diferentes tamaños y tipos.",
     tags: ["Python", "OpenCV", "Numpy"],
-    imageUrl: "/projects/Cell.png",
+    imageUrl: "/projects/Cell.webp",
     projectLink: "https://github.com/riqedev/Cells",
   },
   {
@@ -96,7 +96,7 @@ export const projectsData = [
     description:
       "Todo App con funcionalidad CRUD que permite gestionar y organizar tareas dinámicamente con almacenamiento y persistencia en tiempo real.",
     tags: ["ReactJS", "TailwindCSS", "Firebase"],
-    imageUrl: "/projects/Todolist.png",
+    imageUrl: "/projects/Todolist.webp",
     projectLink: "https://github.com/riqedev/Todo-App-ReactJS-TailwindCSS-Firebase",
   },
 ] as const;

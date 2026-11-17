@@ -1,9 +1,24 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@fontsource-variable/inter/opsz.css";
+@import "@fontsource-variable/archivo/wdth.css";
+@import "@fontsource-variable/jetbrains-mono/wght.css";
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * TAKE 01 design tokens. La documentación vive en DESIGN.md y en la ruta /system.
+ * Regla: los componentes consumen tokens semánticos (bg-card, text-hud, bg-rec…),
+ * nunca colores de paleta crudos (red-500, zinc-400…).
+ */
+
 @theme inline {
+  /* Tipografía: Inter para leer, Archivo (eje de ancho) para la marca y el HUD, JetBrains Mono para código */
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-brand: "Archivo Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-xs: 2px;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -11,6 +26,7 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -29,19 +45,30 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Señales del visor: cada color tiene UN significado */
+  --color-rec: var(--rec);
+  --color-af: var(--af);
+  --color-info: var(--info);
+  --color-link: var(--link);
+  --color-warn: var(--warn);
+
+  /* Texto del HUD: tres niveles de presencia sobre el fondo */
+  --color-hud-strong: var(--hud-strong);
+  --color-hud: var(--hud);
+  --color-hud-faint: var(--hud-faint);
+
+  /* Sintaxis (package.json, logs) */
+  --color-syntax-key: var(--syntax-key);
+  --color-syntax-string: var(--syntax-string);
+  --color-syntax-punct: var(--syntax-punct);
+  --color-syntax-comment: var(--syntax-comment);
+
+  /* Movimiento */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
   --animate-grid: grid 15s linear infinite;
   @keyframes grid {
     0% {
@@ -54,87 +81,156 @@
 }
 
 :root {
-  /* AQUÍ ESTÁ LA CLAVE: Definir colores semánticos */
-
   --radius: 0.625rem;
-  /* Light Mode: Un gris muy sutil (Zinc 50) en lugar de blanco puro */
-  --background: oklch(0.985 0.005 264.376);
-  --foreground: oklch(0.145 0 0);
+
+  --background: oklch(0.985 0.002 264);
+  --foreground: oklch(0.16 0 0);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.16 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.16 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: oklch(0.96 0 0);
   --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.48 0 0);
+  --accent: oklch(0.95 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.9 0 0);
+  --ring: oklch(0.45 0 0);
+
+  --rec: oklch(0.58 0.22 27);
+  --af: oklch(0.53 0.12 152);
+  --info: oklch(0.55 0.17 255);
+  --link: oklch(0.56 0.1 210);
+  --warn: oklch(0.62 0.15 70);
+
+  --hud-strong: oklch(0.16 0 0 / 78%);
+  --hud: oklch(0.16 0 0 / 60%);
+  --hud-faint: oklch(0.16 0 0 / 45%);
+
+  --syntax-key: oklch(0.52 0.19 25);
+  --syntax-string: oklch(0.48 0.13 150);
+  --syntax-punct: oklch(0.55 0.13 70);
+  --syntax-comment: oklch(0.55 0 0);
+
+  /* Elevación: sombra en capas sobre un relleno plano. Da material a las cards sin bordes gruesos. */
+  --shadow-card: 0 1px 2px oklch(0 0 0 / 4%), 0 14px 32px -18px oklch(0 0 0 / 16%);
+  --shadow-card-hover: 0 1px 2px oklch(0 0 0 / 5%), 0 22px 44px -20px oklch(0 0 0 / 24%);
 }
 
 :root.dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: oklch(0.19 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+  --primary: oklch(0.93 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
+  --muted-foreground: oklch(0.72 0 0);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --ring: oklch(0.72 0 0);
+
+  --rec: oklch(0.65 0.23 27);
+  --af: oklch(0.76 0.13 152);
+  --info: oklch(0.7 0.15 255);
+  --link: oklch(0.82 0.11 205);
+  --warn: oklch(0.84 0.15 85);
+
+  --hud-strong: oklch(0.985 0 0 / 75%);
+  --hud: oklch(0.985 0 0 / 58%);
+  --hud-faint: oklch(0.985 0 0 / 42%);
+
+  --syntax-key: oklch(0.74 0.15 25);
+  --syntax-string: oklch(0.8 0.15 150);
+  --syntax-punct: oklch(0.85 0.14 90);
+  --syntax-comment: oklch(0.6 0 0);
+
+  --shadow-card: inset 0 1px 0 0 oklch(1 0 0 / 6%), 0 18px 40px -22px oklch(0 0 0 / 75%);
+  --shadow-card-hover: inset 0 1px 0 0 oklch(1 0 0 / 9%), 0 26px 52px -22px oklch(0 0 0 / 85%);
+}
+
+/* OSD: la voz del visor. Archivo semicondensado, mayúsculas, cifras tabulares. */
+@utility osd {
+  font-family: var(--font-brand);
+  font-stretch: 84%;
+  font-weight: 540;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Display: la voz de la marca. Archivo semiexpandido (112%), pesado y apretado.
+   El wordmark es `riqedev` en minúscula + punto REC redondo (ver <Wordmark />). */
+@utility display {
+  font-family: var(--font-brand);
+  font-stretch: 112%;
+  font-weight: 780;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+/* Superficie de card: relleno plano + elevación por tokens. Sin degradados: con 4+ cards en
+   pantalla, cada brillo superior sumaba una banda más y el conjunto se veía sucio. */
+@utility surface {
+  background-color: var(--card);
+  box-shadow: var(--shadow-card);
+}
+
+/* Feedback de presión para cualquier elemento clickeable */
+@utility pressable {
+  transition-property: transform, color, background-color, border-color, opacity;
+  transition-duration: 160ms;
+  transition-timing-function: var(--ease-out);
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
   body {
-    /* CORRECCIÓN: Usar variables, no hardcoded colors */
-    @apply bg-background text-foreground selection:bg-primary selection:text-primary-foreground;
+    @apply bg-background text-foreground font-sans selection:bg-rec selection:text-white;
+    font-optical-sizing: auto;
+    /* Inter: 1 con base, a de un piso no; cifras tabulares solo donde se piden */
     font-feature-settings:
       "rlig" 1,
-      "calt" 1;
+      "calt" 1,
+      "cv05" 1;
+  }
+  strong,
+  b {
+    font-weight: 600;
+    color: var(--foreground);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline-color: var(--ring);
   }
 }
 
@@ -144,28 +240,20 @@
   mix-blend-mode: normal;
 }
 
-/* Custom scrollbar — design system aligned */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background-color: var(--border);
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--muted-foreground);
-}
-
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
 
-/* Respeta la preferencia del sistema: sin drift de grid, sin pulsos, sin blur-in.
+/* Material del dock: si el usuario pide menos transparencia, superficie sólida */
+@media (prefers-reduced-transparency: reduce) {
+  [data-material] {
+    background-color: var(--card) !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* Respeta la preferencia del sistema: sin drift de grid, sin pulsos, sin desplazamientos.
    motion/react se cubre aparte con <MotionConfig reducedMotion="user"> en App.tsx. */
 @media (prefers-reduced-motion: reduce) {
   *,

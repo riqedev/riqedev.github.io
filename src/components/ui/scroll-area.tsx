@@ -1,13 +1,35 @@
 import * as React from "react"
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
+import { ScrollArea as ScrollAreaPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * `fade`: difumina el borde inferior solo mientras queda contenido por leer. Al llegar al final
+ * (o si el contenido cabe) el corte desaparece, así no queda una línea a medias sin motivo.
+ */
 function ScrollArea({
   className,
   children,
+  fade = false,
   ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
+}: React.ComponentProps<typeof ScrollAreaPrimitive.Root> & { fade?: boolean }) {
+  const viewportRef = React.useRef<HTMLDivElement>(null)
+  const [more, setMore] = React.useState(false)
+
+  React.useEffect(() => {
+    const el = viewportRef.current
+    if (!fade || !el) return
+    const update = () => setMore(el.scrollHeight - el.scrollTop - el.clientHeight > 4)
+    el.addEventListener("scroll", update, { passive: true })
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    if (el.firstElementChild) ro.observe(el.firstElementChild)
+    return () => {
+      el.removeEventListener("scroll", update)
+      ro.disconnect()
+    }
+  }, [fade])
+
   return (
     <ScrollAreaPrimitive.Root
       data-slot="scroll-area"
@@ -15,8 +37,12 @@ function ScrollArea({
       {...props}
     >
       <ScrollAreaPrimitive.Viewport
+        ref={viewportRef}
         data-slot="scroll-area-viewport"
-        className="focus-visible:ring-ring/50 size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:outline-1"
+        className={cn(
+          "focus-visible:ring-ring/50 size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:outline-1",
+          fade && more && "mask-b-from-[calc(100%-2.5rem)]"
+        )}
       >
         {children}
       </ScrollAreaPrimitive.Viewport>

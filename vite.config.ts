@@ -13,7 +13,7 @@ const githubPagesSpaFallback = (): Plugin => ({
   name: "gh-pages-spa-fallback",
   apply: "build",
   closeBundle() {
-    const out = path.resolve(__dirname, "dist");
+    const out = path.resolve(import.meta.dirname, "dist");
     copyFileSync(path.join(out, "index.html"), path.join(out, "404.html"));
   },
 });
@@ -23,23 +23,21 @@ export default defineConfig({
   base: "/",
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
   build: {
     target: "es2022",
     cssCodeSplit: true,
-    rollupOptions: {
+    rolldownOptions: {
       output: {
-        // Separa libs grandes para mejor cache hit en GitHub Pages
-        manualChunks: {
-          react: ["react", "react-dom", "react-router-dom"],
-          motion: ["motion"],
-          radix: [
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-scroll-area",
-            "@radix-ui/react-slot",
-            "@radix-ui/react-tooltip",
+        // Separa libs grandes para mejor cache hit en GitHub Pages.
+        // Vite 8 (Rolldown) ya no acepta manualChunks en forma de objeto.
+        codeSplitting: {
+          groups: [
+            { name: "react", test: /node_modules[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/ },
+            { name: "motion", test: /node_modules[\\/](motion|motion-dom|motion-utils)[\\/]/ },
+            { name: "radix", test: /node_modules[\\/](radix-ui|@radix-ui)[\\/]/ },
           ],
         },
       },

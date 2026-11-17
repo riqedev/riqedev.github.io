@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { Cpu, User, ArrowUpRight, Award, Camera, Bike, Keyboard, Rss, Maximize2 } from "lucide-react";
+import { Cpu, User, ArrowUpRight, Award, Camera, Bike, Keyboard, Rss, Maximize2, type LucideIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { certifications } from "@/types/generalTypes";
@@ -9,6 +9,7 @@ import { Terminal, AnimatedSpan, TypingAnimation } from "@/components/ui/termina
 import { BioPopup } from "@/components/shared/BioPopup";
 import { HUDFrame } from "@/components/shared/HUDFrame";
 import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
+import { DURATION, EASE_OUT } from "@/lib/motion";
 
 const EXPERIENCE_LOGS = [
   {
@@ -51,6 +52,21 @@ const CORE_STACK = [
 
 const TOOLING_STACK = ["TailwindCSS", "Framer Motion", "Vite", "Expo", "Figma", "Git", "Docker", "Vercel", "PM2", "Firebase"];
 
+const HOBBIES: { label: string; icon: LucideIcon; href?: string }[] = [
+  { label: "Fotografía", icon: Camera, href: "https://www.flickr.com/photos/breathnshoot/" },
+  { label: "Mech Keebs", icon: Keyboard },
+  { label: "Ciclismo", icon: Bike },
+  { label: "Blog", icon: Rss, href: "https://riqedev-blog.vercel.app/" },
+];
+
+/** Tiempo en CTR desde 2023-08, calculado en vivo para que el log no envejezca. */
+const uptime = () => {
+  const start = new Date(2023, 7, 1);
+  const now = new Date();
+  const months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+  return `${Math.floor(months / 12)}y ${months % 12}m`;
+};
+
 const getCertIssuer = (link: string) => {
   if (link.includes("udemy.com")) return "Udemy";
   if (link.includes("efset.org")) return "EF SET";
@@ -65,52 +81,59 @@ export const Profile = () => {
       <HUDHeader
         label="RIQEDEV"
         status="ONLINE"
-        dotClassName="bg-emerald-500"
+        signal="af"
+        live
         right={
           <>
-            <span className="text-foreground/55">FULL-STACK</span>
-            <span className="opacity-55">v2.0.26</span>
+            <span className="text-hud-strong">FULL-STACK</span>
+            <span>v2.1.26</span>
           </>
         }
       />
 
       {/* MAIN */}
-      <div className="relative z-10 w-full max-w-400 h-full pt-24 pb-24 px-4 md:px-8 flex flex-col lg:grid lg:grid-cols-12 gap-4 lg:gap-6 overflow-y-auto lg:overflow-hidden">
+      <div className="relative z-10 w-full max-w-400 h-full pt-24 pb-28 px-4 md:px-8 flex flex-col lg:grid lg:grid-cols-12 gap-4 lg:gap-6 overflow-y-auto lg:overflow-hidden">
         {/* COL 1: EXPERIENCE LOG */}
         <motion.div
-          initial={{ x: -20, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
+          initial={{ y: 8, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: DURATION.modal, ease: EASE_OUT }}
           className="lg:col-span-4 lg:h-full flex flex-col mb-4 lg:mb-0"
         >
-          <Terminal className="h-auto lg:h-full w-full max-w-none max-h-none lg:max-h-screen bg-card border-border shadow-sm dark:shadow-md text-[10px] md:text-xs font-mono leading-relaxed overflow-visible lg:overflow-hidden">
-            <TypingAnimation className="text-muted-foreground mb-4">&gt; tail -f /var/log/career.log</TypingAnimation>
+          <Terminal
+            title="career.log"
+            className="h-auto lg:h-full w-full max-w-none max-h-none lg:max-h-screen text-[11px] md:text-xs font-mono leading-relaxed"
+          >
+            <TypingAnimation duration={35} className="text-muted-foreground mb-4">&gt; tail -f /var/log/career.log</TypingAnimation>
 
             {EXPERIENCE_LOGS.map((log, idx) => (
               <div key={log.timestamp} className="mb-6">
-                <AnimatedSpan delay={1000 + idx * 800} className="text-muted-foreground">
+                <AnimatedSpan delay={1000 + idx * 800} className="text-hud">
                   [{log.timestamp}] [{log.level}]
                 </AnimatedSpan>
-                <AnimatedSpan delay={1200 + idx * 800} className="text-primary font-bold">
+                <AnimatedSpan delay={1200 + idx * 800} className="text-foreground font-bold">
                   ➜ {log.msg}
                 </AnimatedSpan>
                 <AnimatedSpan
                   delay={1400 + idx * 800}
-                  className="text-foreground pl-4 block opacity-90 mt-1 whitespace-normal wrap-break-word"
+                  className="text-muted-foreground pl-4 block mt-1 whitespace-normal wrap-break-word"
                 >
                   Details: {log.details}
                 </AnimatedSpan>
                 <AnimatedSpan
                   delay={1600 + idx * 800}
                   className={`pl-4 block mt-1 ${
-                    log.status.includes("RUNNING") ? "text-emerald-500" : "text-muted-foreground"
+                    log.status.includes("RUNNING") ? "text-af" : "text-hud"
                   }`}
                 >
                   &gt; Status: {log.status}
                 </AnimatedSpan>
               </div>
             ))}
-            <TypingAnimation delay={4500} className="text-emerald-500 mt-4 animate-pulse">
+            <AnimatedSpan className="text-hud mt-2">
+              {`> uptime: ${uptime()} @ CTR`}
+            </AnimatedSpan>
+            <TypingAnimation delay={4500} className="text-af mt-2 animate-pulse">
               &gt; _
             </TypingAnimation>
           </Terminal>
@@ -128,21 +151,33 @@ export const Profile = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-6 w-6 text-muted-foreground hover:text-foreground"
+                className="pressable size-7 text-muted-foreground hover:text-foreground"
                 onClick={() => setShowBio(true)}
                 aria-label="Abrir bio completa"
-                title="Open in Editor (Read Full Bio)"
+                title="Abrir README completo"
               >
                 <Maximize2 size={14} />
               </Button>
             }
           >
-            <ScrollArea className="lg:h-full p-6 md:p-8">
-              <div className="space-y-6 max-w-3xl pb-16">
+            <ScrollArea fade className="lg:h-full p-6 md:p-8">
+              <div className="grid gap-8 lg:grid-cols-[minmax(0,64ch)_minmax(0,1fr)] lg:gap-10">
                 <div className="space-y-4">
-                  <h3 className="text-xl md:text-2xl font-bold text-foreground flex items-center gap-2">
-                    Hola, soy Enrique <span className="text-2xl">👋🏽</span>
-                  </h3>
+                  <div className="flex items-center gap-4">
+                    <img
+                      src="/profile/portrait.webp"
+                      alt="Enrique"
+                      width={56}
+                      height={56}
+                      className="size-12 shrink-0 rounded-full ring-1 ring-border ring-offset-2 ring-offset-card md:size-14"
+                    />
+                    <div className="grid gap-1">
+                      <h3 className="flex items-center gap-2 text-xl font-semibold tracking-tight text-foreground md:text-2xl">
+                        Hola, soy Enrique <span className="text-2xl">👋🏽</span>
+                      </h3>
+                      <p className="font-mono text-[11px] text-hud">Software Engineer @ CTR // Chile</p>
+                    </div>
+                  </div>
                   <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                     <strong>Ingeniero Civil Informático</strong> con mención en <strong>desarrollo de software</strong>,
                     con +3 años de experiencia en el diseño e implementación de soluciones tecnológicas innovadoras,
@@ -158,52 +193,54 @@ export const Profile = () => {
                     backend en <strong>Python</strong>, <strong>Node.js</strong> y <strong>PHP</strong>. Paso gran
                     parte del tiempo diseñando dashboards en tiempo real, APIs RESTful y sistemas que automatizan
                     procesos industriales complejos.
-                    <span className="text-primary font-medium block mt-2">
-                      [ "Siempre busco nuevas formas de mejorar para entregar lo mejor de mí en cada desafío." ]
+                    <span className="text-foreground/80 italic block mt-3 border-l-2 border-foreground/25 pl-3">
+                      "Siempre busco nuevas formas de mejorar para entregar lo mejor de mí en cada desafío."
                     </span>
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-border">
-                  <h4 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-4">
+                <div className="pt-6 border-t border-border lg:pt-0 lg:border-t-0 lg:border-l lg:pl-8">
+                  <h4 className="osd text-[10px] text-hud mb-4">
                     Fuera del código
                   </h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <a
-                      href="https://www.flickr.com/photos/breathnshoot/"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 hover:bg-muted/40 transition-colors group/item text-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-                    >
-                      <Camera size={24} className="text-muted-foreground group-hover/item:text-primary transition-colors" />
-                      <span className="text-xs font-medium">Fotografía</span>
-                    </a>
-                    <div className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 text-center cursor-default">
-                      <Keyboard size={24} className="text-muted-foreground" />
-                      <span className="text-xs font-medium">Mech Keebs</span>
-                    </div>
-                    <div className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 text-center cursor-default">
-                      <Bike size={24} className="text-muted-foreground" />
-                      <span className="text-xs font-medium">Ciclismo</span>
-                    </div>
-                    <a
-                      href="https://riqedev-blog.vercel.app/"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex flex-col items-center gap-2 p-3 rounded-lg bg-muted/20 hover:bg-muted/40 transition-colors group/item text-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-                    >
-                      <Rss size={24} className="text-muted-foreground group-hover/item:text-primary transition-colors" />
-                      <span className="text-xs font-medium">Blog</span>
-                    </a>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3">
+                    {HOBBIES.map((h) => {
+                      const inner = (
+                        <>
+                          {h.href && (
+                            <ArrowUpRight
+                              size={12}
+                              aria-hidden="true"
+                              className="absolute top-2 right-2 text-hud-faint transition-colors group-hover/item:text-foreground"
+                            />
+                          )}
+                          <h.icon size={22} aria-hidden="true" className="text-muted-foreground transition-colors group-hover/item:text-foreground" />
+                          <span className="text-xs font-medium">{h.label}</span>
+                        </>
+                      );
+                      const base =
+                        "group/item relative flex flex-col items-center gap-2 rounded-lg border border-border/70 p-3 text-center";
+                      return h.href ? (
+                        <a
+                          key={h.label}
+                          href={h.href}
+                          target="_blank"
+                          rel="noreferrer"
+                          className={`${base} transition-[transform,border-color,background-color] duration-200 ease-(--ease-out) outline-none hover:-translate-y-0.5 hover:border-foreground/25 hover:bg-muted/30 focus-visible:ring-2 focus-visible:ring-ring/60`}
+                        >
+                          {inner}
+                        </a>
+                      ) : (
+                        <div key={h.label} className={base}>
+                          {inner}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
             </ScrollArea>
 
-            <div
-              aria-hidden="true"
-              className="absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-card via-card/80 to-transparent pointer-events-none z-20"
-            />
           </TerminalCard>
 
           {/* package.json */}
@@ -213,102 +250,95 @@ export const Profile = () => {
             className="md:col-span-1 lg:row-span-5 relative overflow-hidden"
             delay={0.3}
           >
-            <ScrollArea className="lg:h-full p-6">
-              <div className="font-mono text-xs md:text-sm leading-relaxed select-text pb-12">
-                <span className="text-yellow-400">{"{"}</span>
+            <ScrollArea fade className="lg:h-full p-6">
+              <div className="font-mono text-xs md:text-sm leading-relaxed select-text">
+                <span className="text-syntax-punct">{"{"}</span>
 
                 <div className="pl-4 mb-3">
                   <div>
-                    <span className="text-red-400">"name"</span>
-                    <span className="text-zinc-400">: </span>
-                    <span className="text-emerald-500">"riqedev"</span>
-                    <span className="text-zinc-400">,</span>
+                    <span className="text-syntax-key">"name"</span>
+                    <span className="text-syntax-comment">: </span>
+                    <span className="text-syntax-string">"riqedev"</span>
+                    <span className="text-syntax-comment">,</span>
                   </div>
                   <div>
-                    <span className="text-red-400">"role"</span>
-                    <span className="text-zinc-400">: </span>
-                    <span className="text-emerald-500">"Software Engineer"</span>
-                    <span className="text-zinc-400">,</span>
+                    <span className="text-syntax-key">"role"</span>
+                    <span className="text-syntax-comment">: </span>
+                    <span className="text-syntax-string">"Software Engineer"</span>
+                    <span className="text-syntax-comment">,</span>
                   </div>
                 </div>
 
                 <div className="pl-4">
-                  <span className="text-zinc-500 italic mb-0.5 block">// Core Stack & Languages</span>
-                  <span className="text-red-400">"dependencies"</span>
-                  <span className="text-zinc-400">:</span> <span className="text-yellow-400">{"["}</span>
+                  <span className="text-syntax-comment italic mb-0.5 block">// Core Stack & Languages</span>
+                  <span className="text-syntax-key">"dependencies"</span>
+                  <span className="text-syntax-comment">:</span> <span className="text-syntax-punct">{"["}</span>
                   <div className="pl-4 flex flex-wrap gap-x-3 gap-y-1">
                     {CORE_STACK.map((tech) => (
-                      <span key={tech} className="text-emerald-500 hover:text-green-300 transition-colors cursor-default">
-                        "{tech}"<span className="text-zinc-400">,</span>
+                      <span key={tech} className="text-syntax-string">
+                        "{tech}"<span className="text-syntax-comment">,</span>
                       </span>
                     ))}
                   </div>
-                  <span className="text-yellow-400">{"],"}</span>
+                  <span className="text-syntax-punct">{"],"}</span>
                 </div>
 
                 <div className="pl-4 mt-2">
-                  <span className="text-zinc-500 italic mb-0.5 block">// Tools, Frameworks & UI</span>
-                  <span className="text-red-400">"devDependencies"</span>
-                  <span className="text-zinc-400">:</span> <span className="text-yellow-400">{"["}</span>
+                  <span className="text-syntax-comment italic mb-0.5 block">// Tools, Frameworks & UI</span>
+                  <span className="text-syntax-key">"devDependencies"</span>
+                  <span className="text-syntax-comment">:</span> <span className="text-syntax-punct">{"["}</span>
                   <div className="pl-4 flex flex-wrap gap-x-3 gap-y-1">
                     {TOOLING_STACK.map((tech) => (
-                      <span key={tech} className="text-emerald-500 hover:text-green-300 transition-colors cursor-default">
-                        "{tech}"<span className="text-zinc-400">,</span>
+                      <span key={tech} className="text-syntax-string">
+                        "{tech}"<span className="text-syntax-comment">,</span>
                       </span>
                     ))}
                   </div>
-                  <span className="text-yellow-400">{"]"}</span>
+                  <span className="text-syntax-punct">{"]"}</span>
                 </div>
 
-                <span className="text-yellow-400">{"}"}</span>
+                <span className="text-syntax-punct">{"}"}</span>
               </div>
             </ScrollArea>
 
-            <div
-              aria-hidden="true"
-              className="absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-card via-card/80 to-transparent pointer-events-none z-20"
-            />
           </TerminalCard>
 
           {/* licenses.txt */}
           <TerminalCard
             title="licenses.txt"
             icon={Award}
+            headerAction={<span className="font-mono text-[11px] text-hud-faint tabular-nums">{certifications.length} files</span>}
             className="md:col-span-1 lg:row-span-5 relative overflow-hidden"
             delay={0.4}
           >
-            <ScrollArea className="lg:h-full p-0">
-              <div className="flex flex-col pb-12">
+            <ScrollArea fade className="lg:h-full p-0">
+              <div className="flex flex-col">
                 {certifications.map((cert) => (
                   <a
                     key={cert.certificationLink}
                     href={cert.certificationLink}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-between p-3 border-b border-border hover:bg-muted/20 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/60"
+                    className="flex items-center justify-between p-3 border-b border-border hover:bg-muted/20 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/60"
                   >
                     <div className="flex flex-col gap-1 overflow-hidden">
                       <span className="text-xs font-medium text-foreground truncate">{cert.name}</span>
-                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                      <span className="osd w-fit rounded-xs border border-border px-1.5 py-px text-[9px] text-hud">
                         {getCertIssuer(cert.certificationLink)}
                       </span>
                     </div>
-                    <ArrowUpRight size={14} className="text-muted-foreground group-hover:text-primary shrink-0 ml-2" />
+                    <ArrowUpRight size={14} className="text-muted-foreground group-hover:text-foreground shrink-0 ml-2" />
                   </a>
                 ))}
               </div>
             </ScrollArea>
-            <div
-              aria-hidden="true"
-              className="absolute bottom-0 left-0 right-0 h-20 bg-linear-to-t from-card via-card/80 to-transparent pointer-events-none z-20"
-            />
           </TerminalCard>
         </div>
       </div>
 
       <HUDFooter left="AUTOBIO" right="[ 100% ]" />
 
-      {showBio && <BioPopup onClose={() => setShowBio(false)} />}
+      <BioPopup open={showBio} onOpenChange={setShowBio} />
     </HUDFrame>
   );
 };

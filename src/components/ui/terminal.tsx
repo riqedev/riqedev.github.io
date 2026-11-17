@@ -2,6 +2,7 @@ import { Children, createContext, useContext, useEffect, useMemo, useRef, useSta
 import { motion, type MotionProps, useInView } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { WindowDots } from "@/components/shared/TerminalCard";
 
 interface SequenceContextValue {
   completeItem: (index: number) => void;
@@ -49,7 +50,7 @@ export const AnimatedSpan = ({ children, delay = 0, className, startOnView = fal
       ref={elementRef}
       initial={{ opacity: 0, y: -5 }}
       animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: -5 }}
-      transition={{ duration: 0.3, delay: sequence ? 0 : delay / 1000 }}
+      transition={{ duration: sequence ? 0.14 : 0.3, delay: sequence ? 0 : delay / 1000 }}
       className={cn("grid text-sm font-normal tracking-tight", className)}
       onAnimationComplete={() => {
         if (!sequence) return;
@@ -155,12 +156,13 @@ export const TypingAnimation = ({
 
 interface TerminalProps {
   children: React.ReactNode;
+  title?: string;
   className?: string;
   sequence?: boolean;
   startOnView?: boolean;
 }
 
-export const Terminal = ({ children, className, sequence = true, startOnView = true }: TerminalProps) => {
+export const Terminal = ({ children, title, className, sequence = true, startOnView = true }: TerminalProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(containerRef as React.RefObject<Element>, {
     amount: 0.3,
@@ -194,17 +196,17 @@ export const Terminal = ({ children, className, sequence = true, startOnView = t
   const content = (
     <div
       ref={containerRef}
-      className={cn("border-border bg-background z-0 h-full max-h-screen w-full max-w-lg rounded-xl border", className)}
+      className={cn(
+        "group/card surface z-0 flex h-full max-h-screen w-full max-w-lg flex-col overflow-hidden rounded-xl border border-border",
+        className,
+      )}
     >
-      <div className="border-border flex flex-col gap-y-2 border-b p-4">
-        <div className="flex flex-row gap-x-2">
-          <div className="h-2 w-2 rounded-full bg-red-500"></div>
-          <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
-          <div className="h-2 w-2 rounded-full bg-green-500"></div>
-        </div>
+      <div className="flex h-10 shrink-0 items-center gap-3 border-b border-border px-4">
+        <WindowDots />
+        {title && <span className="truncate font-mono text-[11px] font-medium tracking-wide text-hud">{title}</span>}
       </div>
-      <pre className="p-4">
-        <code className="grid gap-y-1 overflow-auto">{wrappedChildren}</code>
+      <pre className="min-h-0 flex-1 overflow-auto p-4">
+        <code className="grid gap-y-1">{wrappedChildren}</code>
       </pre>
     </div>
   );

@@ -1,50 +1,59 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { SignalDot } from "@/components/shared/hud";
+import type { Signal } from "@/lib/signals";
 
 /**
  * Barras de HUD compartidas por todas las vistas. Centralizan posicionamiento,
- * tipografía mono y z-index para que las 5 vistas no diverjan al editarse.
+ * tipografía OSD y z-index para que las vistas no diverjan al editarse.
  * El contenido específico (badges, coords, contadores) se inyecta por props.
  */
 
 interface HUDHeaderProps {
   /** Etiqueta principal, arriba a la izquierda (RIQEDEV / ARCHIVE / TRANSMIT…). */
   label: string;
-  /** Texto de estado junto al punto pulsante (REC / ONLINE / CATALOG…). */
+  /** Texto de estado junto al punto de señal (REC / ONLINE / CATALOG…). */
   status: string;
-  /** Clase de color del punto de estado, ej. "bg-red-500". */
-  dotClassName: string;
+  /** Señal semántica del estado. Ver SIGNALS en hud.tsx. */
+  signal: Signal;
+  /** Pulsa el punto. Reservado para estados "en vivo" (REC, ONLINE). */
+  live?: boolean;
   /** Contenido centrado (solo Home: coordenadas). Oculto en <md. */
   center?: ReactNode;
   /** Cluster derecho (badges, contadores, versión…). */
   right?: ReactNode;
 }
 
-export const HUDHeader = ({ label, status, dotClassName, center, right }: HUDHeaderProps) => (
-  <div className="absolute top-7 sm:top-8 md:top-9 w-full px-7 md:px-9 z-20 flex justify-between items-start text-[0.55rem] md:text-[0.65rem] font-mono tracking-wider text-muted-foreground/40 uppercase pointer-events-none">
-    <div className="flex flex-col gap-2 text-left">
-      <span className="text-foreground/55 tracking-[0.2em]">{label}</span>
+export const HUDHeader = ({ label, status, signal, live = false, center, right }: HUDHeaderProps) => (
+  <div className="osd pointer-events-none absolute top-7 z-20 flex w-full items-start justify-between px-7 text-[10px] text-hud-faint sm:top-8 md:top-9 md:px-9 md:text-[11px]">
+    <div className="flex flex-col gap-1.5 text-left">
+      <span className="tracking-[0.2em] text-hud-strong">{label}</span>
       <div className="flex items-center gap-2">
-        <span className={cn("w-1.5 h-1.5 rounded-full animate-pulse", dotClassName)} />
-        <span className="text-foreground/45">{status}</span>
+        <SignalDot signal={signal} live={live} />
+        <span className="text-hud">{status}</span>
       </div>
     </div>
 
-    {center && (
-      <div className="absolute left-1/2 -translate-x-1/2 hidden md:block text-center opacity-40">{center}</div>
-    )}
+    {center && <div className="absolute left-1/2 hidden -translate-x-1/2 text-center md:block">{center}</div>}
 
-    {right && <div className="flex flex-col items-end gap-1 text-right">{right}</div>}
+    {right && <div className="flex flex-col items-end gap-1.5 text-right">{right}</div>}
   </div>
 );
 
 interface HUDFooterProps {
   left: ReactNode;
   right: ReactNode;
+  className?: string;
 }
 
-export const HUDFooter = ({ left, right }: HUDFooterProps) => (
-  <div className="absolute bottom-7 sm:bottom-8 md:bottom-9 w-full px-7 md:px-9 flex justify-between items-end text-[0.55rem] md:text-[0.65rem] font-mono text-muted-foreground/40 uppercase pointer-events-none z-10">
+/** En mobile el dock ocupa el borde inferior: el footer se oculta para no quedar tapado. */
+export const HUDFooter = ({ left, right, className }: HUDFooterProps) => (
+  <div
+    className={cn(
+      "osd pointer-events-none absolute bottom-7 z-10 hidden w-full items-end justify-between px-7 text-[10px] text-hud-faint sm:bottom-8 sm:flex md:bottom-9 md:px-9 md:text-[11px]",
+      className,
+    )}
+  >
     <span>{left}</span>
     <span>{right}</span>
   </div>

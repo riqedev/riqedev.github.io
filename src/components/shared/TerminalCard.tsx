@@ -1,7 +1,21 @@
 import type { ReactNode } from "react";
-import { cn } from "@/lib/utils";
-import { type LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { motion, type HTMLMotionProps } from "motion/react";
+import { cn } from "@/lib/utils";
+import { DURATION, EASE_OUT } from "@/lib/motion";
+
+/**
+ * Semáforos de ventana. En reposo se ven grises (como una ventana inactiva de macOS) y
+ * toman color al interactuar con la card: con 8+ cards en pantalla, 24 puntos de color
+ * competían con el contenido.
+ */
+export const WindowDots = ({ className }: { className?: string }) => (
+  <div aria-hidden="true" className={cn("flex shrink-0 gap-1.5", className)}>
+    <span className="size-2 rounded-full bg-muted-foreground/25 transition-colors duration-200 group-hover/card:bg-rec group-focus-within/card:bg-rec" />
+    <span className="size-2 rounded-full bg-muted-foreground/25 transition-colors duration-200 group-hover/card:bg-warn group-focus-within/card:bg-warn" />
+    <span className="size-2 rounded-full bg-muted-foreground/25 transition-colors duration-200 group-hover/card:bg-af group-focus-within/card:bg-af" />
+  </div>
+);
 
 interface TerminalCardProps extends HTMLMotionProps<"div"> {
   title: string;
@@ -22,39 +36,28 @@ export const TerminalCard = ({
 }: TerminalCardProps) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.4 }}
+      transition={{ delay, duration: DURATION.modal, ease: EASE_OUT }}
       className={cn(
-        "flex flex-col bg-card border border-border rounded-xl overflow-hidden shadow-sm dark:shadow-md transition-all duration-300",
+        "group/card surface flex flex-col overflow-hidden rounded-xl border border-border transition-[border-color,box-shadow] duration-200",
         className,
       )}
       {...props}
     >
-      {/* HEADER TIPO TERMINAL */}
-      <div className="flex items-center justify-between px-4 py-3 bg-background/50 dark:bg-background/10 border-b border-border shrink-0 relative z-20">
-        <div className="flex items-center gap-3">
-          {/* Semáforos */}
-          <div className="flex gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-red-500 " />
-            <div className="w-2 h-2 rounded-full bg-yellow-500 " />
-            <div className="w-2 h-2 rounded-full bg-emerald-500 " />
-          </div>
-
-          {/* Título e Icono */}
-          <div className="flex items-center gap-2 ml-2 text-muted-foreground">
-            {Icon && <Icon size={14} />}
-            <span className="text-xs font-mono font-medium uppercase tracking-wider truncate max-w-37.5">
-              {title}
-            </span>
+      <div className="relative z-20 flex h-10 shrink-0 items-center justify-between gap-3 border-b border-border px-4">
+        <div className="flex min-w-0 items-center gap-3">
+          <WindowDots />
+          <div className="flex min-w-0 items-center gap-2 text-hud">
+            {Icon && <Icon size={13} className="shrink-0" aria-hidden="true" />}
+            <span className="truncate font-mono text-[11px] font-medium tracking-wide">{title}</span>
           </div>
         </div>
 
-        {headerAction && <div>{headerAction}</div>}
+        {headerAction && <div className="shrink-0">{headerAction}</div>}
       </div>
 
-      {/* CONTENIDO */}
-      <div className="flex-1 min-h-0 relative z-10 bg-background/50 dark:bg-background/10">{children}</div>
+      <div className="relative z-10 min-h-0 flex-1">{children}</div>
     </motion.div>
   );
 };

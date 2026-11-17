@@ -1,12 +1,14 @@
-import { useMemo, useState } from "react";
-import { type Project, projectsData } from "@/types/generalTypes";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { FolderGit2, ArrowUpRight, Code2 } from "lucide-react";
+import { projectsData } from "@/types/generalTypes";
 import { ProjectModal } from "@/components/shared/ProjectModal";
-import { FolderGit2, ArrowUpRight, Code2, Filter } from "lucide-react";
 import { TerminalCard } from "@/components/shared/TerminalCard";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { HUDFrame } from "@/components/shared/HUDFrame";
 import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
-import { cn } from "@/lib/utils";
+import { Chip } from "@/components/shared/hud";
+import { stagger } from "@/lib/motion";
 
 const CATEGORIES = ["REACT", "PYTHON", "JAVA", "PHP"] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -23,7 +25,18 @@ const getProjectCategory = (tags: readonly string[]): Category | null => {
 };
 
 export const Work = () => {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  // El menú ⌘K puede pedir abrir un proyecto directo: llega como state.open (título).
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(() => {
+    const target = (location.state as { open?: string } | null)?.open;
+    const idx = target ? projectsData.findIndex((p) => p.title === target) : -1;
+    return idx >= 0 ? idx : null;
+  });
+
+  useEffect(() => {
+    if ((location.state as { open?: string } | null)?.open) navigate(".", { replace: true, state: null });
+  }, [location.state, navigate]);
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
 
   const counts = useMemo(() => {
@@ -36,16 +49,10 @@ export const Work = () => {
     return map;
   }, []);
 
-  const visibleCategories = useMemo(
-    () => CATEGORIES.filter((c) => (counts.get(c) ?? 0) > 0),
-    [counts],
-  );
+  const visibleCategories = useMemo(() => CATEGORIES.filter((c) => (counts.get(c) ?? 0) > 0), [counts]);
 
   const filteredProjects = useMemo(
-    () =>
-      activeCategory
-        ? projectsData.filter((p) => getProjectCategory(p.tags) === activeCategory)
-        : projectsData,
+    () => (activeCategory ? projectsData.filter((p) => getProjectCategory(p.tags) === activeCategory) : projectsData),
     [activeCategory],
   );
 
@@ -56,142 +63,124 @@ export const Work = () => {
       <HUDHeader
         label="ARCHIVE"
         status="CATALOG"
-        dotClassName="bg-blue-500"
+        signal="info"
         right={
-          <span className="text-foreground/55">
+          <span className="text-hud-strong">
             {filteredProjects.length}/{projectsData.length} FILES
           </span>
         }
       />
 
-      {/* MAIN */}
-      <div className="relative z-10 w-full max-w-400 h-full pt-24 pb-24 px-4 md:px-8 flex flex-col gap-4">
-        <div className="flex justify-between items-end border-b border-border/50 pb-4 shrink-0">
+      <div className="relative z-10 flex h-full w-full max-w-400 flex-col gap-4 px-4 pt-24 pb-28 md:px-8">
+        <div className="flex shrink-0 items-end justify-between gap-4 border-b border-border/60 pb-4">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">Selected Works</h2>
-            <p className="text-[10px] md:text-xs text-muted-foreground font-mono mt-1">// 2022 — present</p>
+            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">Selected Works</h2>
+            <p className="mt-1 font-mono text-[11px] text-hud md:text-xs">// 2022 — present</p>
           </div>
           <a
             href="https://github.com/riqedev"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-[10px] md:text-xs font-mono bg-muted/20 hover:bg-muted/40 px-2 py-1 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+            className="pressable flex items-center gap-2 rounded-xs border border-border px-2 py-1 font-mono text-[11px] text-muted-foreground outline-none hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:text-xs"
           >
-            <FolderGit2 size={12} />
-            <span>github / riqedev</span>
+            <FolderGit2 size={12} aria-hidden="true" />
+            <span>github/riqedev</span>
           </a>
         </div>
 
-        {/* Filtro por tag: tira horizontal estilo "film strip" */}
         <div className="shrink-0">
           <ScrollArea className="w-full">
-            <div className="flex items-center gap-1.5 pb-2">
-              <span
-                aria-hidden="true"
-                className="flex items-center gap-1.5 text-[9px] md:text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50 pr-2 shrink-0"
-              >
-                <Filter size={10} />
-                FILTER
-              </span>
-              <FilterChip
-                label={`ALL (${projectsData.length})`}
-                active={activeCategory === null}
-                onClick={() => setActiveCategory(null)}
-              />
+            <div role="group" aria-label="Filtrar por stack" className="flex items-center gap-1.5 pb-2">
+              <Chip active={activeCategory === null} onClick={() => setActiveCategory(null)}>
+                ALL {projectsData.length}
+              </Chip>
               {visibleCategories.map((cat) => (
-                <FilterChip
-                  key={cat}
-                  label={`${cat} (${counts.get(cat) ?? 0})`}
-                  active={activeCategory === cat}
-                  onClick={() => setActiveCategory(cat)}
-                />
+                <Chip key={cat} active={activeCategory === cat} onClick={() => setActiveCategory(cat)}>
+                  {cat} {counts.get(cat) ?? 0}
+                </Chip>
               ))}
             </div>
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
         </div>
 
-        <ScrollArea className="flex-1 min-h-0">
+        <ScrollArea fade className="min-h-0 flex-1">
           {filteredProjects.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-2 py-16 text-center">
-              <span className="text-xs font-mono text-muted-foreground/60">[ NO MATCH IN ROLL ]</span>
+              <span className="font-mono text-xs text-hud">[ NO MATCH IN ROLL ]</span>
               <button
+                type="button"
                 onClick={() => setActiveCategory(null)}
-                className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors"
+                className="osd text-[10px] text-muted-foreground hover:text-foreground"
               >
                 Reset filter
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-8">
+            <div className="grid grid-cols-1 gap-4 pb-12 sm:grid-cols-2 md:gap-5 lg:grid-cols-3 xl:grid-cols-4">
               {filteredProjects.map((project, idx) => (
                 <TerminalCard
                   key={project.title}
                   title={project.title}
                   icon={Code2}
-                  delay={idx * 0.05}
+                  delay={stagger(idx)}
                   role="button"
                   tabIndex={0}
                   aria-label={`Ver detalles de ${project.title}`}
-                  onClick={() => setSelectedProject(project)}
+                  onClick={() => setSelectedIndex(idx)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
-                      setSelectedProject(project);
+                      setSelectedIndex(idx);
                     }
                   }}
-                  className="cursor-pointer hover:border-primary/50 hover:shadow-lg group h-64 md:h-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+                  className="h-64 cursor-pointer outline-none hover:border-foreground/25 hover:shadow-(--shadow-card-hover) focus-visible:ring-2 focus-visible:ring-ring/60 md:h-72"
                 >
-                  <div className="relative w-full h-full">
-                    <div className="absolute inset-0 bg-muted overflow-hidden">
+                  <div className="relative h-full w-full">
+                    <div className="absolute inset-0 overflow-hidden bg-muted">
                       <img
                         src={project.imageUrl}
-                        alt={`Captura del proyecto ${project.title}`}
+                        alt=""
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-90 group-hover:opacity-100"
+                        className="h-full w-full object-cover transition-transform duration-500 ease-(--ease-out) group-hover/card:scale-[1.03]"
                       />
-                      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/70 to-transparent" />
                     </div>
 
-                    <div className="absolute inset-0 p-4 flex flex-col justify-between">
-                      <div className="self-end opacity-0 group-hover:opacity-100 transition-opacity -translate-y-2 group-hover:translate-y-0 duration-300">
-                        <div className="bg-background/80 backdrop-blur-md p-1.5 rounded-full text-foreground shadow-sm">
-                          <ArrowUpRight size={14} />
-                        </div>
+                    <div className="absolute inset-0 flex flex-col justify-between p-4">
+                      <div className="self-end rounded-full bg-background/80 p-1.5 text-foreground opacity-0 shadow-sm backdrop-blur-md transition-opacity duration-200 group-hover/card:opacity-100 group-focus-visible/card:opacity-100">
+                        <ArrowUpRight size={14} aria-hidden="true" />
                       </div>
 
-                      <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                        <div className="flex flex-wrap gap-1.5">
-                          {project.tags.slice(0, 2).map((tag) => (
-                            <span
-                              key={tag}
-                              className="text-[9px] font-mono uppercase bg-black/40 backdrop-blur-md border border-white/10 px-1.5 py-0.5 rounded text-white/90"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.tags.slice(0, 2).map((tag) => (
+                          <span
+                            key={tag}
+                            className="osd rounded-xs border border-white/15 bg-black/45 px-1.5 py-0.5 text-[9px] text-white/90 backdrop-blur-md"
+                          >
+                            {tag}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
                 </TerminalCard>
               ))}
 
-              {/* Placeholder visual: completar grid (estética "memoria libre") */}
               {showPlaceholder && (
                 <div
                   aria-hidden="true"
-                  className="hidden lg:flex flex-col border-2 border-dashed rounded-xl opacity-70 overflow-hidden h-64 md:h-80 bg-muted/5"
+                  className="hidden h-64 flex-col overflow-hidden rounded-xl border border-dashed border-border md:h-72 xl:flex"
                 >
-                  <div className="h-9 border-b border-border/40 bg-muted/10 flex items-center px-3 gap-2">
-                    <div className="w-2 h-2 rounded-full bg-muted-foreground/20" />
-                    <div className="w-2 h-2 rounded-full bg-muted-foreground/20" />
-                    <div className="w-2 h-2 rounded-full bg-muted-foreground/20" />
+                  <div className="flex h-10 items-center gap-1.5 border-b border-dashed border-border px-4">
+                    <span className="size-2 rounded-full bg-muted-foreground/20" />
+                    <span className="size-2 rounded-full bg-muted-foreground/20" />
+                    <span className="size-2 rounded-full bg-muted-foreground/20" />
                   </div>
-                  <div className="flex-1 flex flex-col items-center justify-center gap-2">
-                    <span className="text-xs font-mono text-muted-foreground/60">[ FREE_SLOT ]</span>
-                    <span className="text-[10px] font-mono text-muted-foreground/40">WAITING_FOR_DATA...</span>
+                  <div className="flex flex-1 flex-col items-center justify-center gap-2 font-mono">
+                    <span className="text-xs text-hud">[ FREE_SLOT ]</span>
+                    <span className="text-[10px] text-hud-faint">WAITING_FOR_DATA...</span>
                   </div>
                 </div>
               )}
@@ -202,29 +191,12 @@ export const Work = () => {
 
       <HUDFooter left="ROLL 01" right="[ 100% ]" />
 
-      <ProjectModal project={selectedProject} isOpen={!!selectedProject} onClose={() => setSelectedProject(null)} />
+      <ProjectModal
+        projects={filteredProjects}
+        index={selectedIndex}
+        onIndexChange={setSelectedIndex}
+        onClose={() => setSelectedIndex(null)}
+      />
     </HUDFrame>
   );
 };
-
-interface FilterChipProps {
-  label: string;
-  active: boolean;
-  onClick: () => void;
-}
-
-const FilterChip = ({ label, active, onClick }: FilterChipProps) => (
-  <button
-    type="button"
-    onClick={onClick}
-    aria-pressed={active}
-    className={cn(
-      "px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded-sm border transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
-      active
-        ? "bg-primary/10 border-primary/50 text-primary"
-        : "bg-transparent border-border/40 text-muted-foreground hover:text-foreground hover:border-border",
-    )}
-  >
-    {label}
-  </button>
-);

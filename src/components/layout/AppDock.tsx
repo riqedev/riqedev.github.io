@@ -1,27 +1,53 @@
+import { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { User, FolderDot, Radio, Command } from "lucide-react";
 import { Dock, DockIcon } from "@/components/ui/dock";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import { Link, useLocation } from "react-router-dom";
-import { User, FolderDot, Radio } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import { Kbd } from "@/components/shared/hud";
+import { Monogram } from "@/components/shared/Wordmark";
+import { cn } from "@/lib/utils";
+import { useCommandMenu } from "@/lib/command-menu";
 
 const NAV_ITEMS = [
-  { type: "logo", label: "HOME", href: "/" },
-  { type: "icon", icon: User, label: "PROFILE", href: "/profile" },
-  { type: "icon", icon: FolderDot, label: "WORK", href: "/work" },
-  { type: "icon", icon: Radio, label: "CONTACT", href: "/contact" },
+  { type: "logo", label: "HOME", href: "/", key: "1" },
+  { type: "icon", icon: User, label: "PROFILE", href: "/profile", key: "2" },
+  { type: "icon", icon: FolderDot, label: "WORK", href: "/work", key: "3" },
+  { type: "icon", icon: Radio, label: "CONTACT", href: "/contact", key: "4" },
 ] as const;
+
+const tooltipClass = "osd flex items-center gap-2 rounded-xs border-none bg-foreground px-2 py-1 text-[10px] text-background";
+
+/** Atajos 1–4 para saltar de sección. Se ignoran con modificadores, en campos de texto o con un diálogo abierto. */
+const useNavShortcuts = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey || e.repeat) return;
+      const target = e.target as HTMLElement | null;
+      if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
+      if (document.querySelector("[role='dialog']")) return;
+      const item = NAV_ITEMS.find((i) => i.key === e.key);
+      if (item) navigate(item.href);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [navigate]);
+};
 
 export const AppDock = () => {
   const location = useLocation();
+  const { setOpen } = useCommandMenu();
+  useNavShortcuts();
 
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-auto">
+    <nav aria-label="Principal" className="fixed bottom-6 left-1/2 z-50 w-auto -translate-x-1/2 sm:bottom-8">
       <TooltipProvider>
         <Dock
           direction="middle"
-          className="bg-card backdrop-blur-md border border-border/80 px-3 md:px-6 py-2 md:py-3 rounded-2xl shadow-sm gap-2 md:gap-4"
+          data-material
+          className="mt-0 gap-2 rounded-2xl border border-border/80 bg-card/75 px-3 py-2 shadow-lg shadow-black/5 backdrop-blur-xl backdrop-saturate-150 md:gap-4 md:px-5 md:py-3 dark:shadow-black/40"
         >
           {NAV_ITEMS.map((item) => {
             const isActive = location.pathname === item.href;
@@ -32,61 +58,68 @@ export const AppDock = () => {
                   <TooltipTrigger asChild>
                     <Link
                       to={item.href}
-                      aria-label={item.label}
+                      aria-label={item.label.toLowerCase()}
                       aria-current={isActive ? "page" : undefined}
+                      aria-keyshortcuts={item.key}
                       className={cn(
                         buttonVariants({ variant: "ghost", size: "icon" }),
-                        "size-9 md:size-10 rounded-xl transition-colors hover:bg-transparent",
-                        isActive ? "text-primary" : "text-muted-foreground hover:text-foreground",
+                        "pressable size-9 rounded-xl hover:bg-transparent md:size-10",
+                        isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
                       )}
                     >
                       {item.type === "logo" ? (
-                        <img
-                          src="/Logo.png"
-                          alt="Logo"
-                          className={cn(
-                            "size-4 md:size-5 object-contain transition-opacity dark:invert",
-                            isActive ? "opacity-100" : "opacity-60 hover:opacity-100",
-                          )}
-                        />
+                        <Monogram className="-translate-y-[0.07em] text-[26px] md:text-[30px]" />
                       ) : (
-                        item.icon && <item.icon className="size-4 md:size-5" />
+                        <item.icon className="size-4 md:size-5" aria-hidden="true" />
                       )}
                     </Link>
                   </TooltipTrigger>
-                  <TooltipContent
-                    sideOffset={10}
-                    showArrow={false}
-                    className="font-mono text-[10px] uppercase tracking-widest bg-foreground text-background border-none rounded-sm px-2 py-0.5"
-                  >
-                    <p>{item.label}</p>
+                  <TooltipContent sideOffset={10} showArrow={false} className={tooltipClass}>
+                    {item.label}
+                    <Kbd className="border-background/30">{item.key}</Kbd>
                   </TooltipContent>
                 </Tooltip>
               </DockIcon>
             );
           })}
 
-          <div className="h-4 md:h-6 w-px bg-border/30 mx-1 self-center" />
+          <div aria-hidden="true" className="mx-1 h-4 w-px self-center bg-border md:h-6" />
 
-          {/* SECCIÓN THEME TOGGLE (ANIMADO) */}
           <DockIcon className="size-9 md:size-10">
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="size-9 md:size-10 flex items-center justify-center rounded-xl text-muted-foreground hover:text-foreground transition-colors hover:bg-transparent">
-                  <AnimatedThemeToggler className="cursor-pointer" />
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setOpen(true)}
+                  aria-label="Abrir menú"
+                  aria-keyshortcuts="Meta+K Control+K"
+                  className={cn(
+                    buttonVariants({ variant: "ghost", size: "icon" }),
+                    "pressable size-9 rounded-xl text-muted-foreground hover:bg-transparent hover:text-foreground md:size-10",
+                  )}
+                >
+                  <Command className="size-4 md:size-5" aria-hidden="true" />
+                </button>
               </TooltipTrigger>
-              <TooltipContent
-                sideOffset={10}
-                showArrow={false}
-                className="font-mono text-[10px] uppercase tracking-widest bg-foreground text-background border-none rounded-sm px-2 py-0.5"
-              >
-                <p>THEME</p>
+              <TooltipContent sideOffset={10} showArrow={false} className={tooltipClass}>
+                MENU
+                <Kbd className="border-background/30">⌘K</Kbd>
+              </TooltipContent>
+            </Tooltip>
+          </DockIcon>
+
+          <DockIcon className="size-9 md:size-10">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AnimatedThemeToggler className="pressable size-9 rounded-xl text-muted-foreground hover:bg-transparent hover:text-foreground md:size-10" />
+              </TooltipTrigger>
+              <TooltipContent sideOffset={10} showArrow={false} className={tooltipClass}>
+                THEME
               </TooltipContent>
             </Tooltip>
           </DockIcon>
         </Dock>
       </TooltipProvider>
-    </div>
+    </nav>
   );
 };

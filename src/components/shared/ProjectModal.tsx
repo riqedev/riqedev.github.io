@@ -1,18 +1,45 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
+import { useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight, ExternalLink, Play, X } from "lucide-react";
+import { Dialog as DialogPrimitive } from "radix-ui";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Github, ExternalLink } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { type Project } from "@/types/generalTypes";
+import { GithubIcon } from "@/components/icons/brand";
+import { Kbd } from "@/components/shared/hud";
+import type { Project } from "@/types/generalTypes";
 
 interface ProjectModalProps {
-  project: Project | null;
-  isOpen: boolean;
+  projects: readonly Project[];
+  index: number | null;
+  onIndexChange: (index: number) => void;
   onClose: () => void;
 }
 
-export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) => {
-  if (!project) return null;
+const pad = (n: number) => String(n).padStart(4, "0");
+
+/**
+ * Modo PLAYBACK: como revisar tomas en la cámara. ←/→ recorren el rollo filtrado
+ * sin animación (acción de teclado = respuesta instantánea).
+ */
+export const ProjectModal = ({ projects, index, onIndexChange, onClose }: ProjectModalProps) => {
+  // Recordamos la última toma abierta para que el diálogo pueda animar su salida.
+  const [shown, setShown] = useState(index);
+  if (index !== null && index !== shown) setShown(index);
+  const current = index ?? shown;
+  const project = current !== null ? projects[current] : null;
+  const total = projects.length;
+
+  useEffect(() => {
+    if (index === null || total < 2) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") onIndexChange((index + 1) % total);
+      if (e.key === "ArrowLeft") onIndexChange((index - 1 + total) % total);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [index, total, onIndexChange]);
+
+  if (!project || current === null) return null;
 
   const liveUrl = project.projectLink || null;
   // Si projectLink ya apunta a GitHub y no hay repoLink, evitamos duplicar el botón.
@@ -22,92 +49,128 @@ export const ProjectModal = ({ project, isOpen, onClose }: ProjectModalProps) =>
       : liveUrl && liveUrl.includes("github.com")
         ? liveUrl
         : null;
-
-  // Si el "Live Demo" en realidad es el repo, no lo mostramos como demo.
   const showLive = liveUrl !== null && !liveUrl.includes("github.com");
-  const showRepo = repoUrl !== null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-6xl p-0 overflow-hidden bg-background text-foreground border-border sm:rounded-2xl h-[70vh] flex flex-col md:flex-row gap-0">
-        {/* COLUMNA IZQUIERDA: IMAGEN */}
-        <div className="relative md:w-[60%] h-64 md:h-full bg-muted overflow-hidden group select-none">
+    <Dialog open={index !== null} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent
+        showCloseButton={false}
+        className="flex max-h-[88dvh] flex-col gap-0 overflow-hidden rounded-2xl border-border bg-card p-0 sm:max-w-6xl md:h-[72vh] md:flex-row"
+      >
+        {/* PLAYBACK: imagen */}
+        <div className="relative aspect-video shrink-0 overflow-hidden bg-muted select-none md:aspect-auto md:h-full md:w-[60%]">
           <img
+            key={project.imageUrl}
             src={project.imageUrl}
             alt={`Captura del proyecto ${project.title}`}
-            loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="h-full w-full object-cover"
           />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent pointer-events-none"
-          />
+          <div aria-hidden="true" className="absolute inset-0 bg-linear-to-b from-black/55 via-transparent to-black/70" />
 
-          <div className="absolute bottom-6 left-6 z-20 flex flex-wrap gap-2">
+          <div className="osd absolute inset-x-5 top-5 flex items-center justify-between text-[10px] text-white/80 md:inset-x-7 md:top-6">
+            <span className="flex items-center gap-1.5">
+              <Play size={10} className="fill-current" aria-hidden="true" />
+              PLAYBACK
+            </span>
+            <span>
+              100-{pad(current + 1)} <span className="text-white/50">/ {pad(total)}</span>
+            </span>
+          </div>
+
+          <div className="absolute bottom-5 left-5 flex flex-wrap gap-1.5 md:bottom-6 md:left-7">
             {project.tags.slice(0, 3).map((tag) => (
-              <Badge
+              <span
                 key={tag}
-                variant="secondary"
-                className="bg-black/60 backdrop-blur-md border-white/10 text-white font-medium text-[10px] rounded-md"
+                className="osd rounded-xs border border-white/15 bg-black/50 px-1.5 py-0.5 text-[9px] text-white/90 backdrop-blur-md"
               >
                 {tag}
-              </Badge>
+              </span>
             ))}
           </div>
         </div>
 
-        {/* COLUMNA DERECHA: INFO */}
-        <div className="flex-1 flex flex-col h-full border-t md:border-t-0 md:border-l border-border bg-card relative">
-          <DialogHeader className="p-6 border-b border-border shrink-0 text-left">
-            <DialogTitle className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+        {/* INFO */}
+        <div className="flex min-h-0 flex-1 flex-col border-t border-border md:border-t-0 md:border-l">
+          <div className="flex shrink-0 items-start justify-between gap-4 border-b border-border p-5 md:p-6">
+            <DialogTitle className="text-2xl font-semibold tracking-tight md:text-3xl">
               {project.title}
             </DialogTitle>
-          </DialogHeader>
+            <DialogPrimitive.Close
+              aria-label="Cerrar"
+              className="pressable -mt-1 -mr-1 grid size-8 shrink-0 place-items-center rounded-md text-muted-foreground outline-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
+            >
+              <X size={16} aria-hidden="true" />
+            </DialogPrimitive.Close>
+          </div>
 
-          <ScrollArea className="flex-1 p-6 md:p-8">
-            <div className="space-y-8">
-              <div>
-                <h4 className="text-sm font-semibold text-foreground mb-2">Project Overview</h4>
-                <DialogDescription className="text-muted-foreground leading-relaxed text-sm md:text-base">
+          <ScrollArea className="min-h-0 flex-1">
+            <div className="space-y-7 p-5 md:p-6">
+              <section>
+                <h3 className="osd mb-2 text-[10px] text-hud">Overview</h3>
+                <DialogDescription className="max-w-prose text-sm leading-relaxed text-muted-foreground md:text-base">
                   {project.description}
                 </DialogDescription>
-              </div>
+              </section>
 
-              <div>
-                <h4 className="text-sm font-semibold text-foreground mb-3">Architecture & Stack</h4>
-                <div className="flex flex-wrap gap-2">
+              <section>
+                <h3 className="osd mb-3 text-[10px] text-hud">Stack</h3>
+                <ul className="flex flex-wrap gap-1.5">
                   {project.tags.map((tag) => (
-                    <span
+                    <li
                       key={tag}
-                      className="px-2.5 py-1 bg-muted/50 border border-border rounded-md text-xs text-muted-foreground transition-colors"
+                      className="rounded-xs border border-border bg-muted/40 px-2 py-1 font-mono text-[11px] text-muted-foreground"
                     >
                       {tag}
-                    </span>
+                    </li>
                   ))}
-                </div>
-              </div>
+                </ul>
+              </section>
             </div>
           </ScrollArea>
 
-          {(showLive || showRepo) && (
-            <div className="p-6 border-t border-border flex flex-col sm:flex-row gap-3 shrink-0">
-              {showLive && liveUrl && (
-                <Button asChild className="flex-1 gap-2">
-                  <a href={liveUrl} target="_blank" rel="noreferrer">
-                    <ExternalLink size={16} /> Live Demo
-                  </a>
-                </Button>
-              )}
-              {showRepo && repoUrl && (
-                <Button asChild variant="outline" className="flex-1 gap-2 border-border hover:bg-accent">
-                  <a href={repoUrl} target="_blank" rel="noreferrer">
-                    <Github size={16} /> Repository
-                  </a>
-                </Button>
-              )}
-            </div>
-          )}
+          <div className="flex shrink-0 flex-col gap-3 border-t border-border p-5 md:p-6">
+            {(showLive || repoUrl) && (
+              <div className="flex flex-col gap-2 sm:flex-row">
+                {showLive && liveUrl && (
+                  <Button asChild className="pressable flex-1">
+                    <a href={liveUrl} target="_blank" rel="noreferrer">
+                      <ExternalLink aria-hidden="true" /> Live demo
+                    </a>
+                  </Button>
+                )}
+                {repoUrl && (
+                  <Button asChild variant="outline" className="pressable flex-1">
+                    <a href={repoUrl} target="_blank" rel="noreferrer">
+                      <GithubIcon size={15} /> Source
+                    </a>
+                  </Button>
+                )}
+              </div>
+            )}
+            {!showLive && !repoUrl && (
+              <p className="font-mono text-[11px] text-hud">// Proyecto privado: sin demo ni repositorio público.</p>
+            )}
+
+            {total > 1 && (
+              <div className="flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => onIndexChange((current - 1 + total) % total)}
+                  className="osd pressable flex items-center gap-1.5 rounded-xs px-1 py-1 text-[10px] text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
+                >
+                  <ChevronLeft size={12} aria-hidden="true" /> Prev <Kbd className="hidden md:inline-flex">←</Kbd>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onIndexChange((current + 1) % total)}
+                  className="osd pressable flex items-center gap-1.5 rounded-xs px-1 py-1 text-[10px] text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
+                >
+                  <Kbd className="hidden md:inline-flex">→</Kbd> Next <ChevronRight size={12} aria-hidden="true" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
