@@ -57,6 +57,14 @@ const CommandMenuDialog = ({ open, setOpen }: { open: boolean; setOpen: (o: bool
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
         showCloseButton={false}
+        onOpenAutoFocus={(e) => {
+          // En táctil no enfocamos el buscador: abriría el teclado y taparía medio menú. Se navega
+          // tocando; quien quiera buscar toca el campo. El foco queda en el diálogo (Esc y trap siguen).
+          if (window.matchMedia("(pointer: coarse)").matches) {
+            e.preventDefault();
+            (e.currentTarget as HTMLElement | null)?.focus();
+          }
+        }}
         className="top-[18dvh] translate-y-0 gap-0 overflow-hidden rounded-2xl border-border bg-card p-0 shadow-2xl sm:max-w-xl"
       >
         <DialogTitle className="sr-only">Menú</DialogTitle>
@@ -78,7 +86,7 @@ const CommandMenuDialog = ({ open, setOpen }: { open: boolean; setOpen: (o: bool
                 <CommandItem key={s.href} value={`ir ${s.label}`} onSelect={() => run(() => navigate(s.href))}>
                   <s.icon aria-hidden="true" />
                   {s.label}
-                  <CommandShortcut>
+                  <CommandShortcut className="pointer-coarse:hidden">
                     <Kbd>{s.key}</Kbd>
                   </CommandShortcut>
                 </CommandItem>
