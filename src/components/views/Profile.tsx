@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "motion/react";
 import { Cpu, User, ArrowUpRight, Award, Camera, Bike, Keyboard, Rss, Maximize2, type LucideIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,6 +10,8 @@ import { BioPopup } from "@/components/shared/BioPopup";
 import { HUDFrame } from "@/components/shared/HUDFrame";
 import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
 import { DURATION, EASE_OUT } from "@/lib/motion";
+import { cn } from "@/lib/utils";
+import { useScrollEdges } from "@/hooks/useScrollEdges";
 
 const EXPERIENCE_LOGS = [
   {
@@ -75,6 +77,8 @@ const getCertIssuer = (link: string) => {
 
 export const Profile = () => {
   const [showBio, setShowBio] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const edges = useScrollEdges(scrollRef);
 
   return (
     <HUDFrame>
@@ -91,8 +95,17 @@ export const Profile = () => {
         }
       />
 
-      {/* MAIN */}
-      <div className="relative z-10 w-full max-w-400 h-full pt-24 pb-28 px-4 md:px-8 flex flex-col lg:grid lg:grid-cols-12 gap-4 lg:gap-6 overflow-y-auto lg:overflow-hidden">
+      {/* MAIN: el padding queda fuera del scroll (como en Work) para que en mobile el contenido
+          se recorte entre el HUD y el dock en vez de pasar por debajo de ellos. */}
+      <div className="relative z-10 flex h-full w-full max-w-400 flex-col pt-24 pb-28">
+      <div
+        ref={scrollRef}
+        className={cn(
+          "min-h-0 flex-1 px-4 md:px-8 flex flex-col lg:grid lg:grid-cols-12 gap-4 lg:gap-6 overflow-y-auto overscroll-contain max-lg:pb-12 lg:overflow-hidden",
+          edges.top && "max-lg:mask-t-from-[calc(100%-2rem)]",
+          edges.bottom && "max-lg:mask-b-from-[calc(100%-2.5rem)]",
+        )}
+      >
         {/* COL 1: EXPERIENCE LOG */}
         <motion.div
           initial={{ y: 8, opacity: 0 }}
@@ -311,7 +324,7 @@ export const Profile = () => {
             className="md:col-span-1 lg:row-span-5 relative overflow-hidden"
             delay={0.4}
           >
-            <ScrollArea fade className="lg:h-full p-0">
+            <ScrollArea fade className="lg:h-full p-0 [&_[data-slot=scroll-area-viewport]>div]:block!">
               <div className="flex flex-col">
                 {certifications.map((cert) => (
                   <a
@@ -334,6 +347,7 @@ export const Profile = () => {
             </ScrollArea>
           </TerminalCard>
         </div>
+      </div>
       </div>
 
       <HUDFooter left="AUTOBIO" right="[ 100% ]" />

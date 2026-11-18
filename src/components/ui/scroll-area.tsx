@@ -2,6 +2,7 @@ import * as React from "react"
 import { ScrollArea as ScrollAreaPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
+import { useScrollEdges } from "@/hooks/useScrollEdges"
 
 /**
  * `fade`: difumina el borde inferior solo mientras queda contenido por leer. Al llegar al final
@@ -14,21 +15,7 @@ function ScrollArea({
   ...props
 }: React.ComponentProps<typeof ScrollAreaPrimitive.Root> & { fade?: boolean }) {
   const viewportRef = React.useRef<HTMLDivElement>(null)
-  const [more, setMore] = React.useState(false)
-
-  React.useEffect(() => {
-    const el = viewportRef.current
-    if (!fade || !el) return
-    const update = () => setMore(el.scrollHeight - el.scrollTop - el.clientHeight > 4)
-    el.addEventListener("scroll", update, { passive: true })
-    const ro = new ResizeObserver(update)
-    ro.observe(el)
-    if (el.firstElementChild) ro.observe(el.firstElementChild)
-    return () => {
-      el.removeEventListener("scroll", update)
-      ro.disconnect()
-    }
-  }, [fade])
+  const { bottom: more } = useScrollEdges(viewportRef, fade)
 
   return (
     <ScrollAreaPrimitive.Root
