@@ -78,14 +78,15 @@ export const projectsData = [
     projectLink: "http://dma2.uct.cl/",
   },
   {
-    title: "Weather App",
+    title: "RIQE Weather",
     description: {
-      es: "Aplicación que proporciona información del clima en tiempo real, permite buscar y visualizar informacion de diferentes locaciones del mundo.",
-      en: "Real-time weather app to search and view conditions for locations around the world.",
+      es: "Pronóstico del tiempo con un agregado para fotografía: horas doradas y azules calculadas con la posición del sol y la nubosidad pronosticada en cada una. Búsqueda de ciudades, geolocalización, 24 horas y 7 días, todo en el navegador y sin API key.",
+      en: "Weather forecast with an extra for photography: golden and blue hours from the sun's position, with the forecast cloud cover for each one. City search, geolocation, 24 hours and 7 days, all in the browser with no API key.",
     },
-    tags: ["ReactJS", "TailwindCSS", "OpenWeatherMap"],
-    imageUrl: "/projects/Weather.webp",
-    projectLink: "https://github.com/riqedev/Weather-App-ReactJS-TailwindCSS",
+    tags: ["React", "TypeScript", "Vite", "Open-Meteo", "SVG", "TailwindCSS"],
+    imageUrl: "/projects/RIQE-WEATHER.webp",
+    repoLink: "https://github.com/riqedev/Weather-App-ReactJS-TailwindCSS",
+    projectLink: "https://riqe-weather.vercel.app/",
   },
   {
     title: "Teleprocesos",
