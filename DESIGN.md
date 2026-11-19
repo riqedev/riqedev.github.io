@@ -198,8 +198,9 @@ Los tokens viven en `src/index.css` (CSS) y `src/lib/motion.ts` (motion/react).
 
 ## 7. Voz
 
-- **La cámara habla en inglés.** HUD, estados y etiquetas de sistema en mayúsculas OSD, como el menú de una cámara: `REC`, `CATALOG`, `NO SIGNAL`, `Copy`. El menú ⌘K es la excepción: es para buscar, así que va en español.
-- **Enrique habla en español.** Bio, descripciones y mensajes para personas, en primera persona, con verbos simples.
+- **La cámara y el código hablan en inglés, siempre.** HUD, estados, chips y botones del visor (`REC`, `CATALOG`, `NO SIGNAL`, `Copy`, `Prev`), nombres de archivo (`career.log`, `package.json`), claves de log (`Details:`, `Status:`) y tags de stack. Es la convención del rubro y no se traduce.
+- **Lo que se lee como frase va en el idioma del lector (ES/EN).** Bio, descripciones de proyectos, valores del career.log, títulos de sección, el menú ⌘K, `aria-label`s y textos para lectores de pantalla. Selector `ES/EN` en el dock y en el menú; detecta el idioma del navegador, recuerda la elección (`portfolio-locale`) y actualiza `<html lang>`. Implementación en `src/lib/i18n.ts`: diccionarios `Localized<T>` junto a cada componente, sin librerías.
+- **Enrique habla en primera persona**, con verbos simples, en los dos idiomas. Texto nuevo: escribir las dos versiones a la vez.
 - Sin frases de marketing ("elevar", "potenciar", tríadas). Si una frase podría estar en cualquier portfolio, se reescribe.
 - Em-dash solo en copy del HUD/marca (`// 2022 — present`). En prosa nueva, no.
 - Nunca se exponen datos crudos de contacto en la UI: nombre de plataforma + acción.

@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { GithubIcon } from "@/components/icons/brand";
 import { Kbd } from "@/components/shared/hud";
 import type { Project } from "@/types/generalTypes";
+import { useLocale, type Localized } from "@/lib/i18n";
 
 interface ProjectModalProps {
   projects: readonly Project[];
@@ -17,11 +18,27 @@ interface ProjectModalProps {
 
 const pad = (n: number) => String(n).padStart(4, "0");
 
+const COPY: Localized<{ screenshot: string; close: string; overview: string; private: string }> = {
+  es: {
+    screenshot: "Captura del proyecto",
+    close: "Cerrar",
+    overview: "Resumen",
+    private: "// Proyecto privado: sin demo ni repositorio público.",
+  },
+  en: {
+    screenshot: "Screenshot of",
+    close: "Close",
+    overview: "Overview",
+    private: "// Private project: no public demo or repository.",
+  },
+};
+
 /**
  * Modo PLAYBACK: como revisar tomas en la cámara. ←/→ recorren el rollo filtrado
  * sin animación (acción de teclado = respuesta instantánea).
  */
 export const ProjectModal = ({ projects, index, onIndexChange, onClose }: ProjectModalProps) => {
+  const { locale } = useLocale();
   // Recordamos la última toma abierta para que el diálogo pueda animar su salida.
   const [shown, setShown] = useState(index);
   if (index !== null && index !== shown) setShown(index);
@@ -40,6 +57,7 @@ export const ProjectModal = ({ projects, index, onIndexChange, onClose }: Projec
   }, [index, total, onIndexChange]);
 
   if (!project || current === null) return null;
+  const t = COPY[locale];
 
   const liveUrl = project.projectLink || null;
   // Si projectLink ya apunta a GitHub y no hay repoLink, evitamos duplicar el botón.
@@ -62,7 +80,7 @@ export const ProjectModal = ({ projects, index, onIndexChange, onClose }: Projec
           <img
             key={project.imageUrl}
             src={project.imageUrl}
-            alt={`Captura del proyecto ${project.title}`}
+            alt={`${t.screenshot} ${project.title}`}
             decoding="async"
             className="h-full w-full object-cover"
           />
@@ -97,7 +115,7 @@ export const ProjectModal = ({ projects, index, onIndexChange, onClose }: Projec
               {project.title}
             </DialogTitle>
             <DialogPrimitive.Close
-              aria-label="Cerrar"
+              aria-label={t.close}
               className="pressable -mt-1 -mr-1 grid size-8 shrink-0 place-items-center rounded-md text-muted-foreground outline-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
             >
               <X size={16} aria-hidden="true" />
@@ -107,9 +125,9 @@ export const ProjectModal = ({ projects, index, onIndexChange, onClose }: Projec
           <ScrollArea className="min-h-0 flex-1">
             <div className="space-y-7 p-5 md:p-6">
               <section>
-                <h3 className="osd mb-2 text-[10px] text-hud">Overview</h3>
+                <h3 className="osd mb-2 text-[10px] text-hud">{t.overview}</h3>
                 <DialogDescription className="max-w-prose text-sm leading-relaxed text-muted-foreground md:text-base">
-                  {project.description}
+                  {project.description[locale]}
                 </DialogDescription>
               </section>
 
@@ -149,7 +167,7 @@ export const ProjectModal = ({ projects, index, onIndexChange, onClose }: Projec
               </div>
             )}
             {!showLive && !repoUrl && (
-              <p className="font-mono text-[11px] text-hud">// Proyecto privado: sin demo ni repositorio público.</p>
+              <p className="font-mono text-[11px] text-hud">{t.private}</p>
             )}
 
             {total > 1 && (

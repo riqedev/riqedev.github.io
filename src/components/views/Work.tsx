@@ -9,6 +9,7 @@ import { HUDFrame } from "@/components/shared/HUDFrame";
 import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
 import { Chip } from "@/components/shared/hud";
 import { stagger } from "@/lib/motion";
+import { useCopy, type Localized } from "@/lib/i18n";
 
 const CATEGORIES = ["REACT", "PYTHON", "JAVA", "PHP"] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -24,7 +25,13 @@ const getProjectCategory = (tags: readonly string[]): Category | null => {
   return null;
 };
 
+const COPY: Localized<{ title: string; since: string; filter: string; details: string }> = {
+  es: { title: "Proyectos seleccionados", since: "// 2022 — presente", filter: "Filtrar por stack", details: "Ver detalles de" },
+  en: { title: "Selected Works", since: "// 2022 — present", filter: "Filter by stack", details: "View details of" },
+};
+
 export const Work = () => {
+  const t = useCopy(COPY);
   const location = useLocation();
   const navigate = useNavigate();
   // El menú ⌘K puede pedir abrir un proyecto directo: llega como state.open (título).
@@ -74,8 +81,8 @@ export const Work = () => {
       <div className="relative z-10 flex h-full w-full max-w-400 flex-col gap-4 px-4 pt-24 pb-28 md:px-8">
         <div className="flex shrink-0 items-end justify-between gap-4 border-b border-border/60 pb-4">
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">Selected Works</h2>
-            <p className="mt-1 font-mono text-[11px] text-hud md:text-xs">// 2022 — present</p>
+            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">{t.title}</h2>
+            <p className="mt-1 font-mono text-[11px] text-hud md:text-xs">{t.since}</p>
           </div>
           <a
             href="https://github.com/riqedev"
@@ -90,7 +97,7 @@ export const Work = () => {
 
         <div className="shrink-0">
           <ScrollArea className="w-full">
-            <div role="group" aria-label="Filtrar por stack" className="flex items-center gap-1.5 pb-2">
+            <div role="group" aria-label={t.filter} className="flex items-center gap-1.5 pb-2">
               <Chip active={activeCategory === null} onClick={() => setActiveCategory(null)}>
                 ALL {projectsData.length}
               </Chip>
@@ -126,7 +133,7 @@ export const Work = () => {
                   delay={stagger(idx)}
                   role="button"
                   tabIndex={0}
-                  aria-label={`Ver detalles de ${project.title}`}
+                  aria-label={`${t.details} ${project.title}`}
                   onClick={() => setSelectedIndex(idx)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {

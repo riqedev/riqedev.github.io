@@ -6,8 +6,15 @@ import { DURATION, EASE_OUT, stagger } from "@/lib/motion";
 import { HUDFrame } from "@/components/shared/HUDFrame";
 import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
 import { TerminalCard } from "@/components/shared/TerminalCard";
+import { useCopy, type Localized } from "@/lib/i18n";
+
+const COPY: Localized<{ copy: string; copied: string; send: string; open: string }> = {
+  es: { copy: "Copiar correo", copied: "Correo copiado", send: "Enviar correo por", open: "Abrir" },
+  en: { copy: "Copy email", copied: "Email copied", send: "Send email via", open: "Open" },
+};
 
 export const Contact = () => {
+  const t = useCopy(COPY);
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -63,7 +70,7 @@ export const Contact = () => {
                         <button
                           type="button"
                           onClick={handleCopy}
-                          aria-label={copied ? "Correo copiado" : "Copiar correo"}
+                          aria-label={copied ? t.copied : t.copy}
                           className="osd pressable flex h-7 items-center gap-1.5 rounded-xs border border-border px-2.5 text-[10px] text-muted-foreground outline-none hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
                         >
                           {copied ? <Check size={11} className="text-af" /> : <Copy size={11} />}
@@ -74,7 +81,7 @@ export const Contact = () => {
                         href={ch.href}
                         target={isMail ? undefined : "_blank"}
                         rel={isMail ? undefined : "noreferrer"}
-                        aria-label={`${isMail ? "Enviar correo" : "Abrir"} ${ch.label}`}
+                        aria-label={`${isMail ? t.send : t.open} ${ch.label}`}
                         className="osd pressable flex h-7 items-center gap-1.5 rounded-xs border border-border px-2.5 text-[10px] text-muted-foreground outline-none hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
                       >
                         <span>{isMail ? "Send" : "Open"}</span>

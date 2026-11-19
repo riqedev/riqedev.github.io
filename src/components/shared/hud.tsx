@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { DURATION, EASE_OUT } from "@/lib/motion";
 import { SIGNALS, type Signal } from "@/lib/signals";
+import { useCopy } from "@/lib/i18n";
 
 /**
  * Primitivas del visor. Son las piezas mínimas del lenguaje TAKE 01 y se documentan
@@ -72,7 +73,9 @@ export const FocusPull = ({
  * Indicador de foco de Sony: `(●)` con AF-C confirmado. Mientras busca foco solo se ven
  * los paréntesis. Va en el HUD (no alrededor del sujeto) para no duplicar el visor.
  */
-export const FocusIndicator = ({ locked, className }: { locked: boolean; className?: string }) => (
+export const FocusIndicator = ({ locked, className }: { locked: boolean; className?: string }) => {
+  const t = useCopy({ es: { locked: "Foco confirmado", seeking: "Enfocando" }, en: { locked: "Focus locked", seeking: "Focusing" } });
+  return (
   <span className={cn("inline-flex items-center font-mono text-[0.95em] tracking-normal", className)}>
     <span aria-hidden="true">(</span>
     <span
@@ -83,9 +86,10 @@ export const FocusIndicator = ({ locked, className }: { locked: boolean; classNa
       )}
     />
     <span aria-hidden="true">)</span>
-    <span className="sr-only">{locked ? "Foco confirmado" : "Enfocando"}</span>
+    <span className="sr-only">{locked ? t.locked : t.seeking}</span>
   </span>
-);
+  );
+};
 
 interface ChipProps extends ComponentProps<"button"> {
   active?: boolean;

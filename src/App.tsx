@@ -8,6 +8,7 @@ import { Contact } from "@/components/views/Contact";
 import { NotFound } from "@/components/views/NotFound";
 import { AppDock } from "@/components/layout/AppDock";
 import { CommandMenuProvider } from "@/components/layout/CommandMenu";
+import { useCopy } from "@/lib/i18n";
 
 // El spec sheet del design system es una herramienta interna: solo existe en `npm run dev`.
 // En build, import.meta.env.DEV es false y Vite elimina la ruta y su chunk del bundle.
@@ -63,6 +64,7 @@ const AnimatedRoutes = () => {
 };
 
 function App() {
+  const skip = useCopy({ es: "Saltar al contenido", en: "Skip to content" });
   return (
     <MotionConfig reducedMotion="user">
       <Router>
@@ -72,7 +74,7 @@ function App() {
               href="#main"
               className="osd sr-only z-60 rounded-xs bg-foreground px-3 py-2 text-[11px] text-background focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
             >
-              Saltar al contenido
+              {skip}
             </a>
             <main id="main" className="relative z-10">
               <AnimatedRoutes />

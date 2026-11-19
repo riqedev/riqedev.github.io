@@ -4,8 +4,15 @@ import { ArrowLeft } from "lucide-react";
 import { HUDFrame } from "@/components/shared/HUDFrame";
 import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
 import { RecDot } from "@/components/shared/Wordmark";
+import { useCopy, type Localized } from "@/lib/i18n";
+
+const COPY: Localized<{ body: string }> = {
+  es: { body: "La toma que buscas no existe en este rollo. El visor está vacío." },
+  en: { body: "The shot you're looking for isn't on this roll. The viewfinder is empty." },
+};
 
 export const NotFound = () => {
+  const t = useCopy(COPY);
   return (
     <HUDFrame className="justify-center">
       <HUDHeader
@@ -40,7 +47,7 @@ export const NotFound = () => {
             NO<RecDot className="mx-[0.06em]" />SIGNAL
           </h1>
           <p className="text-xs md:text-sm font-mono text-muted-foreground max-w-md mt-2">
-            La toma que buscas no existe en este rollo. El visor está vacío.
+            {t.body}
           </p>
         </div>
 

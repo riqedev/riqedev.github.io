@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { motion } from "motion/react";
 import { Cpu, User, ArrowUpRight, Award, Camera, Bike, Keyboard, Rss, Maximize2, type LucideIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -12,27 +12,37 @@ import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
 import { DURATION, EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { useScrollEdges } from "@/hooks/useScrollEdges";
+import { useLocale, type Localized } from "@/lib/i18n";
 
-const EXPERIENCE_LOGS = [
+const EXPERIENCE_LOGS: { timestamp: string; level: string; msg: string; details: Localized; status: string }[] = [
   {
     timestamp: "2022-10 / 2022-12",
     level: "LOG",
     msg: "Consultant @ DIRITT UCT",
-    details: "Innovation workshops for secondary students. Mobile app prototyping, educational focus.",
+    details: {
+      es: "Talleres de innovación para estudiantes de enseñanza media. Prototipado de apps móviles con foco educativo.",
+      en: "Innovation workshops for secondary students. Mobile app prototyping with an educational focus.",
+    },
     status: "COMPLETED",
   },
   {
     timestamp: "2023-01 / 2023-04",
     level: "LOG",
     msg: "Dev Jr @ Kimval Ingeniería",
-    details: "Medical teleconsult platform. Full-stack: Java, SQL, ZK Framework.",
+    details: {
+      es: "Plataforma de teleconsulta médica. Full-stack: Java, SQL, ZK Framework.",
+      en: "Medical teleconsultation platform. Full-stack: Java, SQL, ZK Framework.",
+    },
     status: "COMPLETED",
   },
   {
     timestamp: "2023-08 / present",
     level: "INFO",
     msg: "Software Engineer @ CTR",
-    details: "IoT solutions, React web & React Native mobile. Dashboards, REST APIs, Python/Node.js backend.",
+    details: {
+      es: "Plataformas IoT de punta a punta: portal web en React, apps Android en React Native para equipos en terreno, dashboards de monitoreo en Grafana sobre Zabbix y backends en Python y Node.js.",
+      en: "End-to-end IoT platforms: React web portal, React Native Android apps for field teams, Grafana monitoring dashboards on Zabbix, and Python and Node.js backends.",
+    },
     status: "RUNNING",
   },
 ];
@@ -54,12 +64,70 @@ const CORE_STACK = [
 
 const TOOLING_STACK = ["TailwindCSS", "Framer Motion", "Vite", "Expo", "Figma", "Git", "Docker", "Vercel", "PM2", "Firebase"];
 
-const HOBBIES: { label: string; icon: LucideIcon; href?: string }[] = [
-  { label: "Fotografía", icon: Camera, href: "https://www.flickr.com/photos/breathnshoot/" },
-  { label: "Mech Keebs", icon: Keyboard },
-  { label: "Ciclismo", icon: Bike },
-  { label: "Blog", icon: Rss, href: "https://riqedev-blog.vercel.app/" },
+const HOBBIES: { label: Localized; icon: LucideIcon; href?: string }[] = [
+  { label: { es: "Fotografía", en: "Photography" }, icon: Camera, href: "https://www.flickr.com/photos/breathnshoot/" },
+  { label: { es: "Mech Keebs", en: "Mech Keebs" }, icon: Keyboard },
+  { label: { es: "Ciclismo", en: "Cycling" }, icon: Bike },
+  { label: { es: "Blog", en: "Blog" }, icon: Rss, href: "https://riqedev-blog.vercel.app/" },
 ];
+
+const COPY: Localized<{
+  hello: string;
+  bio: ReactNode;
+  quote: string;
+  offCode: string;
+  openBio: string;
+  openReadme: string;
+}> = {
+  es: {
+    hello: "Hola, soy Enrique",
+    bio: (
+      <>
+        <p>
+          <strong>Ingeniero Civil Informático</strong> con mención en <strong>desarrollo de software</strong>, con +3
+          años de experiencia en el diseño e implementación de soluciones tecnológicas, especializado en proyectos de
+          IoT y automatización industrial. He liderado iniciativas para la integración de dispositivos conectados, el
+          análisis de datos en tiempo real y el desarrollo de sistemas escalables, contribuyendo a la optimización de
+          procesos industriales y la mejora de la eficiencia operativa.
+        </p>
+        <p>
+          Actualmente me desempeño como <strong>ingeniero de software</strong>, uniendo el desarrollo digital con la
+          operación industrial. Desarrollo el stack completo: desde interfaces web en <strong>React</strong> y
+          aplicaciones móviles con <strong>React Native</strong>, hasta la lógica de backend en{" "}
+          <strong>Python</strong>, <strong>Node.js</strong> y <strong>PHP</strong>. Paso gran parte del tiempo
+          diseñando dashboards en tiempo real, APIs RESTful y sistemas que automatizan procesos industriales complejos.
+        </p>
+      </>
+    ),
+    quote: "\"Siempre busco nuevas formas de mejorar para entregar lo mejor de mí en cada desafío.\"",
+    offCode: "Fuera del código",
+    openBio: "Abrir bio completa",
+    openReadme: "Abrir README completo",
+  },
+  en: {
+    hello: "Hi, I'm Enrique",
+    bio: (
+      <>
+        <p>
+          <strong>Software Engineer</strong> with 3+ years designing and building technology solutions, specialized
+          in IoT and industrial automation. I've led
+          initiatives to integrate connected devices, analyze real-time data and build scalable systems that optimize
+          industrial processes and improve operational efficiency.
+        </p>
+        <p>
+          In my current role I bridge digital development and industrial operations. I build the full stack: from web interfaces in <strong>React</strong> and mobile apps with{" "}
+          <strong>React Native</strong> to backend logic in <strong>Python</strong>, <strong>Node.js</strong> and{" "}
+          <strong>PHP</strong>. I spend much of my time designing real-time dashboards, RESTful APIs and systems that
+          automate complex industrial processes.
+        </p>
+      </>
+    ),
+    quote: "\"I'm always looking for new ways to improve and give my best in every challenge.\"",
+    offCode: "Outside of code",
+    openBio: "Open full bio",
+    openReadme: "Open full README",
+  },
+};
 
 /** Tiempo en CTR desde 2023-08, calculado en vivo para que el log no envejezca. */
 const uptime = () => {
@@ -77,6 +145,8 @@ const getCertIssuer = (link: string) => {
 
 export const Profile = () => {
   const [showBio, setShowBio] = useState(false);
+  const { locale } = useLocale();
+  const t = COPY[locale];
   const scrollRef = useRef<HTMLDivElement>(null);
   const edges = useScrollEdges(scrollRef);
 
@@ -131,7 +201,7 @@ export const Profile = () => {
                   delay={1400 + idx * 800}
                   className="text-muted-foreground pl-4 block mt-1 whitespace-normal wrap-break-word"
                 >
-                  Details: {log.details}
+                  Details: {log.details[locale]}
                 </AnimatedSpan>
                 <AnimatedSpan
                   delay={1600 + idx * 800}
@@ -166,8 +236,8 @@ export const Profile = () => {
                 size="icon"
                 className="pressable size-7 text-muted-foreground hover:text-foreground"
                 onClick={() => setShowBio(true)}
-                aria-label="Abrir bio completa"
-                title="Abrir README completo"
+                aria-label={t.openBio}
+                title={t.openReadme}
               >
                 <Maximize2 size={14} />
               </Button>
@@ -186,35 +256,20 @@ export const Profile = () => {
                     />
                     <div className="grid gap-1">
                       <h3 className="flex items-center gap-2 text-xl font-semibold tracking-tight text-foreground md:text-2xl">
-                        Hola, soy Enrique <span className="text-2xl">👋🏽</span>
+                        {t.hello} <span className="text-2xl">👋🏽</span>
                       </h3>
                       <p className="font-mono text-[11px] text-hud">Software Engineer @ CTR // Chile</p>
                     </div>
                   </div>
-                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                    <strong>Ingeniero Civil Informático</strong> con mención en <strong>desarrollo de software</strong>,
-                    con +3 años de experiencia en el diseño e implementación de soluciones tecnológicas innovadoras,
-                    especializado en proyectos de IoT y automatización industrial. He liderado iniciativas para la
-                    integración de dispositivos conectados, el análisis de datos en tiempo real y el desarrollo de
-                    sistemas escalables, contribuyendo a la optimización de procesos industriales y la mejora de la
-                    eficiencia operativa.
-                  </p>
-                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                    Actualmente me desempeño como <strong>ingeniero de software</strong>, uniendo el desarrollo digital
-                    con la operación industrial. Desarrollo el stack completo: desde interfaces web en{" "}
-                    <strong>React</strong> y aplicaciones móviles con <strong>React Native</strong>, hasta la lógica de
-                    backend en <strong>Python</strong>, <strong>Node.js</strong> y <strong>PHP</strong>. Paso gran
-                    parte del tiempo diseñando dashboards en tiempo real, APIs RESTful y sistemas que automatizan
-                    procesos industriales complejos.
-                    <span className="text-foreground/80 italic block mt-3 border-l-2 border-foreground/25 pl-3">
-                      "Siempre busco nuevas formas de mejorar para entregar lo mejor de mí en cada desafío."
-                    </span>
-                  </p>
+                  <div className="space-y-4 text-sm md:text-base text-muted-foreground leading-relaxed">
+                    {t.bio}
+                    <p className="text-foreground/80 italic border-l-2 border-foreground/25 pl-3">{t.quote}</p>
+                  </div>
                 </div>
 
                 <div className="pt-6 border-t border-border lg:pt-0 lg:border-t-0 lg:border-l lg:pl-8">
                   <h4 className="osd text-[10px] text-hud mb-4">
-                    Fuera del código
+                    {t.offCode}
                   </h4>
                   <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3">
                     {HOBBIES.map((h) => {
@@ -228,14 +283,14 @@ export const Profile = () => {
                             />
                           )}
                           <h.icon size={22} aria-hidden="true" className="text-muted-foreground transition-colors group-hover/item:text-foreground" />
-                          <span className="text-xs font-medium">{h.label}</span>
+                          <span className="text-xs font-medium">{h.label[locale]}</span>
                         </>
                       );
                       const base =
                         "group/item relative flex flex-col items-center gap-2 rounded-lg border border-border/70 p-3 text-center";
                       return h.href ? (
                         <a
-                          key={h.label}
+                          key={h.label.en}
                           href={h.href}
                           target="_blank"
                           rel="noreferrer"
@@ -244,7 +299,7 @@ export const Profile = () => {
                           {inner}
                         </a>
                       ) : (
-                        <div key={h.label} className={base}>
+                        <div key={h.label.en} className={base}>
                           {inner}
                         </div>
                       );

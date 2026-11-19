@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 
 import { cn } from "@/lib/utils";
+import { useCopy } from "@/lib/i18n";
 
 interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"button"> {
   duration?: number;
@@ -13,6 +14,10 @@ interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"butt
 
 export const AnimatedThemeToggler = ({ className, duration = 400, ref, ...props }: AnimatedThemeTogglerProps) => {
   const { theme, setTheme } = useTheme();
+  const t = useCopy({
+    es: { light: "Activar tema claro", dark: "Activar tema oscuro" },
+    en: { light: "Switch to light theme", dark: "Switch to dark theme" },
+  });
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   // Radix (TooltipTrigger asChild) inyecta su propio ref: lo combinamos con el nuestro,
@@ -68,7 +73,7 @@ export const AnimatedThemeToggler = ({ className, duration = 400, ref, ...props 
     <Button
       variant="ghost"
       size="icon"
-      aria-label={isDark ? "Activar tema claro" : "Activar tema oscuro"}
+      aria-label={isDark ? t.light : t.dark}
       className={cn(className)}
       {...props}
       ref={setRefs}

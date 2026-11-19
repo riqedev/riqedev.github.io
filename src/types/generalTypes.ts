@@ -36,68 +36,85 @@ export const certifications = [
 export const projectsData = [
   {
     title: "RIQE Virtual Lens Lab",
-    description:
-      "Simulador de óptica de cámara en tiempo real. Sin fotos de fondo, todo se genera proceduralmente. Ajusta focal length, apertura, distancia de foco y número de láminas del diafragma para ver bokeh, profundidad de campo, distorsión y viñeteo renderizados con física real.",
+    description: {
+      es: "Simulador de óptica de cámara en tiempo real. Sin fotos de fondo, todo se genera proceduralmente. Ajusta focal length, apertura, distancia de foco y número de láminas del diafragma para ver bokeh, profundidad de campo, distorsión y viñeteo renderizados con física real.",
+      en: "Real-time camera optics simulator. No background photos: everything is generated procedurally. Adjust focal length, aperture, focus distance and the number of aperture blades to see bokeh, depth of field, distortion and vignetting rendered with real physics.",
+    },
     tags: ["React Three Fiber", "TypeScript", "Vite", "drei", "postprocessing", "ShadCN/UI", "TailwindCSS"],
     imageUrl: "/projects/RIQE-LAB.webp",
     projectLink: "https://riqe-lab.vercel.app/",
     repoLink: "https://github.com/riqedev/riqe-lab",
   },
   {
+    title: "RIQE Exif Frame",
+    description: {
+      es: "Lee los datos de toma de una foto (cámara, lente y exposición), avisa si trae la ubicación GPS o el número de serie de la cámara y exporta una versión con marco y sin metadatos. Todo corre en el navegador: la foto no se sube a ningún servidor.",
+      en: "Reads a photo's shot data (camera, lens and exposure), warns you if it carries GPS location or the camera's serial number, and exports a framed copy without metadata. Everything runs in the browser: the photo is never uploaded.",
+    },
+    tags: ["React", "TypeScript", "Vite", "Canvas API", "exifr", "TailwindCSS"],
+    imageUrl: "/projects/RIQE-EXIF.webp",
+    repoLink: "https://github.com/riqedev/riqe-exif",
+    projectLink: "https://riqe-exif.vercel.app/",
+  },
+  {
     title: "Enerlytics",
-    description:
-      "Dashboard de consumo energético simulado que analiza patrones horarios, muestra tendencias, horas críticas y ventanas óptimas para agendar tareas durante horas de menor carga energética.",
+    description: {
+      es: "Dashboard de consumo energético simulado que analiza patrones horarios, muestra tendencias, horas críticas y ventanas óptimas para agendar tareas durante horas de menor carga energética.",
+      en: "Simulated energy consumption dashboard that analyzes hourly patterns and shows trends, peak hours and the best windows to schedule tasks during off-peak periods.",
+    },
     tags: ["ReactJS", "Vite", "TailwindCSS", "ShadCN/UI", "Recharts"],
     imageUrl: "/projects/Enerlytics.webp",
     projectLink: "https://github.com/riqedev/Enerlytics",
   },
   {
     title: "DMA",
-    description:
-      "Plataforma educativa para docentes. Permite diseñar clases, visualizar gráficos y generar PDF, utilizando la taxonomía de aprendizaje SOLO como base.",
+    description: {
+      es: "Plataforma educativa para docentes. Permite diseñar clases, visualizar gráficos y generar PDF, utilizando la taxonomía de aprendizaje SOLO como base.",
+      en: "Educational platform for teachers. Design lessons, view charts and generate PDFs, built on the SOLO learning taxonomy.",
+    },
     tags: ["ReactJS", "AntDesign", "TailwindCSS", "MongoDB", "Redux"],
     imageUrl: "/projects/DMA.webp",
     projectLink: "http://dma2.uct.cl/",
   },
   {
     title: "Weather App",
-    description:
-      "Aplicación que proporciona información del clima en tiempo real, permite buscar y visualizar informacion de diferentes locaciones del mundo.",
+    description: {
+      es: "Aplicación que proporciona información del clima en tiempo real, permite buscar y visualizar informacion de diferentes locaciones del mundo.",
+      en: "Real-time weather app to search and view conditions for locations around the world.",
+    },
     tags: ["ReactJS", "TailwindCSS", "OpenWeatherMap"],
     imageUrl: "/projects/Weather.webp",
     projectLink: "https://github.com/riqedev/Weather-App-ReactJS-TailwindCSS",
   },
   {
     title: "Teleprocesos",
-    description:
-      "Plataforma que ofrece servicios para realizar consultas telemáticas de manera eficiente y segura a las instituciones de salud.",
+    description: {
+      es: "Plataforma que ofrece servicios para realizar consultas telemáticas de manera eficiente y segura a las instituciones de salud.",
+      en: "Platform for efficient and secure telemedicine consultations for healthcare institutions.",
+    },
     tags: ["Java", "ZK", "SQL Server"],
     imageUrl: "/projects/TelC.webp",
     projectLink: "",
   },
   {
     title: "MACD",
-    description:
-      "Aplicación que permite incorporar dinámicamente nuevos campos en formularios sin alterar la estructura base de una BD.",
+    description: {
+      es: "Aplicación que permite incorporar dinámicamente nuevos campos en formularios sin alterar la estructura base de una BD.",
+      en: "App that dynamically adds new fields to forms without changing the base database structure.",
+    },
     tags: ["PHP", "Laravel", "Bootstrap", "SQL Server"],
     imageUrl: "/projects/MACD.webp",
     projectLink: "https://github.com/riqedev/Modulo-Administrador-De-Campos-Dinamicos",
   },
   {
     title: "Detector de células",
-    description:
-      "Sistema embebido que mediante técnicas de Machine Learning detecta y categoriza células mediante sus diferentes tamaños y tipos.",
+    description: {
+      es: "Sistema embebido que mediante técnicas de Machine Learning detecta y categoriza células mediante sus diferentes tamaños y tipos.",
+      en: "Embedded system that uses Machine Learning techniques to detect and classify cells by size and type.",
+    },
     tags: ["Python", "OpenCV", "Numpy"],
     imageUrl: "/projects/Cell.webp",
     projectLink: "https://github.com/riqedev/Cells",
-  },
-  {
-    title: "Todo App",
-    description:
-      "Todo App con funcionalidad CRUD que permite gestionar y organizar tareas dinámicamente con almacenamiento y persistencia en tiempo real.",
-    tags: ["ReactJS", "TailwindCSS", "Firebase"],
-    imageUrl: "/projects/Todolist.webp",
-    projectLink: "https://github.com/riqedev/Todo-App-ReactJS-TailwindCSS-Firebase",
   },
 ] as const;
 

@@ -30,6 +30,17 @@
     <meta name="twitter:image" content="https://riqedev.github.io/og.png" />
     <title>riqedev - Software Engineer</title>
     <script>
+      // Idioma antes del paint (misma regla que src/lib/i18n.ts: guardado o el del navegador).
+      (function () {
+        var lang = "es";
+        try {
+          var stored = localStorage.getItem("portfolio-locale");
+          lang = stored === "es" || stored === "en" ? stored : navigator.language.toLowerCase().indexOf("es") === 0 ? "es" : "en";
+        } catch (e) {}
+        document.documentElement.lang = lang;
+      })();
+    </script>
+    <script>
       // Prevent FOUC: aplicar tema antes del paint inicial.
       (function () {
         try {
