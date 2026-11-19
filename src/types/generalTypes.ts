@@ -59,12 +59,13 @@ export const projectsData = [
   {
     title: "Enerlytics",
     description: {
-      es: "Dashboard de consumo energético simulado que analiza patrones horarios, muestra tendencias, horas críticas y ventanas óptimas para agendar tareas durante horas de menor carga energética.",
-      en: "Simulated energy consumption dashboard that analyzes hourly patterns and shows trends, peak hours and the best windows to schedule tasks during off-peak periods.",
+      es: "Dashboard de energía de una planta simulada: costo del mes con demanda en punta, detección de anomalías contra lo normal de cada hora y un simulador que muestra cuánto cuesta correr un proceso según la hora en que se inicie.",
+      en: "Energy dashboard for a simulated plant: monthly cost with peak-hour demand, anomaly detection against each hour's normal load, and a simulator that shows what running a process costs depending on when it starts.",
     },
-    tags: ["ReactJS", "Vite", "TailwindCSS", "ShadCN/UI", "Recharts"],
+    tags: ["React", "TypeScript", "Vite", "SVG", "TailwindCSS"],
     imageUrl: "/projects/Enerlytics.webp",
-    projectLink: "https://github.com/riqedev/Enerlytics",
+    repoLink: "https://github.com/riqedev/Enerlytics",
+    projectLink: "https://enerlytics-riqedev.vercel.app/",
   },
   {
     title: "DMA",
