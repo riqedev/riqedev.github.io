@@ -76,7 +76,7 @@ export const ProjectModal = ({ projects, index, onIndexChange, onClose }: Projec
         className="flex max-h-[88dvh] flex-col gap-0 overflow-hidden rounded-2xl border-border bg-card p-0 sm:max-w-6xl md:h-[72vh] md:flex-row"
       >
         {/* PLAYBACK: imagen */}
-        <div className="relative aspect-video shrink-0 overflow-hidden bg-muted select-none md:aspect-auto md:h-full md:w-[60%]">
+        <div className="relative aspect-video shrink-0 overflow-hidden bg-muted select-none max-md:max-h-[26dvh] md:aspect-auto md:h-full md:w-[60%]">
           <img
             key={project.imageUrl}
             src={project.imageUrl}
@@ -122,7 +122,12 @@ export const ProjectModal = ({ projects, index, onIndexChange, onClose }: Projec
             </DialogPrimitive.Close>
           </div>
 
-          <ScrollArea className="min-h-0 flex-1">
+          {/* Safari no resuelve el h-full del viewport dentro de un ítem flex de alto indefinido (el modal solo
+              tiene max-h en móvil): el viewport crecía con el contenido y tapaba los CTA. Con el root como columna
+              flex, el alto lo reparte flexbox y no depende de un porcentaje. */}
+          <ScrollArea
+            fade
+            className="flex min-h-0 flex-1 flex-col [&>[data-slot=scroll-area-viewport]]:h-auto [&>[data-slot=scroll-area-viewport]]:min-h-0 [&>[data-slot=scroll-area-viewport]]:flex-1">
             <div className="space-y-7 p-5 md:p-6">
               <section>
                 <h3 className="osd mb-2 text-[10px] text-hud">{t.overview}</h3>
