@@ -7,7 +7,7 @@ import { useCopy } from "@/lib/i18n";
 
 /**
  * Primitivas del visor. Son las piezas mínimas del lenguaje TAKE 01 y se documentan
- * en /system. Si una vista necesita algo "tipo HUD", se arma con esto.
+ * en DESIGN.md. Si una vista necesita algo "tipo HUD", se arma con esto.
  */
 
 

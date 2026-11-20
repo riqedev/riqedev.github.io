@@ -8,12 +8,10 @@ Sistema de marca e interfaz de riqedev. Vive en tres lugares que deben decir lo 
 | Dónde | Qué |
 | --- | --- |
 | `src/index.css` | Fuente de verdad de los tokens (CSS vars + `@theme inline` de Tailwind v4) |
-| `/system` | Spec sheet visual con los componentes reales. **Solo en `npm run dev`**: no se publica |
-| `/lab` | Laboratorio de wordmark y monograma (fuentes candidatas, señal final, tamaños reales). **Solo en dev** |
 | Este archivo | La versión portable: para el blog, una charla, un CV o cualquier pieza nueva de la marca |
 | `riqedev-blog` | Aplica la misma marca y tokens (copiados en `src/styles/globals.css`). Si un token cambia acá, se replica allá |
 
-**En el blog** la cámara es todavía más tenue: metadatos en voz OSD, Galería con visor PLAYBACK y 404 `NO●SIGNAL`, sin HUD de visor. El punto de la marca en `--af` (verde operativo); el rojo solo en NO●SIGNAL. Links en `--link`, Inter para leer.
+**En el blog** la cámara es todavía más tenue: metadatos en voz OSD y 404 `NO●SIGNAL`, sin HUD de visor. El blog es del oficio: sin galería de fotos (se retiró el 2026-11-20). El punto de la marca en `--af` (verde operativo); el rojo solo en NO●SIGNAL. Links en `--link`, Inter para leer.
 
 ---
 
@@ -39,7 +37,7 @@ Referencia de concepto: visor de una Sony α6400 grabando.
 
 **Wordmark (R02, aprobado 2026-11-20):** `riqedev` en minúscula + punto redondo en `--af`. Archivo wdth 112, wght 780 (770 con tinta clara sobre oscuro: la irradiación la engorda), tracking −0.04em y kerning propio `ri` −0.010 · `ed` −0.010 · `ev` −0.021em. El punto mide 0.17em (el grosor del trazo), se centra donde Archivo pone su propio "." (−0.04em tras la `v`) y baja 0.012em bajo la línea base, como las letras redondas. Bajo 120px de ancho, versión chica: tracking −0.02em y punto de 0.19em. `<Wordmark />` (`src/components/shared/Wordmark.tsx`) lo dibuja como SVG con la geometría del kit (`src/lib/brand-geometry.ts`, generado por `riqedev-brand`, no se edita a mano), porque el kerning y el peso por tema no se pueden pedir en CSS. `<RecDot />` (0.17em, mismas reglas) queda para titulares en texto vivo como NO●SIGNAL; nunca el glifo "." de la fuente.
 
-**Monograma:** `r` + punto en `--af` (`<Monogram />`), baldosa `#111111`. En íconos el glifo se recorta a su tinta y ocupa ~70% de la baldosa en 16/32px y ~60% en 180/192px, con el punto a 0.19em (compensación óptica para que sobreviva a 16px), centrado donde Archivo pone su punto tras la `r` (−0.038em). En el dock va a 26/30px para igualar el peso visual de los íconos de 20px. Dock, favicon (`public/favicon*.png`, `favicon.ico`), `apple-touch-icon.png`. Reemplaza al logo del gato con lentes (`public/Logo.png` queda solo como referencia en `/lab`).
+**Monograma:** `r` + punto en `--af` (`<Monogram />`), baldosa `#111111`. En íconos el glifo se recorta a su tinta y ocupa ~70% de la baldosa en 16/32px y ~60% en 180/192px, con el punto a 0.19em (compensación óptica para que sobreviva a 16px), centrado donde Archivo pone su punto tras la `r` (−0.038em). En el dock va a 26/30px para igualar el peso visual de los íconos de 20px. Dock, favicon (`public/favicon*.png`, `favicon.ico`), `apple-touch-icon.png`. Reemplaza al logo del gato con lentes.
 
 **Aire mínimo:** la altura de la `r` a cada lado. Sin marcos propios: el visor ya lo pone la vista.
 
@@ -47,7 +45,7 @@ Referencia de concepto: visor de una Sony α6400 grabando.
 
 **Social card:** `public/og.png` (1200×630), generada desde `design/og.html`.
 
-### Por qué esta marca (decisión 2026-11-17, preset R01 de `/lab`)
+### Por qué esta marca (decisión 2026-11-17, preset R01 del laboratorio de wordmark, ya retirado)
 
 > Histórico. Los puntos 3 a 5 hablan del punto rojo REC, que desde el 2026-11-20 pertenece a riqe (la persona). En riqedev el punto es `--af`. El razonamiento de forma (círculo dibujado, grosor del trazo, lugar exacto) sigue vigente.
 
@@ -93,7 +91,7 @@ Base neutral (shadcn neutral, sin tinte). El 95% de la interfaz son neutros; las
 | `--af` | Operativo, en curso. **Punto de la marca** | Punto del wordmark y del monograma, ONLINE, `Status: RUNNING`, cursor `> _`, "copiado" | `oklch(0.76 0.13 152)` | `oklch(0.53 0.12 152)` |
 | `--info` | Catálogo, archivo, lectura | CATALOG (Work) | `oklch(0.7 0.15 255)` | `oklch(0.55 0.17 255)` |
 | `--link` | Canal abierto, transmisión | OPEN FREQUENCY (Contact) | `oklch(0.82 0.11 205)` | `oklch(0.53 0.1 210)` |
-| `--warn` | Calibración, atención, sistema | CALIBRATION (/system) | `oklch(0.84 0.15 85)` | `oklch(0.55 0.15 70)` |
+| `--warn` | Calibración, atención, sistema | MENU (⌘K), semáforo de las cards al interactuar | `oklch(0.84 0.15 85)` | `oklch(0.55 0.15 70)` |
 
 Los semáforos de ventana (`WindowDots`) usan rec/warn/af, pero solo al interactuar con la card; en reposo son grises.
 

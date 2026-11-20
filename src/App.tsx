@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from "react";
+import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, MotionConfig } from "motion/react";
 import { Home } from "@/components/views/Home";
@@ -10,17 +10,11 @@ import { AppDock } from "@/components/layout/AppDock";
 import { CommandMenuProvider } from "@/components/layout/CommandMenu";
 import { useCopy } from "@/lib/i18n";
 
-// El spec sheet del design system es una herramienta interna: solo existe en `npm run dev`.
-// En build, import.meta.env.DEV es false y Vite elimina la ruta y su chunk del bundle.
-const DesignSystem = import.meta.env.DEV ? lazy(() => import("@/components/views/DesignSystem")) : null;
-const WordmarkLab = import.meta.env.DEV ? lazy(() => import("@/components/views/WordmarkLab")) : null;
-
 const TITLES: Record<string, string> = {
   "/": "riqedev - Software Engineer",
   "/profile": "Profile - riqedev",
   "/work": "Work - riqedev",
   "/contact": "Contact - riqedev",
-  "/system": "Design System - riqedev",
 };
 
 const AnimatedRoutes = () => {
@@ -37,26 +31,6 @@ const AnimatedRoutes = () => {
         <Route path="/work" element={<Work />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/contact" element={<Contact />} />
-        {DesignSystem && (
-          <Route
-            path="/system"
-            element={
-              <Suspense fallback={<div className="h-dvh bg-background" />}>
-                <DesignSystem />
-              </Suspense>
-            }
-          />
-        )}
-        {WordmarkLab && (
-          <Route
-            path="/lab"
-            element={
-              <Suspense fallback={<div className="h-dvh bg-background" />}>
-                <WordmarkLab />
-              </Suspense>
-            }
-          />
-        )}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>

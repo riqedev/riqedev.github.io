@@ -1,4 +1,4 @@
-/** Cada señal del visor tiene un único significado en todo el sitio (ver /system). */
+/** Cada señal del visor tiene un único significado en todo el sitio (ver DESIGN.md §3). */
 export const SIGNALS = {
   rec: { className: "bg-rec", meaning: "Grabando / en vivo. Situacional del TAKE 01 (REC, NO●SIGNAL)." },
   af: { className: "bg-af", meaning: "Operativo, en curso. Es la luz del punto de la marca." },

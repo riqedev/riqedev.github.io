@@ -7,7 +7,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * TAKE 01 design tokens. La documentación vive en DESIGN.md y en la ruta /system.
+ * TAKE 01 design tokens. La documentación vive en DESIGN.md.
  * Regla: los componentes consumen tokens semánticos (bg-card, text-hud, bg-rec…),
  * nunca colores de paleta crudos (red-500, zinc-400…).
  */

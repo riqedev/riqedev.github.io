@@ -23,17 +23,12 @@ npm run lint
 npm run typecheck
 ```
 
-Rutas internas, solo disponibles con `npm run dev` (no se publican):
-
-- `/system`: spec sheet del design system, construido con los componentes reales.
-- `/lab`: laboratorio de wordmark y monograma.
-
 ## Estructura
 
 ```
 src/
   components/
-    views/       Home, Profile, Work, Contact, NotFound (+ DesignSystem, WordmarkLab en dev)
+    views/       Home, Profile, Work, Contact, NotFound
     shared/      HUDFrame, HUDBar, primitivas del visor (hud.tsx), TerminalCard, ProjectModal
     layout/      AppDock, CommandMenu (⌘K)
     ui/          componentes shadcn/magicui adaptados
