@@ -18,7 +18,7 @@ const Mark = ({ mark, className, fromOrigin = true }: { mark: BrandMark; classNa
       style={{ width: `${(x1 - x0) / 1000}em`, height: `${(y1 - y0) / 1000}em`, verticalAlign: `${-y1 / 1000}em` }}
     >
       <path fill="currentColor" d={mark.d} />
-      <circle className="fill-rec" cx={mark.dot.cx} cy={mark.dot.cy} r={mark.dot.r} />
+      <circle className="fill-af" cx={mark.dot.cx} cy={mark.dot.cy} r={mark.dot.r} />
     </svg>
   );
 };

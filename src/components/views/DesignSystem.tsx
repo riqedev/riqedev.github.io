@@ -280,9 +280,9 @@ const DesignSystem = () => {
             </div>
             <ul className="mt-6 grid gap-3 text-sm text-muted-foreground md:grid-cols-3">
               <li>
-                <strong className="text-foreground">El punto se lee dos veces.</strong> Primero como punto final;
-                junto al HUD, como el LED de REC. Círculo dibujado de 0.16em en <Spec>--rec</Spec>: es el único rojo
-                de la marca.
+                <strong className="text-foreground">El punto es una luz de estado.</strong> Círculo dibujado de 0.17em
+                en <Spec>--af</Spec>: operativo, lo terminado y funcionando. El rojo <Spec>--rec</Spec> es de riqe (la
+                persona) y aquí queda solo para REC y NO●SIGNAL del TAKE 01.
               </li>
               <li>
                 <strong className="text-foreground">Minúscula, siempre.</strong> <Spec>riqedev</Spec> es un handle:
