@@ -96,7 +96,7 @@ export const AppDock = () => {
                       )}
                     >
                       {item.type === "logo" ? (
-                        <Monogram className="-translate-y-[0.07em] text-[26px] md:text-[30px]" />
+                        <Monogram className="text-[26px] md:text-[30px]" />
                       ) : (
                         <item.icon
                           className="size-4 md:size-5"

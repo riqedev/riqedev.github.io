@@ -44,7 +44,7 @@ export const NotFound = () => {
             // 404 // scene not found
           </span>
           <h1 className="display text-[13vw] sm:text-[12vw] md:text-[10vw] lg:text-[8vw] text-foreground">
-            NO<RecDot className="mx-[0.06em]" />SIGNAL
+            NO<RecDot className="ml-[0.055em] mr-[0.018em]" />SIGNAL
           </h1>
           <p className="text-xs md:text-sm font-mono text-muted-foreground max-w-md mt-2">
             {t.body}

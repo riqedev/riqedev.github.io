@@ -1,6 +1,7 @@
 # riqedev Design System — TAKE 01
 
-> **Engineering through the lens.** La ingeniería es el contenido; la cámara es el marco.
+> **Marca: hasta el último detalle.** Diseño y construyo software hasta el último detalle.
+> **Portfolio, TAKE 01: Engineering through the lens.** El escenario de esta toma es la cámara; la ingeniería es el contenido.
 
 Sistema de marca e interfaz de riqedev. Vive en tres lugares que deben decir lo mismo:
 
@@ -18,10 +19,14 @@ Sistema de marca e interfaz de riqedev. Vive en tres lugares que deben decir lo 
 
 ## 1. Principios
 
+**De la marca (aplican a todo):** hasta el último detalle. Enrique es ingeniero de software, creativo y detallista; le mueven el diseño en todas sus formas (industrial, arquitectura, moda), la fotografía, la música y las mentes brillantes que cruzan disciplinas, y todo eso entra en lo que hace. Cada decisión, por pequeña que sea, tiene una razón y se nota en el resultado; si un detalle no tiene razón, sobra. TAKE es una toma, en cine y en estudio: cada versión del portfolio puede tener otro escenario sin cambiar la marca. Frase de presentación: "Diseño y construyo software hasta el último detalle." Fuente completa: el design system riqedev en Claude y el kit `riqedev-brand`.
+
+**Del portfolio (TAKE 01):**
+
 1. **El visor no es el contenido.** Todo lo que rodea al contenido es HUD: tenue, condensado, inmóvil. Si un elemento del HUD llama más la atención que un proyecto, está mal calibrado.
 2. **Una señal, un significado.** Cada color de señal tiene exactamente un significado (ver §3). Nunca se usa como decoración.
 3. **Un solo momento por vista.** El focus pull del hero es el único movimiento orquestado. El resto responde a la persona (presionar, abrir, filtrar); nada se mueve solo para lucirse.
-4. **La cámara es referencia, no copia.** El HUD toma del visor de la Sony α6400 solo lo que se reconoce: `● REC` arriba a la izquierda, `RAW` y `AF-C WIDE` arriba a la derecha, lectura de exposición abajo (`(●)  1/2000  F2.8  ±0.0  ISO AUTO`). Batería, resolución, tarjeta y demás indicadores se omiten: cargan sin aportar. Lo que sí aparece se escribe como la cámara: `F2.8`, no `ƒ/2.8`.
+4. **La cámara es el escenario, tomado con criterio.** El HUD toma del visor de la Sony α6400 solo lo que se reconoce: `● REC` arriba a la izquierda, `RAW` y `AF-C WIDE` arriba a la derecha, lectura de exposición abajo (`(●)  1/2000  F2.8  ±0.0  ISO AUTO`). Batería, resolución, tarjeta y demás indicadores se omiten: cargan sin aportar. Lo que sí aparece se escribe como la cámara: `F2.8`, no `ƒ/2.8`.
 5. **Nada de HUD dentro del HUD.** El visor lo pone la vista. El contenido (wordmark, imágenes, cards) nunca lleva esquinas de visor ni recuadros de AF propios.
 
 Referencia de concepto: visor de una Sony α6400 grabando.
@@ -30,9 +35,9 @@ Referencia de concepto: visor de una Sony α6400 grabando.
 
 ## 2. Marca
 
-**Wordmark:** `riqedev` en minúscula + punto REC redondo, en la voz Display (Archivo wdth 112, wght 780, tracking −0.04em). Componente `<Wordmark />` en `src/components/shared/Wordmark.tsx`. El punto es `<RecDot />`: un círculo dibujado de 0.16em (el grosor del trazo) en `--rec`, nunca el glifo "." de la fuente.
+**Wordmark (R02, aprobado 2026-11-20):** `riqedev` en minúscula + punto redondo en `--rec`. Archivo wdth 112, wght 780 (770 con tinta clara sobre oscuro: la irradiación la engorda), tracking −0.04em y kerning propio `ri` −0.010 · `ed` −0.010 · `ev` −0.021em. El punto mide 0.17em (el grosor del trazo), se centra donde Archivo pone su propio "." (−0.04em tras la `v`) y baja 0.012em bajo la línea base, como las letras redondas. Bajo 120px de ancho, versión chica: tracking −0.02em y punto de 0.19em. `<Wordmark />` (`src/components/shared/Wordmark.tsx`) lo dibuja como SVG con la geometría del kit (`src/lib/brand-geometry.ts`, generado por `riqedev-brand`, no se edita a mano), porque el kerning y el peso por tema no se pueden pedir en CSS. `<RecDot />` (0.17em, mismas reglas) queda para titulares en texto vivo como NO●SIGNAL; nunca el glifo "." de la fuente.
 
-**Monograma:** `r` + punto REC (`<Monogram />`). En íconos el glifo se recorta a su tinta y ocupa ~70% de la baldosa en 16/32px y ~60% en 180/192px, con el punto a 0.19em (compensación óptica para que sobreviva a 16px). En el dock va a 26/30px para igualar el peso visual de los íconos de 20px. Dock, favicon (`public/favicon*.png`, `favicon.ico`), `apple-touch-icon.png`. Reemplaza al logo del gato con lentes (`public/Logo.png` queda solo como referencia en `/lab`).
+**Monograma:** `r` + punto REC (`<Monogram />`). En íconos el glifo se recorta a su tinta y ocupa ~70% de la baldosa en 16/32px y ~60% en 180/192px, con el punto a 0.19em (compensación óptica para que sobreviva a 16px), centrado donde Archivo pone su punto tras la `r` (−0.038em). En el dock va a 26/30px para igualar el peso visual de los íconos de 20px. Dock, favicon (`public/favicon*.png`, `favicon.ico`), `apple-touch-icon.png`. Reemplaza al logo del gato con lentes (`public/Logo.png` queda solo como referencia en `/lab`).
 
 **Aire mínimo:** la altura de la `r` a cada lado. Sin marcos propios: el visor ya lo pone la vista.
 
@@ -49,7 +54,7 @@ Referencia de concepto: visor de una Sony α6400 grabando.
 1. **Minúscula: `riqedev`.** Es un handle (GitHub, blog), y en minúscula se lee como lo que es: una firma digital, cercana y de oficio. La mayúscula expandida se lee como marca de hardware (el grabado de un cuerpo de cámara), que empuja hacia el nicho equivocado. Además la minúscula tiene silueta reconocible (la `q` baja, la `d` sube); en mayúscula la palabra es un bloque uniforme.
 2. **Archivo al 112%, peso ~780, tracking −0.04em.** Mantiene la familia del sistema (Archivo ya es la voz OSD), así que la marca y la interfaz son parientes sin ser iguales. Al 125% en minúscula se vuelve gorda y caricaturesca; al 100% se confunde con cualquier grotesca. 112% es presencia sin gritar. Descartadas: Inter (es la letra de la UI, la marca desaparecería), Geist (asociada al ecosistema Vercel), Space Grotesk y Unbounded (muy vistas en portfolios dev), Michroma (retro-cámara, el nicho otra vez), JetBrains Mono con cursor (cliché de "soy dev").
 3. **Punto final redondo, en rojo REC.** Es la decisión clave: el punto se lee **primero como puntuación** (seguro, terminado) y solo dentro del portfolio, junto al HUD, se lee **también como el LED de grabación**. Es un guiño, no una declaración: no exige saber de cámaras para funcionar. El cuadrado se descarta porque se lee como píxel y no existe en ningún REC real. El punto se dibuja (círculo de 0.16em, el grosor del trazo) en vez de usar el glifo de la fuente, para que sea idéntico en cualquier contexto.
-4. **¿"Nombre + punto de color" está trillado?** El recurso es común. Lo que lo salva acá es que tiene una segunda lectura propia (REC) y que se usa con disciplina: es el **único** rojo de la marca. Si algún día se siente gastado, la versión con punto en tinta (R02) mantiene la forma sin el acento.
+4. **¿"Nombre + punto de color" está trillado?** El recurso es común. Lo que lo salva acá es que tiene una segunda lectura propia (REC) y que se usa con disciplina: es el **único** rojo de la marca. Si algún día se siente gastado, la versión con punto en tinta mantiene la forma sin el acento. Desde 2026-11-20 el punto es también el concepto: el último detalle de la palabra, del grosor exacto del trazo y en el lugar exacto. Su REC es de la cámara y del estudio de grabación.
 5. **Monograma `r.`** en minúscula con el mismo punto rojo. A 16px sigue siendo distinguible (el punto es el ancla), es coherente con el wordmark y reemplaza al logo actual (gato con lentes) sin perder personalidad. Se descartan `R.` (monograma en R mayúscula es de los más vistos) y `RQ` (pierde la señal).
 6. **La cámara queda donde está bien:** en el escenario del portfolio (HUD, REC, PLAYBACK, TAKE 01) y como guiño en la foto de Flickr. No en el logo, no en la firma, no en el avatar.
 
@@ -57,7 +62,7 @@ Referencia de concepto: visor de una Sony α6400 grabando.
 
 Se probó destacar las letras q-e-d (*quod erat demonstrandum*) con hover en el nombre, un `∎ q.e.d.` al cierre del `career.log` y una sección en `/system`. Enrique lo sacó (2026-11-17): se siente trillado y su vínculo real es con la demostración matemática, no con la ingeniería. No reintroducirlo.
 
-**README de perfil** (`riqedev/riqedev`): usa el mismo wordmark, renderizado desde `design/readme-wordmark.html` (dark; los colores light están anotados en el archivo).
+**README de perfil** (`riqedev/riqedev`): usa el lockup R02 del kit `riqedev-brand` (`assets/wordmark-{dark,light}.png`, recortado a la tinta). La social card (`design/og.html`) usa `design/wordmark-dark.svg`, copiado del kit.
 
 ---
 
@@ -83,8 +88,8 @@ Base neutral (shadcn neutral, sin tinte). El 95% de la interfaz son neutros; las
 | `--rec` | Grabando / en vivo. Marca. | Punto del wordmark, REC del Home, `NO.SIGNAL`, selección de texto | `oklch(0.65 0.23 27)` | `oklch(0.58 0.22 27)` |
 | `--af` | Operativo, en curso | ONLINE, `Status: RUNNING`, cursor `> _`, "copiado" | `oklch(0.76 0.13 152)` | `oklch(0.53 0.12 152)` |
 | `--info` | Catálogo, archivo, lectura | CATALOG (Work) | `oklch(0.7 0.15 255)` | `oklch(0.55 0.17 255)` |
-| `--link` | Canal abierto, transmisión | OPEN FREQUENCY (Contact) | `oklch(0.82 0.11 205)` | `oklch(0.56 0.1 210)` |
-| `--warn` | Calibración, atención, sistema | CALIBRATION (/system) | `oklch(0.84 0.15 85)` | `oklch(0.62 0.15 70)` |
+| `--link` | Canal abierto, transmisión | OPEN FREQUENCY (Contact) | `oklch(0.82 0.11 205)` | `oklch(0.53 0.1 210)` |
+| `--warn` | Calibración, atención, sistema | CALIBRATION (/system) | `oklch(0.84 0.15 85)` | `oklch(0.55 0.15 70)` |
 
 Los semáforos de ventana (`WindowDots`) usan rec/warn/af, pero solo al interactuar con la card; en reposo son grises.
 
@@ -96,7 +101,7 @@ Los semáforos de ventana (`WindowDots`) usan rec/warn/af, pero solo al interact
 | `--hud` (58–60%) | Estado, labels de sección |
 | `--hud-faint` (42–45%) | Metadatos, valores en reposo |
 
-Antes el HUD usaba `/40` y no se leía. Estos niveles mantienen la jerarquía y pasan contraste para texto pequeño no esencial.
+Antes el HUD usaba `/40` y no se leía. `--hud-strong` y `--hud` pasan 4.5:1; `--hud-faint` da 3.1:1 (claro) y 3.9:1 (oscuro), así que es solo para metadatos no esenciales: lo que haya que leer va en `--hud`. `--link` y `--warn` claros se oscurecieron el 2026-11-20 para pasar 4.5:1 (4.79 y 4.78).
 
 ### Sintaxis
 
@@ -112,7 +117,7 @@ Tres familias, cada una con un trabajo. Todas self-hosted vía Fontsource (sin C
 
 | Rol | Spec | Uso | Clase |
 | --- | --- | --- | --- |
-| **Display** | Archivo · wdth 112 · wght 780 · tracking −0.04em · leading 0.9 | Wordmark y titulares de marca (NO.SIGNAL, TAKE 01). Una vez por pantalla. | `.display` |
+| **Display** | Archivo · wdth 112 · wght 780 (770 en oscuro) · tracking −0.04em · leading 0.9 | Titulares de marca en texto vivo (NO●SIGNAL, TAKE 01); el wordmark va como SVG. Una vez por pantalla. | `.display` |
 | **Heading** | Inter · wght 600 · tracking-tight · opsz auto | Títulos de sección y proyecto | `font-semibold tracking-tight` |
 | **Body** | Inter · wght 400 · leading-relaxed · máx. 64ch · negritas 600 | Prosa y UI | (default, `font-sans`) |
 | **OSD** | Archivo · wdth 84 · wght 540 · tracking 0.08em · mayúsculas · tabular-nums | HUD, etiquetas, chips, botones de sistema | `.osd` |
@@ -156,7 +161,7 @@ Headings con `text-wrap: balance`, párrafos con `text-wrap: pretty` (global en 
 
 ### Radios
 
-`2px` (`rounded-xs`) en chips y etiquetas del HUD (piezas de instrumento), `12px` en cards, `16px` en diálogos y dock.
+`2px` (`rounded-xs`) en chips y etiquetas del HUD (piezas de instrumento), `8px` (`rounded-md`) en botones, `14px` (`rounded-xl`) en cards, `18px` (`rounded-2xl`) en diálogos y dock. Base `--radius` 10px; el blog usa la misma escala.
 
 ### Layout
 

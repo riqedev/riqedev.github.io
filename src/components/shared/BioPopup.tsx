@@ -149,7 +149,7 @@ export const BioPopup = ({ open, onOpenChange }: BioPopupProps) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="group/card flex max-h-[85dvh] flex-col gap-0 overflow-hidden rounded-xl border-border bg-card p-0 sm:max-w-2xl"
+        className="group/card flex max-h-[85dvh] flex-col gap-0 overflow-hidden rounded-2xl border-border bg-card p-0 sm:max-w-2xl"
       >
         <div className="flex h-10 shrink-0 items-center justify-between gap-3 border-b border-border bg-muted/30 px-4">
           <div className="flex items-center gap-3 text-hud">

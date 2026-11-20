@@ -4,7 +4,7 @@ import { HUDFrame } from "@/components/shared/HUDFrame";
 import { HUDHeader, HUDFooter } from "@/components/shared/HUDBar";
 import { FocusIndicator, FocusPull, Kbd } from "@/components/shared/hud";
 import { DURATION, EASE_OUT } from "@/lib/motion";
-import { RecDot } from "@/components/shared/Wordmark";
+import { Wordmark } from "@/components/shared/Wordmark";
 import { useCommandMenu } from "@/lib/command-menu";
 
 /**
@@ -39,8 +39,7 @@ export const Home = () => {
           <h1
             className="display cursor-default text-[14vw] text-foreground sm:text-[12.5vw] md:text-[11.5vw] lg:text-[9.5vw] xl:text-[8.25vw] 2xl:text-[7.5vw]"
           >
-            riqedev
-            <RecDot />
+            <Wordmark />
           </h1>
         </FocusPull>
 
