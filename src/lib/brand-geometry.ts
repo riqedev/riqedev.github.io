@@ -1,4 +1,4 @@
-/* riqedev: geometría de la marca (R02). Generado por riqedev-brand/scripts/export-geometry.mjs, no editar a mano. */
+/* riqedev: geometría de la marca (R02). Generado por riqe-brand/scripts/riqedev/export-geometry.mjs, no editar a mano. */
 /* Unidades de fuente: 1 em = 1000, y hacia abajo, línea base en y = 0. "Dark" = peso 770 para tinta clara sobre oscuro. */
 
 export type BrandMark = {

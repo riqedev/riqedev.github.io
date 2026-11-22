@@ -173,7 +173,7 @@
 
 /* Display: la voz de la marca. Archivo semiexpandido (112%), pesado y apretado. En oscuro baja a 770:
    la tinta clara se ve más gruesa (irradiación). El wordmark va como SVG (<Wordmark />), con la
-   geometría del kit riqedev-brand; esta clase queda para titulares de marca como NO●SIGNAL. */
+   geometría del kit de riqedev (riqe-brand); esta clase queda para titulares de marca como NO●SIGNAL. */
 @utility display {
   font-family: var(--font-brand);
   font-stretch: 112%;

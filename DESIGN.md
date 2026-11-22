@@ -17,7 +17,7 @@ Sistema de marca e interfaz de riqedev. Vive en tres lugares que deben decir lo 
 
 ## 1. Principios
 
-**De la marca (aplican a todo):** hasta el último detalle. Enrique es ingeniero de software, creativo y detallista; le mueven el diseño en todas sus formas (industrial, arquitectura, moda), la fotografía, la música y las mentes brillantes que cruzan disciplinas, y todo eso entra en lo que hace. Cada decisión, por pequeña que sea, tiene una razón y se nota en el resultado; si un detalle no tiene razón, sobra. TAKE es una toma, en cine y en estudio: cada versión del portfolio puede tener otro escenario sin cambiar la marca. Frase de presentación: "Diseño y construyo software hasta el último detalle." Fuente completa: el design system riqedev en Claude y el kit `riqedev-brand`.
+**De la marca (aplican a todo):** hasta el último detalle. Enrique es ingeniero de software, creativo y detallista; le mueven el diseño en todas sus formas (industrial, arquitectura, moda), la fotografía, la música y las mentes brillantes que cruzan disciplinas, y todo eso entra en lo que hace. Cada decisión, por pequeña que sea, tiene una razón y se nota en el resultado; si un detalle no tiene razón, sobra. TAKE es una toma, en cine y en estudio: cada versión del portfolio puede tener otro escenario sin cambiar la marca. Frase de presentación: "Diseño y construyo software hasta el último detalle." Fuente completa: el design system riqedev en Claude y el repo de la familia `riqe-brand` (kit de riqedev en `docs/riqedev/`).
 
 **Del portfolio (TAKE 01):**
 
@@ -35,7 +35,7 @@ Referencia de concepto: visor de una Sony α6400 grabando.
 
 **Familia riqe (2026-11-20):** riqedev es la rama del oficio de la marca madre **riqe** (`../riqe-brand`). Mismo wordmark R02 en toda la familia; el punto es una **luz de estado**: riqe (la persona) graba, REC rojo; riqedev está **operativo, `--af`**. El rojo `--rec` queda en este sitio solo como situacional del TAKE 01 (REC del HUD, NO●SIGNAL).
 
-**Wordmark (R02, aprobado 2026-11-20):** `riqedev` en minúscula + punto redondo en `--af`. Archivo wdth 112, wght 780 (770 con tinta clara sobre oscuro: la irradiación la engorda), tracking −0.04em y kerning propio `ri` −0.010 · `ed` −0.010 · `ev` −0.021em. El punto mide 0.17em (el grosor del trazo), se centra donde Archivo pone su propio "." (−0.04em tras la `v`) y baja 0.012em bajo la línea base, como las letras redondas. Bajo 120px de ancho, versión chica: tracking −0.02em y punto de 0.19em. `<Wordmark />` (`src/components/shared/Wordmark.tsx`) lo dibuja como SVG con la geometría del kit (`src/lib/brand-geometry.ts`, generado por `riqedev-brand`, no se edita a mano), porque el kerning y el peso por tema no se pueden pedir en CSS. `<RecDot />` (0.17em, mismas reglas) queda para titulares en texto vivo como NO●SIGNAL; nunca el glifo "." de la fuente.
+**Wordmark (R02, aprobado 2026-11-20):** `riqedev` en minúscula + punto redondo en `--af`. Archivo wdth 112, wght 780 (770 con tinta clara sobre oscuro: la irradiación la engorda), tracking −0.04em y kerning propio `ri` −0.010 · `ed` −0.010 · `ev` −0.021em. El punto mide 0.17em (el grosor del trazo), se centra donde Archivo pone su propio "." (−0.04em tras la `v`) y baja 0.012em bajo la línea base, como las letras redondas. Bajo 120px de ancho, versión chica: tracking −0.02em y punto de 0.19em. `<Wordmark />` (`src/components/shared/Wordmark.tsx`) lo dibuja como SVG con la geometría del kit (`src/lib/brand-geometry.ts`, generado por `riqe-brand` (`npm run riqedev:export`), no se edita a mano), porque el kerning y el peso por tema no se pueden pedir en CSS. `<RecDot />` (0.17em, mismas reglas) queda para titulares en texto vivo como NO●SIGNAL; nunca el glifo "." de la fuente.
 
 **Monograma:** `r` + punto en `--af` (`<Monogram />`), baldosa `#111111`. En íconos el glifo se recorta a su tinta y ocupa ~70% de la baldosa en 16/32px y ~60% en 180/192px, con el punto a 0.19em (compensación óptica para que sobreviva a 16px), centrado donde Archivo pone su punto tras la `r` (−0.038em). En el dock va a 26/30px para igualar el peso visual de los íconos de 20px. Dock, favicon (`public/favicon*.png`, `favicon.ico`), `apple-touch-icon.png`. Reemplaza al logo del gato con lentes.
 
@@ -64,7 +64,7 @@ Referencia de concepto: visor de una Sony α6400 grabando.
 
 Se probó destacar las letras q-e-d (*quod erat demonstrandum*) con hover en el nombre, un `∎ q.e.d.` al cierre del `career.log` y una sección en `/system`. Enrique lo sacó (2026-11-17): se siente trillado y su vínculo real es con la demostración matemática, no con la ingeniería. No reintroducirlo.
 
-**README de perfil** (`riqedev/riqedev`): usa el lockup R02 del kit `riqedev-brand` (`assets/wordmark-{dark,light}.png`, recortado a la tinta). La social card (`design/og.html`) usa `design/wordmark-dark.svg`, copiado del kit.
+**README de perfil** (`riqedev/riqedev`): usa el lockup R02 del kit de riqedev en `riqe-brand` (`assets/wordmark-{dark,light}.png`, recortado a la tinta). La social card (`design/og.html`) usa `design/wordmark-dark.svg`, copiado del kit.
 
 ---
 

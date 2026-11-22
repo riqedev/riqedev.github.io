@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { BRAND_GEOMETRY as G, type BrandMark } from "@/lib/brand-geometry";
 
 /**
- * Un trazo de la marca dibujado en em, con la geometría exacta del kit (riqedev-brand): escala con el
+ * Un trazo de la marca dibujado en em, con la geometría exacta del kit (riqe-brand): escala con el
  * font-size, se apoya en la línea base y lleva el kerning propio que el texto vivo no puede tener.
  * `fromOrigin` arranca en el origen tipográfico (como el texto); sin él, en la tinta (íconos).
  */
