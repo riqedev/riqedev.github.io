@@ -100,7 +100,7 @@ export const ProjectModal = ({ projects, index, onIndexChange, onClose }: Projec
             {project.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                className="osd rounded-xs border border-white/15 bg-black/50 px-1.5 py-0.5 text-[9px] text-white/90 backdrop-blur-md"
+                className="osd rounded-xs border border-white/15 bg-black/50 px-1.5 py-0.5 text-osd-9 text-white/90 backdrop-blur-md"
               >
                 {tag}
               </span>
@@ -130,19 +130,19 @@ export const ProjectModal = ({ projects, index, onIndexChange, onClose }: Projec
             className="flex min-h-0 flex-1 flex-col [&>[data-slot=scroll-area-viewport]]:h-auto [&>[data-slot=scroll-area-viewport]]:min-h-0 [&>[data-slot=scroll-area-viewport]]:flex-1">
             <div className="space-y-7 p-5 md:p-6">
               <section>
-                <h3 className="osd mb-2 text-[10px] text-hud">{t.overview}</h3>
+                <h3 className="osd mb-2 text-osd-10 text-hud">{t.overview}</h3>
                 <DialogDescription className="max-w-prose text-sm leading-relaxed text-muted-foreground md:text-base">
                   {project.description[locale]}
                 </DialogDescription>
               </section>
 
               <section>
-                <h3 className="osd mb-3 text-[10px] text-hud">Stack</h3>
+                <h3 className="osd mb-3 text-osd-10 text-hud">Stack</h3>
                 <ul className="flex flex-wrap gap-1.5">
                   {project.tags.map((tag) => (
                     <li
                       key={tag}
-                      className="rounded-xs border border-border bg-muted/40 px-2 py-1 font-mono text-[11px] text-muted-foreground"
+                      className="rounded-xs border border-border bg-muted/40 px-2 py-1 font-mono text-osd-11 text-muted-foreground"
                     >
                       {tag}
                     </li>
@@ -172,7 +172,7 @@ export const ProjectModal = ({ projects, index, onIndexChange, onClose }: Projec
               </div>
             )}
             {!showLive && !repoUrl && (
-              <p className="font-mono text-[11px] text-hud">{t.private}</p>
+              <p className="font-mono text-osd-11 text-hud">{t.private}</p>
             )}
 
             {total > 1 && (
@@ -180,14 +180,14 @@ export const ProjectModal = ({ projects, index, onIndexChange, onClose }: Projec
                 <button
                   type="button"
                   onClick={() => onIndexChange((current - 1 + total) % total)}
-                  className="osd pressable flex items-center gap-1.5 rounded-xs px-1 py-1 text-[10px] text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
+                  className="osd pressable flex items-center gap-1.5 rounded-xs px-1 py-1 text-osd-10 text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
                 >
                   <ChevronLeft size={12} aria-hidden="true" /> Prev <Kbd className="hidden md:inline-flex">←</Kbd>
                 </button>
                 <button
                   type="button"
                   onClick={() => onIndexChange((current + 1) % total)}
-                  className="osd pressable flex items-center gap-1.5 rounded-xs px-1 py-1 text-[10px] text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
+                  className="osd pressable flex items-center gap-1.5 rounded-xs px-1 py-1 text-osd-10 text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
                 >
                   <Kbd className="hidden md:inline-flex">→</Kbd> Next <ChevronRight size={12} aria-hidden="true" />
                 </button>

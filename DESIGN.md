@@ -99,11 +99,11 @@ Los semáforos de ventana (`WindowDots`) usan rec/warn/af, pero solo al interact
 
 | Token | Uso |
 | --- | --- |
-| `--hud-strong` (75–78%) | Etiqueta principal del HUD, valores activos |
-| `--hud` (58–60%) | Estado, labels de sección |
-| `--hud-faint` (42–45%) | Metadatos, valores en reposo |
+| `--hud-strong` (oscuro 75% · claro 82%) | Etiqueta principal del HUD, valores activos |
+| `--hud` (oscuro 58% · claro 68%) | Estado, labels de sección |
+| `--hud-faint` (oscuro 46% · claro 57%) | Metadatos, valores en reposo |
 
-Antes el HUD usaba `/40` y no se leía. `--hud-strong` y `--hud` pasan 4.5:1; `--hud-faint` da 3.1:1 (claro) y 3.9:1 (oscuro), así que es solo para metadatos no esenciales: lo que haya que leer va en `--hud`. `--link` y `--warn` claros se oscurecieron el 2026-11-20 para pasar 4.5:1 (4.79 y 4.78).
+Antes el HUD usaba `/40` y no se leía. **Todo token que se pinta como texto pasa 4.5:1 sobre `background` y `card` en los dos temas** (WCAG AA; el HUD mide 10–12 px, así que no aplica la excepción de texto grande). `--hud-faint` daba 3.1:1 en claro y 3.9:1 en oscuro, con la regla de usarlo solo en metadatos no esenciales; no se cumplió (el © del blog, los `[01]` de Contact) y Lighthouse lo marcó. El 2026-11-25 se subió hasta el mínimo (4.5 y 4.5) y en claro `--hud`/`--hud-strong` subieron para mantener los escalones (11.3 / 6.7 / 4.6). Lo verifica `tests/test_contrast.py` en riqe-brand: un tono nuevo o cambiado se prueba ahí antes de usarlo. `--link` y `--warn` claros se oscurecieron el 2026-11-20 para pasar 4.5:1 (4.79 y 4.78).
 
 ### Sintaxis
 
@@ -131,15 +131,17 @@ Tres familias, cada una con un trabajo. Todas self-hosted vía Fontsource (sin C
 
 | Token | px | Uso |
 | --- | --- | --- |
-| `text-[10px]` | 10 | OSD del HUD (mobile), chips |
-| `text-[11px]` | 11 | OSD del HUD (desktop), mono secundaria |
-| `text-xs` | 12 | Logs, metadatos |
+| `text-[10px]` / `md:text-[11px]` | 10 / 11 | Solo barras del HUD (`HUDHeader`/`HUDFooter`), `RAW`, atajos de teclado (`Kbd`, `CommandShortcut`) y tooltips |
+| `text-osd-9` / `-10` / `-11` | 12 en móvil · 9 / 10 / 11 desde `sm` | OSD de contenido: chips, tags, títulos de tarjeta, metadatos, botones de sistema |
+| `text-xs` | 12 | Logs, metadatos, controles con texto (dock, skip link) |
 | `text-sm` | 14 | UI, botones |
 | `text-base` | 16 | Prosa |
 | `text-2xl` / `3xl` | 24 / 30 | Headings |
 | `.display` | 7.5–14vw | Wordmark del hero |
 
 Headings con `text-wrap: balance`, párrafos con `text-wrap: pretty` (global en `index.css`).
+
+**Piso de legibilidad.** En móvil (<640px) Lighthouse exige que al menos el 60% del texto visible de cada vista mida 12px o más, y lo cuenta por caracteres. Por eso bajo 12px fijo va solo el HUD de las barras, los atajos y los tooltips; todo lo demás usa `text-osd-*`, que vuelve a 12px en móvil (utilidades en `index.css`). Nunca al revés: un texto más chico en móvil que en escritorio (`text-[11px] sm:text-xs`) es un error. Controles con texto (botones del dock, skip link) van en 12px siempre.
 
 ---
 
@@ -198,6 +200,7 @@ Los tokens viven en `src/index.css` (CSS) y `src/lib/motion.ts` (motion/react).
 - Salir es más rápido que entrar. Nada aparece desde `scale(0)`: mínimo 0.95 + opacidad.
 - Las acciones de teclado (1–4, ⌘K, ←/→) no animan la lista ni el contenido.
 - Stagger de 30–80ms, no uniforme (`stagger(i)`).
+- **El texto principal de la vista no espera a otra animación.** Lighthouse toma como LCP el bloque de texto más grande (en el Home, el rol bajo el nombre), y un elemento con opacidad 0 no cuenta hasta que aparece: encadenarlo con `delay` detrás del focus pull subió el LCP móvil ~0.9s. Entra junto con el momento hero; `delay` y stagger, solo para lo secundario.
 - Tooltips: un solo `TooltipProvider` por grupo (350ms de delay, los vecinos abren al instante).
 - Con `prefers-reduced-motion`: sin desplazamientos, pulsos ni desenfoque; el foco aparece ya confirmado.
 
@@ -207,6 +210,8 @@ Los tokens viven en `src/index.css` (CSS) y `src/lib/motion.ts` (motion/react).
 
 - **La cámara y el código hablan en inglés, siempre.** HUD, estados, chips y botones del visor (`REC`, `CATALOG`, `NO SIGNAL`, `Copy`, `Prev`), nombres de archivo (`career.log`, `package.json`), claves de log (`Details:`, `Status:`) y tags de stack. Es la convención del rubro y no se traduce.
 - **Lo que se lee como frase va en el idioma del lector (ES/EN).** Bio, descripciones de proyectos, valores del career.log, títulos de sección, el menú ⌘K, `aria-label`s y textos para lectores de pantalla. Selector `ES/EN` en el dock y en el menú; detecta el idioma del navegador, recuerda la elección (`portfolio-locale`) y actualiza `<html lang>`. Implementación en `src/lib/i18n.ts`: diccionarios `Localized<T>` junto a cada componente, sin librerías.
+- **El nombre accesible contiene el texto visible** (WCAG 2.5.3). Un botón que muestra `ES` se llama "ES, cambiar idioma a English", no "Cambiar idioma a English". En una tarjeta clickeable el nombre sale de su contenido (título + tags) y lo extra va en un `sr-only` al final; un `aria-label` que reemplaza el contenido falla.
+- **Títulos sin saltos de nivel.** Bajo el h1 de una página va h2, no h3, aunque se vea como h3: el nivel se elige por la estructura y el tamaño por la clase (`PostRow` recibe `heading`). En los posts del blog las secciones son `##` y las subsecciones `###`.
 - **Enrique habla en primera persona**, con verbos simples, en los dos idiomas. Texto nuevo: escribir las dos versiones a la vez.
 - Sin frases de marketing ("elevar", "potenciar", tríadas). Si una frase podría estar en cualquier portfolio, se reescribe.
 - Em-dash solo en copy del HUD/marca (`// 2022 — present`). En prosa nueva, no.

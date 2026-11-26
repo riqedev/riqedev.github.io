@@ -203,7 +203,7 @@ export const Terminal = ({ children, title, className, sequence = true, startOnV
     >
       <div className="flex h-10 shrink-0 items-center gap-3 border-b border-border px-4">
         <WindowDots />
-        {title && <span className="truncate font-mono text-[11px] font-medium tracking-wide text-hud">{title}</span>}
+        {title && <span className="truncate font-mono text-osd-11 font-medium tracking-wide text-hud">{title}</span>}
       </div>
       <pre className="min-h-0 flex-1 overflow-auto p-4">
         <code className="grid gap-y-1">{wrappedChildren}</code>

@@ -108,9 +108,9 @@
   --link: oklch(0.53 0.1 210);
   --warn: oklch(0.55 0.15 70);
 
-  --hud-strong: oklch(0.16 0 0 / 78%);
-  --hud: oklch(0.16 0 0 / 60%);
-  --hud-faint: oklch(0.16 0 0 / 45%);
+  --hud-strong: oklch(0.16 0 0 / 82%);
+  --hud: oklch(0.16 0 0 / 68%);
+  --hud-faint: oklch(0.16 0 0 / 57%);
 
   --syntax-key: oklch(0.52 0.19 25);
   --syntax-string: oklch(0.48 0.13 150);
@@ -150,7 +150,7 @@
 
   --hud-strong: oklch(0.985 0 0 / 75%);
   --hud: oklch(0.985 0 0 / 58%);
-  --hud-faint: oklch(0.985 0 0 / 42%);
+  --hud-faint: oklch(0.985 0 0 / 46%);
 
   --syntax-key: oklch(0.74 0.15 25);
   --syntax-string: oklch(0.8 0.15 150);
@@ -169,6 +169,28 @@
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+/* Tamaños de instrumento (9/10/11px) para el OSD de contenido: chips, tags, títulos de tarjeta, metadatos y botones
+   de sistema. Desde sm toman su tamaño; en móvil suben a 12px, porque Lighthouse exige ≥60% del texto visible en
+   12px o más. Solo las barras del HUD, los atajos de teclado y los tooltips usan px fijos bajo 12. */
+@utility text-osd-9 {
+  font-size: var(--text-xs);
+  @variant sm {
+    font-size: 9px;
+  }
+}
+@utility text-osd-10 {
+  font-size: var(--text-xs);
+  @variant sm {
+    font-size: 10px;
+  }
+}
+@utility text-osd-11 {
+  font-size: var(--text-xs);
+  @variant sm {
+    font-size: 11px;
+  }
 }
 
 /* Display: la voz de la marca. Archivo semiexpandido (112%), pesado y apretado. En oscuro baja a 770:
