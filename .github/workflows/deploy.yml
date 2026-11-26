@@ -16,12 +16,11 @@ permissions:
   id-token: write
 
 jobs:
-  build-and-deploy:
+  # Construir y publicar van en jobs separados, como la plantilla oficial de GitHub Pages: con todo en un solo job,
+  # deploy-pages pedía el artefacto ~0.1s después de subirlo y a veces GitHub aún no lo listaba
+  # ("No artifacts named github-pages were found"; pasó dos veces en noviembre de 2026).
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -50,6 +49,13 @@ jobs:
           # Vite genera 'dist'; el plugin local copia index.html → 404.html para SPA fallback
           path: './dist'
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
