@@ -61,7 +61,7 @@ export const Contact = () => {
                     <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                       <span className="text-hud-faint shrink-0 tabular-nums">[{ch.id}]</span>
                       <Icon size={14} className="text-muted-foreground shrink-0" aria-hidden="true" />
-                      <span className="osd text-foreground text-xs">
+                      <span className="osd text-foreground text-[11px] sm:text-xs">
                         {ch.label}
                       </span>
                     </div>
@@ -71,7 +71,7 @@ export const Contact = () => {
                           type="button"
                           onClick={handleCopy}
                           aria-label={copied ? t.copied : t.copy}
-                          className="osd pressable flex h-7 items-center gap-1.5 rounded-xs border border-border px-2.5 text-osd-10 text-muted-foreground outline-none hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
+                          className="osd pressable flex h-7 items-center gap-1.5 rounded-xs border border-border px-2.5 text-[10px] text-muted-foreground outline-none hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
                         >
                           {copied ? <Check size={11} className="text-af" /> : <Copy size={11} />}
                           <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
@@ -82,7 +82,7 @@ export const Contact = () => {
                         target={isMail ? undefined : "_blank"}
                         rel={isMail ? undefined : "noreferrer"}
                         aria-label={`${isMail ? t.send : t.open} ${ch.label}`}
-                        className="osd pressable flex h-7 items-center gap-1.5 rounded-xs border border-border px-2.5 text-osd-10 text-muted-foreground outline-none hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
+                        className="osd pressable flex h-7 items-center gap-1.5 rounded-xs border border-border px-2.5 text-[10px] text-muted-foreground outline-none hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60"
                       >
                         <span>{isMail ? "Send" : "Open"}</span>
                         <ArrowUpRight size={11} />

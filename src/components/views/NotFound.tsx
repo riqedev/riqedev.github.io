@@ -40,7 +40,7 @@ export const NotFound = () => {
         className="relative z-10 flex flex-col items-center text-center select-none px-6 gap-8"
       >
         <div className="flex flex-col items-center gap-3">
-          <span className="osd text-xs tracking-[0.3em] text-hud">
+          <span className="osd text-[10px] md:text-xs tracking-[0.3em] text-hud">
             // 404 // scene not found
           </span>
           <h1 className="display text-[13vw] sm:text-[12vw] md:text-[10vw] lg:text-[8vw] text-foreground">
@@ -53,7 +53,7 @@ export const NotFound = () => {
 
         <Link
           to="/"
-          className="group osd pressable flex h-9 items-center gap-3 rounded-md border border-border px-4 text-osd-10 tracking-[0.2em] text-muted-foreground outline-none hover:border-foreground/40 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:text-xs"
+          className="group osd pressable flex h-9 items-center gap-3 rounded-md border border-border px-4 text-[10px] tracking-[0.2em] text-muted-foreground outline-none hover:border-foreground/40 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:text-xs"
         >
           <ArrowLeft size={14} aria-hidden="true" className="transition-transform duration-200 group-hover:-translate-x-0.5" />
           <span>Rec from start</span>

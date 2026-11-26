@@ -171,28 +171,6 @@
   text-transform: uppercase;
 }
 
-/* Tamaños de instrumento (9/10/11px) para el OSD de contenido: chips, tags, títulos de tarjeta, metadatos y botones
-   de sistema. Desde sm toman su tamaño; en móvil suben a 12px, porque Lighthouse exige ≥60% del texto visible en
-   12px o más. Solo las barras del HUD, los atajos de teclado y los tooltips usan px fijos bajo 12. */
-@utility text-osd-9 {
-  font-size: var(--text-xs);
-  @variant sm {
-    font-size: 9px;
-  }
-}
-@utility text-osd-10 {
-  font-size: var(--text-xs);
-  @variant sm {
-    font-size: 10px;
-  }
-}
-@utility text-osd-11 {
-  font-size: var(--text-xs);
-  @variant sm {
-    font-size: 11px;
-  }
-}
-
 /* Display: la voz de la marca. Archivo semiexpandido (112%), pesado y apretado. En oscuro baja a 770:
    la tinta clara se ve más gruesa (irradiación). El wordmark va como SVG (<Wordmark />), con la
    geometría del kit de riqedev (riqe-brand); esta clase queda para titulares de marca como NO●SIGNAL. */

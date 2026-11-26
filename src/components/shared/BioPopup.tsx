@@ -155,7 +155,7 @@ export const BioPopup = ({ open, onOpenChange }: BioPopupProps) => {
           <div className="flex items-center gap-3 text-hud">
             <WindowDots />
             <FileText size={13} aria-hidden="true" />
-            <span className="font-mono text-osd-11 font-medium tracking-wide">
+            <span className="font-mono text-[11px] font-medium tracking-wide">
               README.md
             </span>
           </div>
@@ -173,18 +173,18 @@ export const BioPopup = ({ open, onOpenChange }: BioPopupProps) => {
               <DialogTitle className="text-2xl font-semibold tracking-tight text-foreground">
                 {t.title}
               </DialogTitle>
-              <DialogDescription className="mt-1 font-mono text-osd-11 text-hud">
+              <DialogDescription className="mt-1 font-mono text-[11px] text-hud">
                 {t.subtitle}
               </DialogDescription>
             </header>
 
             <section className="max-w-prose space-y-4">
-              <h3 className="osd text-osd-10 text-hud">{t.roleHeading}</h3>
+              <h3 className="osd text-[10px] text-hud">{t.roleHeading}</h3>
               {t.role}
             </section>
 
             <section className="max-w-prose space-y-4">
-              <h3 className="osd text-osd-10 text-hud">{t.outsideHeading}</h3>
+              <h3 className="osd text-[10px] text-hud">{t.outsideHeading}</h3>
               {t.outside}
             </section>
           </div>

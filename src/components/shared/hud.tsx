@@ -101,7 +101,7 @@ export const Chip = ({ active = false, className, ...props }: ChipProps) => (
     type="button"
     aria-pressed={active}
     className={cn(
-      "osd pressable h-6 shrink-0 whitespace-nowrap rounded-xs border px-2 text-osd-10 outline-none focus-visible:ring-2 focus-visible:ring-ring/60",
+      "osd pressable h-6 shrink-0 whitespace-nowrap rounded-xs border px-2 text-[10px] outline-none focus-visible:ring-2 focus-visible:ring-ring/60",
       active
         ? "border-foreground/60 bg-foreground text-background"
         : "border-border text-hud hover:border-foreground/30 hover:text-foreground",

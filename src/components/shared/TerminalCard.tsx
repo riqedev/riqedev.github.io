@@ -50,7 +50,7 @@ export const TerminalCard = ({
           <WindowDots />
           <div className="flex min-w-0 items-center gap-2 text-hud">
             {Icon && <Icon size={13} className="shrink-0" aria-hidden="true" />}
-            <span className="truncate font-mono text-osd-11 font-medium tracking-wide">{title}</span>
+            <span className="truncate font-mono text-[11px] font-medium tracking-wide">{title}</span>
           </div>
         </div>
 

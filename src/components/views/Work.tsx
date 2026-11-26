@@ -82,13 +82,13 @@ export const Work = () => {
         <div className="flex shrink-0 items-end justify-between gap-4 border-b border-border/60 pb-4">
           <div>
             <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">{t.title}</h2>
-            <p className="mt-1 font-mono text-xs text-hud">{t.since}</p>
+            <p className="mt-1 font-mono text-[11px] text-hud md:text-xs">{t.since}</p>
           </div>
           <a
             href="https://github.com/riqedev"
             target="_blank"
             rel="noreferrer"
-            className="pressable flex items-center gap-2 rounded-xs border border-border px-2 py-1 font-mono text-osd-11 text-muted-foreground outline-none hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:text-xs"
+            className="pressable flex items-center gap-2 rounded-xs border border-border px-2 py-1 font-mono text-[11px] text-muted-foreground outline-none hover:border-foreground/30 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:text-xs"
           >
             <FolderGit2 size={12} aria-hidden="true" />
             <span>github/riqedev</span>
@@ -118,7 +118,7 @@ export const Work = () => {
               <button
                 type="button"
                 onClick={() => setActiveCategory(null)}
-                className="osd text-osd-10 text-muted-foreground hover:text-foreground"
+                className="osd text-[10px] text-muted-foreground hover:text-foreground"
               >
                 Reset filter
               </button>
@@ -163,7 +163,7 @@ export const Work = () => {
                         {project.tags.slice(0, 2).map((tag) => (
                           <span
                             key={tag}
-                            className="osd rounded-xs border border-white/15 bg-black/45 px-1.5 py-0.5 text-osd-9 text-white/90 backdrop-blur-md"
+                            className="osd rounded-xs border border-white/15 bg-black/45 px-1.5 py-0.5 text-[9px] text-white/90 backdrop-blur-md"
                           >
                             {tag}
                           </span>
@@ -188,7 +188,7 @@ export const Work = () => {
                   </div>
                   <div className="flex flex-1 flex-col items-center justify-center gap-2 font-mono">
                     <span className="text-xs text-hud">[ FREE_SLOT ]</span>
-                    <span className="text-osd-10 text-hud-faint">WAITING_FOR_DATA...</span>
+                    <span className="text-[10px] text-hud-faint">WAITING_FOR_DATA...</span>
                   </div>
                 </div>
               )}

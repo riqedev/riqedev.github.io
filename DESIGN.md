@@ -29,6 +29,16 @@ Sistema de marca e interfaz de riqedev. Vive en tres lugares que deben decir lo 
 
 Referencia de concepto: visor de una Sony α6400 grabando.
 
+### No negociables
+
+**La estética manda sobre el puntaje.** Un cambio que se nota en la estética no se hace para ganar unos puntos de Lighthouse que nadie percibe. Insistir en eso es ser quisquilloso, no cuidadoso. Se corrige lo que una persona sí nota (que el texto se lea, que un lector de pantalla entienda los controles, que la página no tarde de verdad) y lo que no cambia nada visible (un nombre accesible, el nivel de un título, un `robots.txt`). Si la única forma de subir un puntaje es tocar la estética, se documenta el trade-off y se deja como está.
+
+No se tocan por Lighthouse:
+
+- **Los tamaños de instrumento del OSD** (9/10/11px): tags de stack, chips, títulos de tarjeta, metadatos, HUD.
+- **El momento hero:** el focus pull del nombre y el rol que entra con un fade junto a él. Se aceptan los ~0.9s que Lighthouse a veces le suma al LCP móvil.
+- **Las capturas de proyectos a 960×720:** son la resolución justa para pantallas retina; achicarlas para bajar bytes las deja blandas.
+
 ---
 
 ## 2. Marca
@@ -131,9 +141,10 @@ Tres familias, cada una con un trabajo. Todas self-hosted vía Fontsource (sin C
 
 | Token | px | Uso |
 | --- | --- | --- |
-| `text-[10px]` / `md:text-[11px]` | 10 / 11 | Solo barras del HUD (`HUDHeader`/`HUDFooter`), `RAW`, atajos de teclado (`Kbd`, `CommandShortcut`) y tooltips |
-| `text-osd-9` / `-10` / `-11` | 12 en móvil · 9 / 10 / 11 desde `sm` | OSD de contenido: chips, tags, títulos de tarjeta, metadatos, botones de sistema |
-| `text-xs` | 12 | Logs, metadatos, controles con texto (dock, skip link) |
+| `text-[9px]` | 9 | Tags de stack sobre las capturas, `RAW`, `Kbd` |
+| `text-[10px]` | 10 | OSD del HUD (mobile), chips, botones de sistema |
+| `text-[11px]` | 11 | OSD del HUD (desktop), títulos de tarjeta, mono secundaria |
+| `text-xs` | 12 | Logs, metadatos, controles del dock, skip link |
 | `text-sm` | 14 | UI, botones |
 | `text-base` | 16 | Prosa |
 | `text-2xl` / `3xl` | 24 / 30 | Headings |
@@ -141,7 +152,7 @@ Tres familias, cada una con un trabajo. Todas self-hosted vía Fontsource (sin C
 
 Headings con `text-wrap: balance`, párrafos con `text-wrap: pretty` (global en `index.css`).
 
-**Piso de legibilidad.** En móvil (<640px) Lighthouse exige que al menos el 60% del texto visible de cada vista mida 12px o más, y lo cuenta por caracteres. Por eso bajo 12px fijo va solo el HUD de las barras, los atajos y los tooltips; todo lo demás usa `text-osd-*`, que vuelve a 12px en móvil (utilidades en `index.css`). Nunca al revés: un texto más chico en móvil que en escritorio (`text-[11px] sm:text-xs`) es un error. Controles con texto (botones del dock, skip link) van en 12px siempre.
+**Los tamaños de instrumento (9/10/11px) son de la estética y no se tocan por Lighthouse** (ver "No negociables", §1). En móvil Lighthouse pide ≥60% del texto en 12px+ y Work y Contact no llegan (Buenas prácticas 96): se acepta. Se probó subir el OSD de contenido a 12px en móvil (`text-osd-*`, 2026-11-25) y se revirtió el mismo día: las tags de stack perdían el carácter de instrumento. Donde no cambia nada visible sí se sube a 12px: el botón de idioma del dock y el skip link.
 
 ---
 

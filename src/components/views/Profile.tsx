@@ -185,7 +185,7 @@ export const Profile = () => {
         >
           <Terminal
             title="career.log"
-            className="h-auto lg:h-full w-full max-w-none max-h-none lg:max-h-screen text-xs font-mono leading-relaxed"
+            className="h-auto lg:h-full w-full max-w-none max-h-none lg:max-h-screen text-[11px] md:text-xs font-mono leading-relaxed"
           >
             <TypingAnimation duration={35} className="text-muted-foreground mb-4">&gt; tail -f /var/log/career.log</TypingAnimation>
 
@@ -258,7 +258,7 @@ export const Profile = () => {
                       <h3 className="flex items-center gap-2 text-xl font-semibold tracking-tight text-foreground md:text-2xl">
                         {t.hello} <span className="text-2xl">👋🏽</span>
                       </h3>
-                      <p className="font-mono text-osd-11 text-hud">Software Engineer @ CTR // Chile</p>
+                      <p className="font-mono text-[11px] text-hud">Software Engineer @ CTR // Chile</p>
                     </div>
                   </div>
                   <div className="space-y-4 text-sm md:text-base text-muted-foreground leading-relaxed">
@@ -268,7 +268,7 @@ export const Profile = () => {
                 </div>
 
                 <div className="pt-6 border-t border-border lg:pt-0 lg:border-t-0 lg:border-l lg:pl-8">
-                  <h4 className="osd text-osd-10 text-hud mb-4">
+                  <h4 className="osd text-[10px] text-hud mb-4">
                     {t.offCode}
                   </h4>
                   <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 gap-3">
@@ -375,7 +375,7 @@ export const Profile = () => {
           <TerminalCard
             title="licenses.txt"
             icon={Award}
-            headerAction={<span className="font-mono text-osd-11 text-hud-faint tabular-nums">{certifications.length} files</span>}
+            headerAction={<span className="font-mono text-[11px] text-hud-faint tabular-nums">{certifications.length} files</span>}
             className="md:col-span-1 lg:row-span-5 relative overflow-hidden"
             delay={0.4}
           >
@@ -391,7 +391,7 @@ export const Profile = () => {
                   >
                     <div className="flex flex-col gap-1 overflow-hidden">
                       <span className="text-xs font-medium text-foreground truncate">{cert.name}</span>
-                      <span className="osd w-fit rounded-xs border border-border px-1.5 py-px text-osd-9 text-hud">
+                      <span className="osd w-fit rounded-xs border border-border px-1.5 py-px text-[9px] text-hud">
                         {getCertIssuer(cert.certificationLink)}
                       </span>
                     </div>
