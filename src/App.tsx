@@ -46,7 +46,7 @@ function App() {
           <div className="relative min-h-dvh overflow-hidden bg-background text-foreground">
             <a
               href="#main"
-              className="osd sr-only z-60 rounded-xs bg-foreground px-3 py-2 text-[11px] text-background focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+              className="osd sr-only z-60 rounded-xs bg-foreground px-3 py-2 text-xs text-background focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
             >
               {skip}
             </a>

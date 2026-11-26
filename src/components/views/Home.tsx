@@ -43,10 +43,12 @@ export const Home = () => {
           </h1>
         </FocusPull>
 
+        {/* Entra junto con el enfoque del nombre, no después: con retraso, Chrome no lo cuenta como pintado
+            hasta que termina el fade y el LCP en móvil subía ~0.9s. */}
         <motion.p
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: DURATION.modal, ease: EASE_OUT, delay: DURATION.hero * 0.85 }}
+          transition={{ duration: DURATION.hero, ease: EASE_OUT }}
           className="osd mt-9 flex flex-col items-center gap-2 text-xs tracking-[0.28em] text-muted-foreground sm:text-sm md:mt-12 md:flex-row md:gap-5 md:text-base lg:text-lg"
         >
           <span>Software Engineer</span>

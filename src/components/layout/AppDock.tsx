@@ -48,12 +48,12 @@ const COPY: Localized<{ nav: string; menu: string; switchTo: string }> = {
   es: {
     nav: "Principal",
     menu: "Abrir menú",
-    switchTo: "Cambiar idioma a English",
+    switchTo: "cambiar idioma a English",
   },
   en: {
     nav: "Main",
     menu: "Open menu",
-    switchTo: "Switch language to Español",
+    switchTo: "switch language to Español",
   },
 };
 
@@ -156,10 +156,11 @@ export const AppDock = () => {
                 <button
                   type="button"
                   onClick={() => setLocale(locale === "es" ? "en" : "es")}
-                  aria-label={t.switchTo}
+                  // el nombre accesible empieza con el texto visible (WCAG 2.5.3): quien dicta "ES" lo encuentra
+                  aria-label={`${locale.toUpperCase()}, ${t.switchTo}`}
                   className={cn(
                     buttonVariants({ variant: "ghost", size: "icon" }),
-                    "osd pressable size-9 rounded-xl text-[11px] text-muted-foreground hover:bg-transparent hover:text-foreground md:size-10 md:text-xs",
+                    "osd pressable size-9 rounded-xl text-xs text-muted-foreground hover:bg-transparent hover:text-foreground md:size-10",
                   )}
                 >
                   {locale.toUpperCase()}
